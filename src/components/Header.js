@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
+import {RiAdminLine} from "react-icons/ri"
+
 
 export function Header() {
     return (
@@ -12,7 +14,7 @@ export function Header() {
             </div>
 
             <div className='items-center pt-1'>
-                <Link href={"/admin"}>Admin Panel</Link>
+                <Link href={"/dashboard"}><RiAdminLine className='text-4xl rounded-full bg-zinc-300 hover:bg-zinc-200 p-2 transition-all ' /></Link>
             </div>
 
         </header>
