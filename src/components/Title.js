@@ -2,7 +2,7 @@ import React from 'react';
 
 export function Title({children}) {
     return (
-        <div className='bg-red w-full'>
+        <div className='w-full'>
             <h1>
                 {children}
             </h1>
