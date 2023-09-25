@@ -9,7 +9,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
-function promoPage() {
+function PromoPage() {
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState({ title: "", body: "", userId: "" });
   const {
@@ -180,4 +180,4 @@ function promoPage() {
   );
 }
 
-export default promoPage;
+export default PromoPage;
