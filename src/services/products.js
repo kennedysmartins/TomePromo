@@ -56,7 +56,7 @@ export function getProducts() {
   return products;
 }
 
-export function getProduct(id) {
+export function getProductById(id) {
   const result = products.filter((product) => {
     return product.id === id;
   });
