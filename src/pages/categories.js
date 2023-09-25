@@ -17,7 +17,7 @@ const categories = () => {
               <br></br>
               <div>
                 <h1 className="mt-2 text-4xl p-4  ">Categorias</h1>
-                <h1 className=" text-lg px-4  ">Principal</h1>
+                <h1 className=" text-lg px-4  ">Crie e gerencie as categorias</h1>
               </div>
             </div>
         </Content>

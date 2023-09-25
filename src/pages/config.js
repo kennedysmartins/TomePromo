@@ -4,6 +4,7 @@ import { Content } from "@/components/Content";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import 'tailwindcss/tailwind.css';
+import { Box } from "@/components/Box";
 
 
 const config = () => {
@@ -17,7 +18,12 @@ const config = () => {
               <br></br>
               <div>
                 <h1 className="mt-2 text-4xl p-4  ">Configurações</h1>
-                <h1 className=" text-lg px-4  ">Principal</h1>
+                <h1 className=" text-lg px-4  ">Gerencie o App</h1>
+              </div>
+              <div>
+                <Box>
+                  <h3>Dark Mode</h3>
+                </Box>
               </div>
             </div>
         </Content>

@@ -17,7 +17,7 @@ const products = () => {
               <br></br>
               <div>
                 <h1 className="mt-2 text-4xl p-4  ">Produtos</h1>
-                <h1 className=" text-lg px-4  ">Principal</h1>
+                <h1 className=" text-lg px-4  ">Gerenciamento de ofertas</h1>
               </div>
             </div>
         </Content>
