@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Container } from "@/components/Container";
 import { Content } from "@/components/Content";
 import { Header } from "@/components/Header";
@@ -8,11 +8,16 @@ import { Box } from "@/components/Box";
 
 
 const dashboard = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState();
+  const handleMenuToggle  = () => {
+    setIsDrawerOpen(!isDrawerOpen)
+  }
+
   return (
     <Container bgActive={false}>
-      <Header />
+      <Header onMenuToggle={handleMenuToggle} />
       <div className="flex">
-        <Sidebar />
+        <Sidebar isOpen={isDrawerOpen} onClose={handleMenuToggle}/>
         <Content>
             <div className=" flex flex-col">
               <br></br>

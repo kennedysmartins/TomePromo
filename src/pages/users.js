@@ -7,11 +7,15 @@ import "tailwindcss/tailwind.css";
 import { Box } from "@/components/Box";
 
 const users = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState();
+  const handleMenuToggle  = () => {
+    setIsDrawerOpen(!isDrawerOpen)
+  }
   return (
     <Container bgActive={false}>
-      <Header />
+      <Header onMenuToggle={handleMenuToggle} />
       <div className="flex">
-        <Sidebar />
+        <Sidebar isOpen={isDrawerOpen} onClose={handleMenuToggle}/>
         <Content>
           <div className=" flex flex-col">
             <br></br>
