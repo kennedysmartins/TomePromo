@@ -7,7 +7,8 @@ import 'tailwindcss/tailwind.css';
 
 
 const categories = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const handleMenuToggle  = () => {
     setIsDrawerOpen(!isDrawerOpen)
   }

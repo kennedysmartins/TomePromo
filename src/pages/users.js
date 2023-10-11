@@ -7,7 +7,8 @@ import "tailwindcss/tailwind.css";
 import { Box } from "@/components/Box";
 
 const users = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const handleMenuToggle  = () => {
     setIsDrawerOpen(!isDrawerOpen)
   }

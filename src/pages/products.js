@@ -7,7 +7,8 @@ import 'tailwindcss/tailwind.css';
 
 
 const products = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const handleMenuToggle  = () => {
     setIsDrawerOpen(!isDrawerOpen)
   }
