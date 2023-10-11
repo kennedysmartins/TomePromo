@@ -7,7 +7,7 @@ import 'tailwindcss/tailwind.css';
 import { Box } from "@/components/Box";
 
 
-const config = () => {
+const Config = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleMenuToggle  = () => {
@@ -37,4 +37,4 @@ const config = () => {
   );
 };
 
-export default config;
+export default Config;

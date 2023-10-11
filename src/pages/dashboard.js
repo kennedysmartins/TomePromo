@@ -7,7 +7,7 @@ import 'tailwindcss/tailwind.css';
 import { Box } from "@/components/Box";
 
 
-const dashboard = () => {
+const Dashboard = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleMenuToggle  = () => {
@@ -49,4 +49,4 @@ const dashboard = () => {
   );
 };
 
-export default dashboard;
+export default Dashboard;

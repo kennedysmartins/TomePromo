@@ -6,7 +6,7 @@ import { Sidebar } from "@/components/Sidebar";
 import "tailwindcss/tailwind.css";
 import { Box } from "@/components/Box";
 
-const users = () => {
+const Users = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleMenuToggle  = () => {
@@ -123,4 +123,4 @@ const users = () => {
   );
 };
 
-export default users;
+export default Users;

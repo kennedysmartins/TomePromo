@@ -6,7 +6,7 @@ import { Sidebar } from "@/components/Sidebar";
 import 'tailwindcss/tailwind.css';
 
 
-const products = () => {
+const Products = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleMenuToggle  = () => {
@@ -31,4 +31,4 @@ const products = () => {
   );
 };
 
-export default products;
+export default Products;
