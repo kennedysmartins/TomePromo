@@ -24,13 +24,8 @@ export function Sidebar({ isOpen, onClose }) {
                 <Link href={"/users"}><ButtonMenu icon={FiUsers} title="Usuários">Usuários</ButtonMenu></Link>
                 <Link href={"/config"}><ButtonMenu icon={FiSettings} title="Configurações">Configurações</ButtonMenu></Link>
                 
-                <CgMenuGridR
-  onClick={onClose}
-  className='absolute cursor-pointer bg-zinc-200 top-2/4 right-0 text-3xl rounded-tl-lg w-9 h-9 p-1 rounded-bl-lg'
-/>
+                <CgMenuGridR onClick={onClose} className='absolute cursor-pointer bg-zinc-200 top-2/4 right-0 text-3xl rounded-tl-lg w-9 h-9 p-1 rounded-bl-lg' />
 
-
-                
                 <footer className='absolute bottom-2 w-[17rem]'>
                 <ButtonMenu icon={RxExit} title="Sair">Sair</ButtonMenu>
 
