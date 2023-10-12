@@ -3,6 +3,8 @@ import { Container } from "@/components/Container";
 import { Content } from "@/components/Content";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
+import { Bottom } from "@/components/Bottom";
+
 import "tailwindcss/tailwind.css";
 import { Box } from "@/components/Box";
 
@@ -16,7 +18,7 @@ const Users = () => {
     <Container bgActive={false}>
       <Header onMenuToggle={handleMenuToggle} />
       <div className="flex">
-        <Sidebar isOpen={isDrawerOpen} onClose={handleMenuToggle}/>
+      <Sidebar className={`hidden md:flex flex-col`} isOpen={isDrawerOpen} onClose={handleMenuToggle} />
         <Content>
           <div className=" flex flex-col">
             <br></br>
@@ -117,6 +119,7 @@ const Users = () => {
             </Box>
             </main>
           </div>
+          <Bottom className={`md:hidden`} />
         </Content>
       </div>
     </Container>
