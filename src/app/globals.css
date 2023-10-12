@@ -28,5 +28,10 @@ body {
     padding: 0;
 }
 
+html, body{
+  height:100vh;
+    overflow-x: hidden;
+} 
+
 
 @tailwind utilities;
