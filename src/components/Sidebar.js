@@ -12,7 +12,7 @@ import Link from 'next/link';
 export function Sidebar({ isOpen, onClose, className }) {
   const drawerStyle = {
     transform: isOpen ? 'translateX(0%)' : 'translateX(-35%)',
-    marginLeft: isOpen ? '0' : '-150px', // Adicione a margem esquerda negativa desejada quando o drawer estiver fechado
+    marginLeft: isOpen ? '0' : '-150px', 
   };
 
   return (
