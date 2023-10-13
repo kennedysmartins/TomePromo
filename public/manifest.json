@@ -1,0 +1,12 @@
+{
+    "short_name": "TomePromo",
+    "name": "Tome Promo",
+    "start_url": "/",
+    "display": "browser",
+    "orientation": "portrait-primary",
+    "icons":{
+        "src": "next.svg", 
+        "size": "192x192", 
+        "type": "image/svg"
+    }
+}
