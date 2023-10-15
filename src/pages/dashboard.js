@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { Container } from "@/components/Container";
 import { Content } from "@/components/Content";
 import { Header } from "@/components/Header";
@@ -10,10 +12,18 @@ import { Box } from "@/components/Box";
 
 const Dashboard = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { data: session } = useSession();
+  const router = useRouter();
 
   const handleMenuToggle = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
+
+  useEffect(() => {
+    if (!session) {
+      router.push('/login'); 
+    }
+  }, [session, router]);
 
   return (
     <Container bgActive={false}>
