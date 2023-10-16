@@ -1,12 +1,14 @@
 import Link from "next/link";
 import React, {useContext} from 'react';
-import { ThemeContext } from '@/app/contexts/ThemeContext'
+import { ThemeContext } from '@/contexts/ThemeContext' 
 import { RiAdminLine } from "react-icons/ri";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export function Header({ onMenuToggle }) {
   const { data: session } = useSession();
   const { theme } = useContext(ThemeContext);
+  const router = useRouter();
   return (
     
     <header
@@ -24,13 +26,13 @@ export function Header({ onMenuToggle }) {
         </h1>
       </Link>
       <div className="items-center pt-1">
-        {session ? (
-          <Link href={"/dashboard"}>
+        {router.pathname !== "/" && session ? (
+          <Link href={"/login"}>
           <img src={session.user.image} alt="image do usuário" className="w-10 text-4xl rounded-full bg-zinc-300 hover:bg-zinc-200 p-1 transition-all " />
         </Link>
         ) : (
-        <Link href={"/login"}>
-          <RiAdminLine className="text-4xl rounded-full bg-zinc-300 hover:bg-zinc-200 p-2 transition-all " />
+        <Link href={"/dashboard"}>
+          <RiAdminLine className={`${theme === 'dark' ? 'bg-gray-900 hover:bg-zinc-600 ': 'bg-zinc-300 hover:bg-zinc-200 '} text-4xl rounded-full  p-2 transition-all `} />
         </Link>
         )}
         
