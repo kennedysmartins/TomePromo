@@ -15,53 +15,38 @@ import "tailwindcss/tailwind.css";
 const LoginPage = () => {
   const { drawer, toggleDrawer } = useContext(DrawerContext);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [shouldRender, setShouldRender] = useState(false);
 
     const { data: session, status } = useSession();
     const router = useRouter();
 
     useEffect(() => {
-      const checkSessionAndRedirect = async () => {
-        if (status === 'loading') return;
-  
-        if (!session) {
-          router.push('/login');
-        } else {
-          setShouldRender(true);
-        }
-      };
-  
-      checkSessionAndRedirect();
-  
       setIsDrawerOpen(drawer === "open");
-    }, [session, status, router, drawer]);
+    }, [router, drawer]);
 
     const handleMenuToggle = () => {
       setIsDrawerOpen(!isDrawerOpen);
       toggleDrawer();
     };
+
  
 
   if (session) {
     return (
+
       <Container bgActive={false}>
-
-        <Header onMenuToggle={handleMenuToggle} />
-        <div className="flex">
-          <Sidebar
-            className={`hidden md:flex flex-col`}
-            isOpen={isDrawerOpen}
-            onClose={handleMenuToggle}
-          />
-            <div className=" flex flex-col">
-              <div>
-                <h1 className="mt-2 text-4xl p-4  ">Você está logado</h1>
-
-                <h1 className=" text-lg px-4  ">
-                Logado como: {session.user.name}, e-mail: {session.user.email}
-                </h1>
-                
-              <div>
+      <Header />
+      <div className="grid grid-cols-3 min-h-screen h-full">
+      <div className="col-span-1 min-h-screen h-full overflow-y-auto">
+        <Sidebar
+          className={`hidden md:flex flex-col`}
+          isOpen={isDrawerOpen}
+          onClose={handleMenuToggle}
+        />
+        </div>
+        <Content className="m-8 col-span-2">
+          <h1 className="mt-2 text-4xl p-4 ">Você está logado</h1>
+          <h2 className="text-lg px-4  ">Logado como: {session.user.name}, e-mail: {session.user.email}</h2>
+          <div>
                 <CompleteProfile user={session.user}/>
             </div>
             <button
@@ -72,38 +57,43 @@ const LoginPage = () => {
               >
                 Sign out
               </button>
-              </div>
-            </div>
-            <Bottom className={`md:hidden`} />
-        </div>
-      </Container>
+        </Content>
+      </div>
+      <Bottom className={`md:hidden`} />
+    </Container>
+
+
+
+      
     );
   }
   return (
+
     <Container bgActive={false}>
-      <Header onMenuToggle={handleMenuToggle} />
-      <div className="flex">
+      <Header />
+      <div className="flex min-h-screen h-full">
         <Sidebar
           className={`hidden md:flex flex-col`}
           isOpen={isDrawerOpen}
           onClose={handleMenuToggle}
         />
-          <div className=" flex flex-col">
-            <br></br>
-            <div>
-              <h1 className="mt-2 text-4xl p-4  ">Você não está logado</h1>
-              <h1 className=" text-lg px-4  ">Logue com o Google!</h1>
-              <button
+        <Content className="m-8">
+          <h1 className="mt-2 text-4xl p-4 ">Você não está logado</h1>
+          <h2 className="text-lg px-4  ">Logue com o Google</h2>
+          
+            <button
   className="bg-blue-500 ml-4 mt-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
   onClick={() => signIn('google')}
 >
   Sign in
 </button>
-            </div>
-          </div>
-          <Bottom className={`md:hidden`} />
+        </Content>
       </div>
+      <Bottom className={`md:hidden`} />
     </Container>
+
+
+    
   );
 };
 
