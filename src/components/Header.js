@@ -12,9 +12,7 @@ export function Header({ onMenuToggle }) {
   return (
     
     <header
-      className={` ${theme === 'dark' ? 'bg-gray-800 text-white': 'bg-zinc-50 text-zinc-900 shadow-slate-300'} flex justify-between items-center p-4 fixed z-10 w-full
-    
-    `}
+      className={` ${theme === 'dark' ? 'bg-gray-800 text-white shadow-slate-700/10': 'bg-zinc-50 text-zinc-900 shadow-slate-300/30'} shadow-md flex justify-between items-center p-4 fixed z-10 w-full`}
     >
       <Link href="/" className="flex gap-3 items-center">
         <img

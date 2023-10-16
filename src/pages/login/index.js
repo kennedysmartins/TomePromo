@@ -45,6 +45,7 @@ const LoginPage = () => {
   if (session) {
     return (
       <Container bgActive={false}>
+
         <Header onMenuToggle={handleMenuToggle} />
         <div className="flex">
           <Sidebar
@@ -52,9 +53,7 @@ const LoginPage = () => {
             isOpen={isDrawerOpen}
             onClose={handleMenuToggle}
           />
-          <Content>
             <div className=" flex flex-col">
-              <br></br>
               <div>
                 <h1 className="mt-2 text-4xl p-4  ">Você está logado</h1>
 
@@ -76,7 +75,6 @@ const LoginPage = () => {
               </div>
             </div>
             <Bottom className={`md:hidden`} />
-          </Content>
         </div>
       </Container>
     );
@@ -90,7 +88,6 @@ const LoginPage = () => {
           isOpen={isDrawerOpen}
           onClose={handleMenuToggle}
         />
-        <Content>
           <div className=" flex flex-col">
             <br></br>
             <div>
@@ -105,7 +102,6 @@ const LoginPage = () => {
             </div>
           </div>
           <Bottom className={`md:hidden`} />
-        </Content>
       </div>
     </Container>
   );

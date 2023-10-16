@@ -60,7 +60,7 @@ const Config = () => {
             <br></br>
             <div>
               <h1 className="mt-2 text-4xl p-4  ">Configurações</h1>
-              <h1 className="text-lg px-4  ">Gerencie o App</h1>
+              <h2 className="text-lg px-4  ">Gerencie o App</h2>
             </div>
             <div>
               <Box>
