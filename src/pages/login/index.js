@@ -1,27 +1,47 @@
 "use client";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Container } from "@/components/Container";
 import { Content } from "@/components/Content";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { Bottom } from "@/components/Bottom";
 import CompleteProfile from '@/components/CompleteProfile'
+import { DrawerContext } from "@/contexts/DrawerContext";
+
 import "tailwindcss/tailwind.css";
 
 const LoginPage = () => {
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    console.log("process.env em string:", JSON.stringify(process.env));
+  const { drawer, toggleDrawer } = useContext(DrawerContext);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
 
+    const { data: session, status } = useSession();
+    const router = useRouter();
 
-  const handleMenuToggle  = () => {
-    setIsDrawerOpen(!isDrawerOpen)
-  }
-  const { data: session } = useSession();
-  const router = useRouter();
+    useEffect(() => {
+      const checkSessionAndRedirect = async () => {
+        if (status === 'loading') return;
+  
+        if (!session) {
+          router.push('/login');
+        } else {
+          setShouldRender(true);
+        }
+      };
+  
+      checkSessionAndRedirect();
+  
+      setIsDrawerOpen(drawer === "open");
+    }, [session, status, router, drawer]);
 
-  console.log(session);
+    const handleMenuToggle = () => {
+      setIsDrawerOpen(!isDrawerOpen);
+      toggleDrawer();
+    };
+ 
+
   if (session) {
     return (
       <Container bgActive={false}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Container } from "@/components/Container";
@@ -6,23 +6,43 @@ import { Content } from "@/components/Content";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { Bottom } from "@/components/Bottom";
+import { DrawerContext } from "@/contexts/DrawerContext";
 
 import "tailwindcss/tailwind.css";
 import { Box } from "@/components/Box";
 
 const Users = () => {
+  const { drawer, toggleDrawer } = useContext(DrawerContext);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
+  const [shouldRender, setShouldRender] = useState(false);
 
-  const handleMenuToggle  = () => {
-    setIsDrawerOpen(!isDrawerOpen)
-  }
   useEffect(() => {
-    if (!session) {
-      router.push('/login'); 
-    }
-  }, [session, router]);
+    const checkSessionAndRedirect = async () => {
+      if (status === 'loading') return;
+
+      if (!session) {
+        router.push('/login');
+      } else {
+        setShouldRender(true);
+      }
+    };
+
+    checkSessionAndRedirect();
+
+    setIsDrawerOpen(drawer === "open");
+  }, [session, status, router, drawer]);
+
+  
+  if (!shouldRender) {
+    return null; 
+  }
+  const handleMenuToggle = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+    toggleDrawer();
+  };
+
   return (
     <Container bgActive={false}>
       <Header onMenuToggle={handleMenuToggle} />
