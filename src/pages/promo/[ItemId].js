@@ -95,7 +95,7 @@ function PromoPage() {
             text7={product.text7}
           />
 
-          <div className="bg-zinc-100 w-[600px] my-[5.5rem] rounded-lg">
+          {/* <div className="bg-zinc-100 w-[600px] my-[5.5rem] rounded-lg">
             <Breadcrumbs />
             <h2 className="m-4 font-bold">Adicionar comentário</h2>
             <form
@@ -173,7 +173,7 @@ function PromoPage() {
                 ))}
               </ul>
             </div>
-          </div>
+          </div> */}
         </div>
       </Content>
     </Container>
