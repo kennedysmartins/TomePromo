@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import { ThemeContext } from '@/app/contexts/ThemeContext'
+import { ThemeContext } from '@/contexts/ThemeContext'
 
 export function ButtonMenu({icon: Icon, title, children, ...rest}) {
     const { theme } = useContext(ThemeContext);

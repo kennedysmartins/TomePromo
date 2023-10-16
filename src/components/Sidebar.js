@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import { ThemeContext } from '@/app/contexts/ThemeContext'
+import { ThemeContext } from '@/contexts/ThemeContext'
 import { TfiPackage } from "react-icons/tfi"
 import { FiUsers, FiSettings } from "react-icons/fi"
 import { MdOutlineCategory } from "react-icons/md"

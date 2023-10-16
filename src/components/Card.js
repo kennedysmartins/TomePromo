@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import Link from "next/link";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 export function Card({
   text1,
@@ -18,12 +19,18 @@ export function Card({
   data,
   hora,
 }) {
+  const { theme } = useContext(ThemeContext);
+
   return (
     <main className="m-16 w-96">
       <div className="flex-col gap-3 max-w-md mx-auto justify-center pt-6">
-        <div className="rounded bg-gray-50">
+        <div
+          className={`${
+            theme === "dark" ? "bg-gray-700 " : "bg-zinc-50  "
+          } rounded `}
+        >
           <header className="flex relative h-9 items-center">
-            <div className="flex absolute -left-12 -top-[2px]">
+            <div className="flex absolute -left-12 -top-[2px] " style={{ clipPath: 'inset(0 0 5px 0)'}}>
               <a href="https://tomepromo.com.br">
                 <img
                   className="rounded-full w-8"
@@ -31,16 +38,33 @@ export function Card({
                   alt="Logo Tome Promo"
                 />
               </a>
-              <img className="w-5" src="/bubble.svg" alt="Logo WhatsApp" />
+              <svg
+                className="w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 10 21"
+              >
+                <path
+                  class="background"
+                  fill={`${theme === "dark" ? "#374151 " : "#fbfbfb  "} `}
+                  d="M8,1 L9,1 L9,20 L8,20 L8,18 C7.807,15.161 7.124,12.233 5.950,9.218 C5.046,6.893 3.504,4.733 1.325,2.738 L1.325,2.738 C0.917,2.365 0.89,1.732 1.263,1.325 C1.452,1.118 1.72,1 2,1 L8,1 Z"
+                />
+              </svg>
             </div>
-            <h2 className="text-black ml-3 font-semibold">Tome Promo</h2>
+            <h2
+              className={`${
+                theme === "dark" ? "text-white " : "text-black  "
+              }  ml-3 font-semibold`}
+            >
+              Tome Promo
+            </h2>
           </header>
 
-          <picture>
+          <picture >
             <Link href={`/promo/${id}`}>
               {imageURL ? (
                 <img
-                  className="w-full h-96 object-contain bg-white p-4"
+                  
+                  className="w-full z-20 h-96 object-contain bg-white p-4"
                   src={imageURL}
                   alt={nomeProduto}
                 />
@@ -50,7 +74,11 @@ export function Card({
             </Link>
           </picture>
 
-          <main className="p-4 text-black">
+          <main
+            className={`${
+              theme === "dark" ? "text-white " : "text-black  "
+            } p-4 `}
+          >
             <p>{text1 || <Skeleton />}</p>
             <br />
             <p>{text2 || <Skeleton />}</p>
@@ -96,11 +124,23 @@ export function Card({
             href={linkCompra}
           >
             {text5 ? (
-              <button className="bg-gray-50 text-black w-full p-2 rounded">
+              <button
+                className={`${
+                  theme === "dark"
+                    ? "text-white bg-gray-700 "
+                    : "text-black bg-gray-50  "
+                }   w-full p-2 rounded`}
+              >
                 🛒 Comprar
               </button>
             ) : (
-              <button className="bg-gray-50 text-black w-full p-2 rounded">
+              <button
+                className={`${
+                  theme === "dark"
+                    ? "text-white bg-gray-700 "
+                    : "text-black bg-gray-50  "
+                }   w-full p-2 rounded`}
+              >
                 <Skeleton />
               </button>
             )}
@@ -111,11 +151,23 @@ export function Card({
             href={linkCompra}
           >
             {text5 ? (
-              <button className="bg-gray-50 text-black w-full p-2 rounded">
+              <button
+                className={`${
+                  theme === "dark"
+                    ? "text-white bg-gray-700 "
+                    : "text-black bg-gray-50  "
+                }  w-full p-2 rounded`}
+              >
                 🛒 Comprar
               </button>
             ) : (
-              <button className="bg-gray-50 text-black w-full p-2 rounded">
+              <button
+                className={`${
+                  theme === "dark"
+                    ? "text-white bg-gray-700 "
+                    : "text-black bg-gray-50  "
+                }  w-full p-2 rounded`}
+              >
                 <Skeleton />
               </button>
             )}

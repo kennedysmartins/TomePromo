@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useForm } from "react-hook-form";
 import AvatarEditor from "react-avatar-editor";
+import { ThemeContext } from '@/contexts/ThemeContext'
 
 const ZoomSlider = ({ zoom, onZoomChange }) => {
   return (
@@ -20,6 +21,7 @@ const CompleteProfile = ({ user }) => {
   const [editedImage, setEditedImage] = useState(null);
   const [zoom, setZoom] = useState(2);
   const editorRef = useRef(null);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     setValue("name", user.name);
@@ -58,43 +60,45 @@ const CompleteProfile = ({ user }) => {
     alert("user updated successfully");
   };
 
+
+
   return (
-    <form className="max-w-wd mx-auto p-6 rounded-lg shadow-x1">
+    <form className={`${theme === 'dark' ? ' text-white': ' text-zinc-900 '} max-w-wd mx-auto p-6 rounded-lg shadow-x1`}>
       <div className="mb-4">
-        <label htmlFor="name" className="block text-gray-700">
+        <label htmlFor="name" className={`${theme === 'dark' ? ' text-white': ' text-zinc-900 '}`}>
           Nome:
         </label>
         <input
           {...register("name")}
           id="name"
-          className="border rounded w-full py-2 px-3"
+          className={`${theme === 'dark' ? ' text-zinc-900': ' text-zinc-900 '} border rounded w-full py-2 px-3`}
         ></input>
       </div>
 
       <div className="mb-4">
-        <label htmlFor="email" className="block text-gray-700">
+        <label htmlFor="email" className={`${theme === 'dark' ? ' text-white': ' text-zinc-900 '}`}>
           E-mail:
         </label>
         <input
           {...register("email")}
           id="email"
-          className="border rounded w-full py-2 px-3"
+          className={`${theme === 'dark' ? ' text-zinc-900': ' text-zinc-900 '} border rounded w-full py-2 px-3`}
         ></input>
       </div>
 
       <div className="mb-4">
-        <label htmlFor="phone" className="block text-gray-700">
+        <label htmlFor="phone" className={`${theme === 'dark' ? ' text-white': ' text-zinc-900 '}`}>
           Telefone:
         </label>
         <input
           {...register("phone")}
           id="phone"
-          className="border rounded w-full py-2 px-3"
+          className={`${theme === 'dark' ? ' text-zinc-900': ' text-zinc-900 '} border rounded w-full py-2 px-3`}
         ></input>
       </div>
 
       <div className="mb-4">
-        <label htmlFor="image" className="block text-gray-700">
+        <label htmlFor="image" className={`${theme === 'dark' ? ' text-white': ' text-zinc-900 '}`}>
           Imagem:
         </label>
 

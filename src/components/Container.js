@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import { ThemeContext } from '@/app/contexts/ThemeContext'
+import { ThemeContext } from '@/contexts/ThemeContext'
 
 export function Container({ bgActive=true ,children}) {
     const { theme } = useContext(ThemeContext);
