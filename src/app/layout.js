@@ -1,4 +1,5 @@
-import { ThemeProvider } from './contexts/ThemeContext'
+import { DrawerProvider } from '@/contexts/DrawerContext'
+import { ThemeProvider } from '../contexts/ThemeContext'
 import './globals.css'
 import { Inter } from 'next/font/google'
 
@@ -12,10 +13,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ThemeProvider>
+      <DrawerProvider>
     <html lang="en">
       <link rel="manifest" href="manifest.json"></link>
       <body className={inter.className}>{children}</body>
     </html>
+    </DrawerProvider>
     </ThemeProvider>
   )
 }
