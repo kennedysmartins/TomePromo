@@ -24,10 +24,7 @@ const LoginPage = () => {
     useEffect(() => {
       const checkSessionAndRedirect = async () => {
         if (status === "loading") return;
-  
-        if (session) {
           setShouldRender(true);
-        }
       };
   
       checkSessionAndRedirect();
