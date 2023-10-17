@@ -17,29 +17,31 @@ const LoginPage = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
 
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
-    const { data: session, status } = useSession();
-    const router = useRouter();
-
-    useEffect(() => {
-      const checkSessionAndRedirect = async () => {
-        if (status === "loading") return;
-          setShouldRender(true);
-      };
-  
-      checkSessionAndRedirect();
-      setIsDrawerOpen(drawer === "open");
-    }, [router, drawer]);
-
-    const handleMenuToggle = () => {
-      setIsDrawerOpen(!isDrawerOpen);
-      toggleDrawer();
+  useEffect(() => {
+    const checkSessionAndRedirect = async () => {
+      if (status === "loading") return;
+      setShouldRender(true);
     };
 
-    if (!shouldRender) {
-      return null;
-    }
- 
+    checkSessionAndRedirect();
+    setIsDrawerOpen(drawer === "open");
+  }, [router, drawer, status]);
+
+  const handleMenuToggle = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+    toggleDrawer();
+  };
+
+  if (status === "loading") {
+    return null;
+  }
+
+  if (!shouldRender) {
+    return null;
+  }
 
   if (session) {
     return (
