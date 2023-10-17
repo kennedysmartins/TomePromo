@@ -15,11 +15,22 @@ import "tailwindcss/tailwind.css";
 const LoginPage = () => {
   const { drawer, toggleDrawer } = useContext(DrawerContext);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
+
 
     const { data: session, status } = useSession();
     const router = useRouter();
 
     useEffect(() => {
+      const checkSessionAndRedirect = async () => {
+        if (status === "loading") return;
+  
+        if (session) {
+          setShouldRender(true);
+        }
+      };
+  
+      checkSessionAndRedirect();
       setIsDrawerOpen(drawer === "open");
     }, [router, drawer]);
 
@@ -28,6 +39,9 @@ const LoginPage = () => {
       toggleDrawer();
     };
 
+    if (!shouldRender) {
+      return null;
+    }
  
 
   if (session) {
