@@ -56,7 +56,7 @@ const Users = () => {
               <h1 className=" text-lg px-4  ">Gerencie os usuários</h1>
             </div>
 
-            <main className="h-80 w-full whitespace-nowrap overflow-hidden grid-cols-3 grid gap-x-6 px-4 ">
+            <main className="h-80 md:w-full whitespace-nowrap grid-cols-2 md:grid-cols-3 md:grid flex flex-col gap-x-6 px-4">
             <Box>
               <div className="flex flex-row gap-3 justify-center items-center cursor-pointer">
                 <picture>
@@ -124,28 +124,7 @@ const Users = () => {
                 <h3>Kerolayne Martins</h3>
               </div>
             </Box>
-            <Box>
-              <div className="flex flex-row gap-3 justify-center items-center cursor-pointer">
-                <picture>
-                  <img
-                    className="rounded-full w-10"
-                    src="https://github.com/diogoAcode.png"
-                  />
-                </picture>
-                <h3>Diogo Almeida</h3>
-              </div>
-            </Box>
-            <Box>
-              <div className="flex flex-row gap-3 justify-center items-center cursor-pointer">
-                <picture>
-                  <img
-                    className="rounded-full w-10"
-                    src="https://github.com/arieljunior.png"
-                  />
-                </picture>
-                <h3>Ariel Júnior</h3>
-              </div>
-            </Box>
+            
             </main>
           </div>
           <Bottom className={`md:hidden`} />

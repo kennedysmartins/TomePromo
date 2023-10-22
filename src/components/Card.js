@@ -22,7 +22,7 @@ export function Card({
   const { theme } = useContext(ThemeContext);
 
   return (
-    <main className="m-16 w-96">
+    <main className="w-[500px] p-14 mx-auto">
       <div className="flex-col gap-3 max-w-md mx-auto justify-center pt-6">
         <div
           className={`${

@@ -53,12 +53,14 @@ const Dashboard = () => {
           isOpen={isDrawerOpen}
           onClose={handleMenuToggle}
         />
+      <Content>
         <div className="mt-16">
           <h1 className="mt-2 text-4xl p-4  ">Dashboard</h1>
           <Box>
             <h3>Criar oferta</h3>
           </Box>
         </div>
+      </Content>
       </div>
       <Bottom className={`md:hidden`} />
     </Container>

@@ -48,22 +48,22 @@ const LoginPage = () => {
 
       <Container bgActive={false}>
       <Header />
-      <div className="grid grid-cols-3 min-h-screen h-full">
-      <div className="col-span-1 min-h-screen h-full overflow-y-auto">
+      <div className="flex min-h-screen h-full">
+      <div className="flex min-h-screen h-full overflow-y-auto">
         <Sidebar
           className={`hidden md:flex flex-col`}
           isOpen={isDrawerOpen}
           onClose={handleMenuToggle}
         />
         </div>
-        <Content className="m-8 col-span-2">
+        <Content className="m-8">
           <h1 className="mt-2 text-4xl p-4 ">Você está logado</h1>
           <h2 className="text-lg px-4  ">Logado como: {session.user.name}, e-mail: {session.user.email}</h2>
           <div>
                 <CompleteProfile user={session.user}/>
             </div>
             <button
-                className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 ml-4 mt-2 px-4 rounded-full'
+                className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 ml-4 my-14 px-4 rounded-full'
                 onClick={() => {
                   signOut();
                 }}

@@ -19,7 +19,7 @@ export function Sidebar({ isOpen, onClose, className }) {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <aside className={`${theme === 'dark' ? 'bg-gray-800 text-white shadow-slate-700/30': 'bg-zinc-50 text-zinc-900 shadow-slate-300/50'} grid-cols-sidebar relative w-72 px-3 pt-20 h-full min-h-screen overflow-auto  shadow-lg ${className}`} style={drawerStyle}>
+    <aside className={`${theme === 'dark' ? 'bg-gray-800 text-white shadow-slate-700/30': 'bg-zinc-50 text-zinc-900 shadow-slate-300/50'} grid-cols-sidebar relative w-72 px-3 pt-20  min-h-screen h-full overflow-auto shadow-lg ${className}`} style={drawerStyle}>
       <Link href={"/dashboard"}><ButtonMenu icon={RxDashboard} title="Dashboard">Dashboard</ButtonMenu></Link>
       <Link href={"/products"}><ButtonMenu icon={TfiPackage} title="Produtos">Produtos</ButtonMenu></Link>
       <Link href={"/categories"}><ButtonMenu icon={MdOutlineCategory} title="Categorias">Categorias</ButtonMenu></Link>
