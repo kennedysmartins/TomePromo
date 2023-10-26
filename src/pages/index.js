@@ -3,19 +3,18 @@ import { Card } from "@/components/Card"
 import { Container } from "@/components/Container"
 import { Content } from "@/components/Content"
 import { Header } from "@/components/Header"
-import { getProducts } from "@/services/products"
+import { getProducts } from "@/utils/api";
 import { useEffect, useState } from "react"
 import 'tailwindcss/tailwind.css';
 
 
 
 export default function Home() {
-  const [products, setProducts] = useState(Array(3).fill({})) // Inicialize com 20 objetos vazios como esqueletos
+  const [products, setProducts] = useState(Array(3).fill({})) 
 
   useEffect(() => {
     const fetchData = async () => {
-      const dataProducts = await getProducts(); // Suponha que esta função retorne os produtos reais
-      // Atualize os objetos vazios com os dados reais dos produtos
+      const dataProducts = await getProducts(); 
       const updatedProducts = [...dataProducts.slice(0, 20)];
       setProducts(updatedProducts);
     };
@@ -36,8 +35,8 @@ export default function Home() {
             <Card 
             key={product.id}
             id={product.id}
-            imageURL={product.imageURL}
-            nomeProduto={product.nomeProduto}
+            image={product.image}
+            title={product.title}
             linkCompra={product.linkCompra}
             data={product.data}
             hora={product.hora}
