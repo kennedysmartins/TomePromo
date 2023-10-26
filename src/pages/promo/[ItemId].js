@@ -81,8 +81,8 @@ function PromoPage() {
       <Content>
         <div className="flex flex-col sm:flex-row justify-center items-start">
           <Card
-            imageURL={product.imageURL}
-            nomeProduto={product.nomeProduto}
+            image={product.image}
+            title={product.title}
             linkCompra={product.linkCompra}
             data={product.data}
             hora={product.hora}

@@ -1,8 +1,8 @@
 const products = [
   {
     id: 1,
-    nomeProduto:"Headset Gamer Sem Fio Logitech G435 LIGHTSPEED",
-    imageURL: "https://m.media-amazon.com/images/I/81WfRjLX93L._AC_SX679_.jpg",
+    title:"Headset Gamer Sem Fio Logitech G435 LIGHTSPEED",
+    image: "https://m.media-amazon.com/images/I/81WfRjLX93L._AC_SX679_.jpg",
     linkCompra: "https://amzn.to/46iMRYh",
     categoria:"eletrônico",
     data: "21/09/23",
@@ -18,8 +18,8 @@ const products = [
   },
   {
     id: 2,
-    nomeProduto:"Lava e Seca Smart LG VC2 13kg",
-    imageURL:"https://m.media-amazon.com/images/I/51iOom9qxoL._AC_SX522_.jpg",
+    title:"Lava e Seca Smart LG VC2 13kg",
+    image:"https://m.media-amazon.com/images/I/51iOom9qxoL._AC_SX522_.jpg",
     linkCompra:"https://amzn.to/3t2PzD1",
     categoria: "casa",
     data: "21/09/23",
@@ -35,8 +35,8 @@ const products = [
   },
   {
     id: 3,
-    nomeProduto:"DURACELL - Pilha Alcalina AAA",
-    imageURL:"https://m.media-amazon.com/images/I/61neCVcO5EL._AC_SX679_.jpg",
+    title:"DURACELL - Pilha Alcalina AAA",
+    image:"https://m.media-amazon.com/images/I/61neCVcO5EL._AC_SX679_.jpg",
     linkCompra:"https://amzn.to/46hwlIb",
     categoria:"Pilhas Descartáveis",
     data: "21/09/23",

@@ -13,8 +13,8 @@ export function Card({
   text6,
   text7,
   id,
-  nomeProduto,
-  imageURL,
+  title,
+  image,
   linkCompra,
   data,
   hora,
@@ -61,12 +61,12 @@ export function Card({
 
           <picture >
             <Link href={`/promo/${id}`}>
-              {imageURL ? (
+              {image ? (
                 <img
                   
                   className="w-full z-20 h-96 object-contain bg-white p-4"
-                  src={imageURL}
-                  alt={nomeProduto}
+                  src={image}
+                  alt={title}
                 />
               ) : (
                 <Skeleton height={384} />

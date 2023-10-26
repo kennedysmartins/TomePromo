@@ -12,8 +12,8 @@ const Custom404 = () => {
           <Content >
             <div className="flex flex-col justify-center items-center">
             <Card
-            imageURL="https://spikeandfreak.com/wp-content/uploads/2019/03/img-404.gif"
-            nomeProduto="404 Não Encontrado"
+            image="https://spikeandfreak.com/wp-content/uploads/2019/03/img-404.gif"
+            title="404 Não Encontrado"
             linkCompra=""
             data=""
             hora=""
