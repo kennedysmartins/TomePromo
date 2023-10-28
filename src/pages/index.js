@@ -1,7 +1,7 @@
 "use client"
 import { Card } from "@/components/Card"
 import { Container } from "@/components/Container"
-import { Content } from "@/components/Content"
+import { ContentHome } from "@/components/ContentHome"
 import { Header } from "@/components/Header"
 import { getProducts } from "@/utils/api";
 import { useEffect, useState } from "react"
@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <Container>
       <Header />
-      <Content>
+      <ContentHome>
         <div className="flex flex-col justify-center items-center">
 
         {products.map((product) => {
@@ -52,7 +52,7 @@ export default function Home() {
         })}
         </div>
 
-      </Content>
+      </ContentHome>
     </Container>
     
   )

@@ -7,7 +7,7 @@ export function Content({children, ...rest}) {
 
     return (
         <main>
-            <div {...rest} className={`${drawer === 'open'? 'ml-72' :'ml-8'} py-24 px-4  min-h-screen h-full grid-cols-content`}>
+            <div {...rest} className={`${drawer === 'open'? 'ml-72' :'ml-8'} py-10 px-4  min-h-screen h-full grid-cols-content`}>
                 {children}
                 </div>
         </main>
