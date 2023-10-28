@@ -7,10 +7,10 @@ import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
 import { Bottom } from "@/components/Bottom";
 import { DrawerContext } from "@/contexts/DrawerContext";
+import { Box } from "@/components/Box";
 
 
 import "tailwindcss/tailwind.css";
-import { Box } from "@/components/Box";
 
 const Dashboard = () => {
   const { drawer, toggleDrawer } = useContext(DrawerContext);

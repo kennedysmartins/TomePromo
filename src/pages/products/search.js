@@ -8,18 +8,19 @@ import { Sidebar } from "@/components/Sidebar";
 import { Input } from "@/components/Input";
 import { Bottom } from "@/components/Bottom";
 import { DrawerContext } from "@/contexts/DrawerContext";
-import { createProduct } from "@/utils/api";
-import { useForm } from "react-hook-form"
-import { Textarea } from "@/components/Textarea";
+import { searchProducts } from "@/utils/api";
+import { RiAdminLine } from "react-icons/ri";
 import Link from 'next/link';
 
 
 
 import "tailwindcss/tailwind.css";
+import { Box } from "@/components/Box";
 
-const CreateProducts = () => {
+const Search = () => {
   const { drawer, toggleDrawer } = useContext(DrawerContext);
-const {register, handleSubmit} = useForm()
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -41,7 +42,13 @@ const {register, handleSubmit} = useForm()
     setIsDrawerOpen(drawer === "open");
   }, [session, status, router, drawer]);
 
-  
+  useEffect(() => {
+    const search = async () => {
+      const results = await searchProducts(searchTerm);
+      setSearchResults(results);
+    };
+    search();
+  }, [searchTerm]);
 
   if (!shouldRender) {
     return null;
@@ -50,15 +57,6 @@ const {register, handleSubmit} = useForm()
     setIsDrawerOpen(!isDrawerOpen);
     toggleDrawer();
   };
-
-  const onSubmit = async (data) => {
-    const success = await createProduct(data)
-
-    if(success) {
-        alert('Produto criado')
-        router.push(`/products`)
-    }
-  }
 
   return (
     <Container bgActive={false}>
@@ -71,7 +69,7 @@ const {register, handleSubmit} = useForm()
         />
         <Content>
           <div className=" flex flex-col">
-          <div>
+            <div>
                 <Link href="/products">
                 <h3>Voltar</h3>
                 </Link>
@@ -79,32 +77,35 @@ const {register, handleSubmit} = useForm()
             <br></br>
             <div>
               <h1 className="mt-2 text-4xl p-4  ">Produtos</h1>
-              <h1 className=" text-lg px-4  ">Crie um produto</h1>
+              <h2 className=" text-lg px-4  ">Gerenciamento de ofertas</h2>
             </div>
-            <form className="mt-4 ml-4" onSubmit={handleSubmit(onSubmit)}>
-                <div className="mb-4" >
-                    <label htmlFor="title">Título</label>
-                    <Input {...register('title')} />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="price">Preço</label>
-                    <Input {...register('price')} />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="description">Descrição</label>
-                    <Textarea rows="5" {...register('description')} ></Textarea>
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="category">Categoria</label>
-                    <Input {...register('category')} />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="image">Imagem</label>
-                    <Input {...register('image')} />
-                </div>
-                <button type="submit" className="bg-blue-500 text-white font-semibold py-2 rounded px-8">Postar</button>
-            </form>
-            
+            <div className="w-full flex justify-content p-4">
+              <Input 
+              Icon={RiAdminLine}
+              type="text"
+              placeholder="Pesquise por produtos"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              
+            </div>
+              <div className="flex justify-center">
+                <ul>
+                  {searchResults &&
+                    searchResults.map((product) => (
+                      <li key={product.id}>
+                        <div className="border rounded p-4 shadow-md">
+                          <img
+                            src={product.image}
+                            className="w-16 h-16 rounded bg-white p-1 object-contain"
+                            alt={product.title}
+                          />
+                          <p className="mt-2">{product.title}</p>
+                        </div>
+                      </li>
+                    ))}
+                </ul>
+              </div>
           </div>
           <Bottom className={`md:hidden`} />
         </Content>
@@ -113,4 +114,4 @@ const {register, handleSubmit} = useForm()
   );
 };
 
-export default CreateProducts;
+export default Search;
