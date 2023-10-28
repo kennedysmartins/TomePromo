@@ -52,3 +52,21 @@ export const getCategories = async() => {
         return [];
     }
 }
+
+export const createProduct = async (data) => {
+    try {
+      const response = await fetch('https://api-tomepromo.onrender.com/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      return response.ok
+      
+    } catch (error) {
+      console.error('Erro ao criar o produto: ', error)
+      return false;
+    }
+  }
+
