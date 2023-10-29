@@ -64,7 +64,7 @@ const CompleteProfile = ({ user }) => {
 
 
   return (
-    <form className={`${theme === 'dark' ? ' text-white': ' text-zinc-900 '} max-w-wd mx-auto p-6 rounded-lg shadow-x1`}>
+    <form className={`${theme === 'dark' ? ' text-white': ' text-zinc-900 '}`}>
       <div className="mb-4">
         <label htmlFor="name" className={`${theme === 'dark' ? ' text-white': ' text-zinc-900 '}`}>
           Nome:
