@@ -7,7 +7,7 @@ import { ThemeContext } from "@/contexts/ThemeContext";
 export function Card({
   text1,
   text2,
-  text3,
+  condition,
   text5,
   text6,
   text7,
@@ -18,6 +18,7 @@ export function Card({
   data,
   hora,
   price,
+  priceoriginal,
 }) {
   const { theme } = useContext(ThemeContext);
 
@@ -30,7 +31,10 @@ export function Card({
           } rounded `}
         >
           <header className="flex relative h-9 items-center">
-            <div className="flex absolute -left-12 -top-[2px] " style={{ clipPath: 'inset(0 0 5px 0)'}}>
+            <div
+              className="flex absolute -left-12 -top-[2px] "
+              style={{ clipPath: "inset(0 0 5px 0)" }}
+            >
               <a href="https://tomepromo.com.br">
                 <img
                   className="rounded-full w-8"
@@ -59,11 +63,10 @@ export function Card({
             </h2>
           </header>
 
-          <picture >
+          <picture>
             <Link href={`/promo/${id}`}>
               {image ? (
                 <img
-                  
                   className="w-full z-20 h-96 object-contain bg-white p-4"
                   src={image}
                   alt={title}
@@ -84,18 +87,25 @@ export function Card({
             <p>{text2 || <Skeleton />}</p>
             <br />
 
+            {priceoriginal && (
+              <strong>
+                De R$<del>{priceoriginal}</del>
+                <br />Por </strong>
+            )}
             {price && (
-        <strong>
-          {`R$ ${price} ${text3}` ? `R$ ${price} ${text3}` : <Skeleton />}
-        </strong>
-      )}
+              <strong>
+                {`R$ ${price} ${condition}` ? (
+                  `R$ ${price} ${condition}`
+                ) : (
+                  <Skeleton />
+                )}
+              </strong>
+            )}
 
-              
-            
             <p>
               {linkCompra && "🛒 Compre aqui: "}
               {linkCompra ? (
-                <a target="_blank" href={linkCompra}>
+                <a target="_blank" href={`${linkCompra}?source=tomepromo08-20`}>
                   {linkCompra}
                 </a>
               ) : (
@@ -129,7 +139,7 @@ export function Card({
           <a
             className="w-full whitespace-nowrap"
             target="_blank"
-            href={linkCompra}
+            href={`${linkCompra}?source=tomepromo08-20`}
           >
             {text5 ? (
               <button
@@ -156,7 +166,7 @@ export function Card({
           <a
             className="w-full whitespace-nowrap"
             target="_blank"
-            href={linkCompra}
+            href={`${linkCompra}?source=tomepromo08-20`}
           >
             {text5 ? (
               <button
