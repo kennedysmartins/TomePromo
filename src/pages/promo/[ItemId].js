@@ -36,7 +36,7 @@ function PromoPage() {
   }, [router.asPath])
 
   if (isLoading) {
-    return <div>Carregando...</div>; // Renderiza um indicador de carregamento enquanto os dados estão sendo buscados
+    return; // Renderiza um indicador de carregamento enquanto os dados estão sendo buscados
   }
 
 
