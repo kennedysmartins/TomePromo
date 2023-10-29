@@ -8,7 +8,6 @@ export function Card({
   text1,
   text2,
   text3,
-  text4,
   text5,
   text6,
   text7,
@@ -18,6 +17,7 @@ export function Card({
   linkCompra,
   data,
   hora,
+  price,
 }) {
   const { theme } = useContext(ThemeContext);
 
@@ -83,7 +83,15 @@ export function Card({
             <br />
             <p>{text2 || <Skeleton />}</p>
             <br />
-            <strong>{text3 || <Skeleton />}</strong>
+
+            {price && (
+        <strong>
+          {`R$ ${price} ${text3}` ? `R$ ${price} ${text3}` : <Skeleton />}
+        </strong>
+      )}
+
+              
+            
             <p>
               {linkCompra && "🛒 Compre aqui: "}
               {linkCompra ? (
