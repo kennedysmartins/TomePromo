@@ -1,5 +1,4 @@
 import "tailwindcss/tailwind.css";
-
 import { useRouter } from 'next/router';
 import { getProductById } from '@/utils/api';
 import Head from 'next/head';
