@@ -167,12 +167,12 @@ const CreateProducts = () => {
 ${product.title}\n\n`;
 
 if (product.priceoriginal) {
-  messageContent += `De ~${product.priceoriginal}~`;
+  messageContent += `De ~${product.priceoriginal}~
+  Por `;
 }
 
-messageContent += `
-Por ${product.price} ${product.condition}
-Compre aqui: https://tomepromo.com.br/promo/${product.id}
+messageContent += `*${product.price} ${product.condition}*
+*🛒 Compre aqui:* https://tomepromo.com.br/promo/${product.id}
 
 ${product.text6}`;
     const sendMessageSuccess = await messageSend(messageContent);
