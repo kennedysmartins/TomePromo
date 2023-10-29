@@ -159,7 +159,7 @@ const CreateProducts = () => {
   return (
     <Container bgActive={false}>
       <Header onMenuToggle={handleMenuToggle} />
-      <div className="flex">
+      <div className="md:flex flex-col">
         <Sidebar
           className={`hidden md:flex flex-col`}
           isOpen={isDrawerOpen}
