@@ -166,7 +166,7 @@ const CreateProducts = () => {
           onClose={handleMenuToggle}
         />
         <Content>
-          <div className="md:flex flex-col">
+          <div className="flex flex-col">
             <div>
               <h1 className="text-4xl p-4 ">Produtos</h1>
               <h1 className=" text-lg px-4 ">Crie um produto</h1>
@@ -188,7 +188,7 @@ const CreateProducts = () => {
               </Button>
             </div>
 
-            <div className="flex">
+            <div className="md:flex">
               <form
                 className="mt-8 ml-4 w-96"
                 onSubmit={handleSubmit(onSubmit)}

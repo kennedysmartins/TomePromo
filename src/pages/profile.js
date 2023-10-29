@@ -8,8 +8,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { Bottom } from "@/components/Bottom";
 import { DrawerContext } from "@/contexts/DrawerContext";
 
-import 'tailwindcss/tailwind.css';
-
+import "tailwindcss/tailwind.css";
 
 const Profile = () => {
   const { drawer, toggleDrawer } = useContext(DrawerContext);
@@ -20,10 +19,10 @@ const Profile = () => {
 
   useEffect(() => {
     const checkSessionAndRedirect = async () => {
-      if (status === 'loading') return;
+      if (status === "loading") return;
 
       if (!session) {
-        router.push('/login');
+        router.push("/login");
       } else {
         setShouldRender(true);
       }
@@ -34,9 +33,8 @@ const Profile = () => {
     setIsDrawerOpen(drawer === "open");
   }, [session, status, router, drawer]);
 
-  
   if (!shouldRender) {
-    return null; 
+    return null;
   }
   const handleMenuToggle = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -47,14 +45,20 @@ const Profile = () => {
     <Container bgActive={false}>
       <Header onMenuToggle={handleMenuToggle} />
       <div className="flex">
-      <Sidebar className={`hidden md:flex flex-col`} isOpen={isDrawerOpen} onClose={handleMenuToggle} />
-            <div className=" flex flex-col">
-              <div>
-                <h1 className="text-4xl p-4  ">Perfil</h1>
-                <h1 className=" text-lg px-4  ">Crie e gerencie as categorias</h1>
-              </div>
+          <Sidebar
+            className={`hidden md:flex flex-col`}
+            isOpen={isDrawerOpen}
+            onClose={handleMenuToggle}
+          />
+        <Content>
+          <div className=" flex flex-col">
+            <div>
+              <h1 className="text-4xl p-4  ">Perfil</h1>
+              <h1 className=" text-lg px-4  ">Crie e gerencie as categorias</h1>
             </div>
-            <Bottom className={`md:hidden`} />
+          </div>
+          <Bottom className={`md:hidden`} />
+        </Content>
       </div>
     </Container>
   );
