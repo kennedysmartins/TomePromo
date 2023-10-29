@@ -12,7 +12,7 @@ export default function PromoPage({ product }) {
   const router = useRouter();
 
   if (!product) {
-    return <div>Carregando...</div>; // Renderizar um indicador de carregamento se o produto não estiver disponível
+    return 
   }
 
   return (
@@ -21,11 +21,12 @@ export default function PromoPage({ product }) {
         <title>{product.title}</title>
         <meta property="og:title" content={product.title} />
         <meta property="og:image" content={product.image} />
-        <meta property="og:url" content={`https://www.example.com/promo/${router.query.ItemId}`} />
+        <meta property="og:url" content={`https://tomepromo.com.br/promo/${router.query.ItemId}`} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="TomePromo" />
         <meta property="og:locale" content="pt_BR" />
         <meta property="og:locale:alternate" content="en_US" />
+        <meta name="description" content="Quer promoção? então Tome! - TomePromo" /> 
       </Head>
       <Header />
       <ContentHome>
