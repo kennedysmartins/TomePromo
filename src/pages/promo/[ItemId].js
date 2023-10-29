@@ -44,6 +44,8 @@ export default function PromoPage({ product }) {
             text5={product.text5}
             text6={product.text6}
             text7={product.text7}
+            price={product.price}
+            priceoriginal={product.priceoriginal}
           />
         </div>
       </ContentHome>

@@ -110,7 +110,7 @@ const CreateProducts = () => {
 
     if (success) {
       alert("Produto criado");
-      isetProduct((prevProduct) => ({
+      setProduct((prevProduct) => ({
         ...prevProduct,
         id: success.id // Assume que o retorno de sucesso contém o ID
       }));
