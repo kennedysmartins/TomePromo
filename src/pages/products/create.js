@@ -138,7 +138,7 @@ const CreateProducts = () => {
       if (response && response.data && response.data.metadata) {
         const { metadata } = response.data;
         console.log(metadata);
-        const firstPart = metadata.title.split(",")[0];
+        const firstPart = metadata.title?.split(",")[0];
         const categoryString = JSON.stringify(metadata.breadcrumbs);
         setProduct((prevProduct) => ({
           ...prevProduct,
@@ -160,9 +160,9 @@ const CreateProducts = () => {
       setIsAnalyzing(false);
     }
   };
-
+  
   const handleSendMessage = async () => {
-    const messageContent = `${text1}\n\n${product.title}\nPreço: ${product.price} ${product.condition}\nCompre aqui: https://tomepromo.com.br/promo/${product.id}\n\n${product.text6}`;
+    const messageContent = `${product.text1}\n\n${product.title}\nPreço: ${product.price} ${product.condition}\nCompre aqui: https://tomepromo.com.br/promo/${product.id}\n\n${product.text6}`;
     const sendMessageSuccess = await messageSend(messageContent);
     if (sendMessageSuccess) {
       alert("Mensagem enviada com sucesso!");
