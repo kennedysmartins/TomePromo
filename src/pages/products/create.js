@@ -162,7 +162,7 @@ const CreateProducts = () => {
   };
 
   const handleSendMessage = async () => {
-    const messageContent = `${product.text1}
+    let messageContent = `${product.text1}
     
 ${product.title}\n\n`;
 
