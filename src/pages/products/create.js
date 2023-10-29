@@ -159,14 +159,14 @@ const CreateProducts = () => {
   return (
     <Container bgActive={false}>
       <Header onMenuToggle={handleMenuToggle} />
-      <div className="md:flex flex-col">
+      <div className="flex flex-col">
         <Sidebar
           className={`hidden md:flex flex-col`}
           isOpen={isDrawerOpen}
           onClose={handleMenuToggle}
         />
         <Content>
-          <div className=" flex flex-col">
+          <div className="md:flex flex-col">
             <div>
               <h1 className="text-4xl p-4 ">Produtos</h1>
               <h1 className=" text-lg px-4 ">Crie um produto</h1>
