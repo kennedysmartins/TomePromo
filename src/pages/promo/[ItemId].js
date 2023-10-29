@@ -10,8 +10,9 @@ import "tailwindcss/tailwind.css";
 
 function PromoPage() {
   const router = useRouter();
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState(null);
   const productID = router.query.ItemId;
+  const [isLoading, setIsLoading] = useState(true);
 
 
   useEffect(() => {
@@ -20,6 +21,7 @@ function PromoPage() {
         try {
           const result = await getProductById(Number(productID));
           setProduct(result);
+          setIsLoading(false); // Define isLoading para falso quando os dados são carregados
         } catch (error) {
           console.error("Erro ao obter o produto pelo ID:", error);
         }
@@ -31,8 +33,11 @@ function PromoPage() {
 
   useEffect(() => {
     const currentUrl = router.asPath;
-  }, [router.asPath]);
+  }, [router.asPath])
 
+  if (isLoading) {
+    return <div>Carregando...</div>; // Renderiza um indicador de carregamento enquanto os dados estão sendo buscados
+  }
 
 
 
@@ -44,7 +49,7 @@ function PromoPage() {
         <meta property="og:image" content={product.image} />
         <meta property="og:url" content={router.asPath} />
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Tomepromo" />
+        <meta property="og:site_name" content="TomePromo" />
         <meta property="og:locale" content="pt_BR" />
         <meta property="og:locale:alternate" content="en_US" />
       </Head>
