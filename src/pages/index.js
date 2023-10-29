@@ -42,7 +42,7 @@ export default function Home() {
             hora={product.hora}
             text1={product.text1}
             text2={product.text2}
-            text3={product.text3}
+            condition={product.condition}
             text4={product.text4}
             text5={product.text5}
             text6={product.text6}

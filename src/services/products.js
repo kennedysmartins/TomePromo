@@ -10,7 +10,7 @@ const products = [
     text1:
       "🔝👌-47% de DESCONTO",
     text2: "Headset Gamer Sem Fio Logitech G435 LIGHTSPEED, Conexão USB e Bluetooth, Design Leve e Confortável, Microfone Embutido, Bateria de até 18h - Compatível com Dolby Atmos, PC, PS4, PS5, Mobile – Branco",
-    text3: "🔥 R$ 374,00 em 1x até 7x sem juros",
+    condition: "🔥 R$ 374,00 em 1x até 7x sem juros",
     text4: "https://tomepromo.com.br/dsjib",
     text5: "https://tomepromo.com.br/p",
     text6: "⚠️ Essa oferta pode encerrar a qualquer momento",
@@ -27,7 +27,7 @@ const products = [
     text1:
       "A melhor Lava e Seca!",
     text2: "Lava e Seca Smart LG VC2 13kg Aço Escovado Preto com Inteligência Artificial AIDD™ - CV9013EC4 - Motor Inverter",
-    text3: "🔥 R$ 6.099,00 e até 10x sem juros",
+    condition: "🔥 R$ 6.099,00 e até 10x sem juros",
     text4: "https://tomepromo.com.br/dsjib",
     text5: "https://tomepromo.com.br/p",
     text6: "⚠️ Essa oferta pode encerrar a qualquer momento",
@@ -44,7 +44,7 @@ const products = [
     text1:
       "Super Oferta",
     text2: "DURACELL - Pilha Alcalina AAA, Palito com 16 unidades",
-    text3: "🔥 R$ 68,90  em 1x",
+    condition: "🔥 R$ 68,90  em 1x",
     text4: "https://tomepromo.com.br/dsjib",
     text5: "https://tomepromo.com.br/p",
     text6: "⚠️ Essa oferta pode encerrar a qualquer momento",
