@@ -180,6 +180,10 @@ const CreateProducts = () => {
     }
   };
 
+  const handleFormReset = () => {
+    resetFormFields();
+  };
+
   const handleSendMessage = async () => {
     let messageContent = product.text1 ? `${product.text1}\n\n` : "";
 
@@ -241,6 +245,7 @@ const CreateProducts = () => {
               >
                 {isAnalyzing ? "Analisando..." : "Verificar link"}
               </Button>
+              <Button className="bg-blue-500" onClick={handleFormReset}>Limpar</Button>
             </div>
 
             <div className="md:flex">
