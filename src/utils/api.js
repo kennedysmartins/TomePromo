@@ -89,7 +89,7 @@ export const urlExtractor = async (url) => {
   try {
     console.log("Enviando requisição para a URL: ", url);
     const response = await axios.post(
-      "${apiUrl}/products/extractor",
+      `${apiUrl}/products/extractor`,
       { url },
       {
         headers: {
@@ -103,6 +103,7 @@ export const urlExtractor = async (url) => {
     return false;
   }
 };
+
 
 export const messageSend = async (text) => {
   const message = {
