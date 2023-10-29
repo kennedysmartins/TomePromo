@@ -215,13 +215,12 @@ const CreateProducts = () => {
     });
   };
 
-  const handlePasteFromClipboard = () => {
-    navigator.clipboard.readText().then((text) => {
-      setProduct((prevProduct) => ({ ...prevProduct, linkCompra: text }));
-      if (text) {
-        analiseLink(text);
-      }
-    });
+  const handlePasteFromClipboard = async () => {
+    const text = await navigator.clipboard.readText();
+    setProduct((prevProduct) => ({ ...prevProduct, linkCompra: text }));
+    if (text) {
+      analiseLink(text);
+    }
   };
 
   return (
@@ -241,28 +240,28 @@ const CreateProducts = () => {
             </div>
 
             <div className="flex mt-8 ml-4 gap-2">
-              <Input
-                className="w-72"
-                value={product.linkCompra}
-                onChange={(e) =>
-                  setProduct({ ...product, linkCompra: e.target.value })
-                }
-                placeholder="Link do produto"
-              />
-              {product.linkCompra ? (
-                <Button
-                  onClick={() => analiseLink(product.linkCompra)}
-                  disabled={isAnalyzing}
-                >
-                  Verificar link
-                </Button>
-              ) : (
-                <Button onClick={handlePasteFromClipboard}>Colar</Button>
-              )}
-              {product.linkCompra && (
-                <Button onClick={handleFormReset}>Limpar</Button>
-              )}
-            </div>
+  <Input
+    className="w-72"
+    value={product.linkCompra}
+    onChange={(e) =>
+      setProduct({ ...product, linkCompra: e.target.value })
+    }
+    placeholder="Link do produto"
+  />
+  {product.linkCompra ? (
+    <Button
+      onClick={() => analiseLink(product.linkCompra)}
+      disabled={isAnalyzing}
+    >
+      Verificar link
+    </Button>
+  ) : (
+    <Button onClick={handlePasteFromClipboard}>Colar</Button>
+  )}
+  {product.linkCompra && (
+    <Button onClick={handleFormReset}>Limpar</Button>
+  )}
+</div>
 
             <div className="md:flex">
               <form
