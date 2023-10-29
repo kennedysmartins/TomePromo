@@ -160,9 +160,21 @@ const CreateProducts = () => {
       setIsAnalyzing(false);
     }
   };
-  
+
   const handleSendMessage = async () => {
-    const messageContent = `${product.text1}\n\n${product.title}\nPreço: ${product.price} ${product.condition}\nCompre aqui: https://tomepromo.com.br/promo/${product.id}\n\n${product.text6}`;
+    const messageContent = `${product.text1}
+    
+${product.title}\n\n`;
+
+if (product.priceoriginal) {
+  messageContent += `De ~${product.priceoriginal}~`;
+}
+
+messageContent += `
+Por ${product.price} ${product.condition}
+Compre aqui: https://tomepromo.com.br/promo/${product.id}
+
+${product.text6}`;
     const sendMessageSuccess = await messageSend(messageContent);
     if (sendMessageSuccess) {
       alert("Mensagem enviada com sucesso!");
