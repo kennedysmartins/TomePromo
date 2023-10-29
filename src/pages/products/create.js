@@ -97,7 +97,7 @@ const CreateProducts = () => {
       priceoriginal: formatPrice(product.priceoriginal),
       description: product.description,
       image: product.image,
-      condition: product.condition.replace('Em', 'em'),
+      condition: product.condition.replace("Em", "em"),
       category: product.category,
       text5: product.text5,
       text6: product.text6,
@@ -215,6 +215,15 @@ const CreateProducts = () => {
     });
   };
 
+  const handlePasteFromClipboard = () => {
+    navigator.clipboard.readText().then((text) => {
+      setProduct((prevProduct) => ({ ...prevProduct, linkCompra: text }));
+      if (text) {
+        analiseLink(text);
+      }
+    });
+  };
+
   return (
     <Container bgActive={false}>
       <Header onMenuToggle={handleMenuToggle} />
@@ -234,18 +243,25 @@ const CreateProducts = () => {
             <div className="flex mt-8 ml-4 gap-2">
               <Input
                 className="w-72"
+                value={product.linkCompra}
                 onChange={(e) =>
                   setProduct({ ...product, linkCompra: e.target.value })
                 }
                 placeholder="Link do produto"
               />
-              <Button
-                onClick={() => analiseLink(product.linkCompra)}
-                disabled={isAnalyzing}
-              >
-                {isAnalyzing ? "Analisando..." : "Verificar link"}
-              </Button>
-              <Button className="bg-blue-500" onClick={handleFormReset}>Limpar</Button>
+              {product.linkCompra ? (
+                <Button
+                  onClick={() => analiseLink(product.linkCompra)}
+                  disabled={isAnalyzing}
+                >
+                  Verificar link
+                </Button>
+              ) : (
+                <Button onClick={handlePasteFromClipboard}>Colar</Button>
+              )}
+              {product.linkCompra && (
+                <Button onClick={handleFormReset}>Limpar</Button>
+              )}
             </div>
 
             <div className="md:flex">
