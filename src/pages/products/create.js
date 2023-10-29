@@ -110,6 +110,10 @@ const CreateProducts = () => {
 
     if (success) {
       alert("Produto criado");
+      isetProduct((prevProduct) => ({
+        ...prevProduct,
+        id: success.id // Assume que o retorno de sucesso contém o ID
+      }));
       setIsMessageSent(true);
     }
   };
@@ -158,7 +162,7 @@ const CreateProducts = () => {
   };
 
   const handleSendMessage = async () => {
-    const messageContent = `Título: ${product.title}\nPreço: ${product.price}\nLink de compra: ${product.linkCompra}`;
+    const messageContent = `${text1}\n\n${product.title}\nPreço: ${product.price} ${product.condition}\nCompre aqui: https://tomepromo.com.br/promo/${product.id}\n\n${product.text6}`;
     const sendMessageSuccess = await messageSend(messageContent);
     if (sendMessageSuccess) {
       alert("Mensagem enviada com sucesso!");
