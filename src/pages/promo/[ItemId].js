@@ -1,45 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { Container } from "@/components/Container";
-import { ContentHome } from "@/components/ContentHome";
-import { Header } from "@/components/Header";
-import { Card } from "@/components/Card";
-import { useRouter } from "next/router";
-import { getProductById } from "@/utils/api";
-import Head from "next/head";
 import "tailwindcss/tailwind.css";
 
-function PromoPage() {
+import { useRouter } from 'next/router';
+import { getProductById } from '@/utils/api';
+import Head from 'next/head';
+import { Container } from '@/components/Container';
+import { ContentHome } from '@/components/ContentHome';
+import { Header } from '@/components/Header';
+import { Card } from '@/components/Card';
+
+
+export default function PromoPage({ product }) {
   const router = useRouter();
-  const [product, setProduct] = useState(null);
-  const productID = router.query.ItemId;
-  const [isLoading, setIsLoading] = useState(true);
 
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      if (productID) {
-        try {
-          const result = await getProductById(Number(productID));
-          setProduct(result);
-          setIsLoading(false); // Define isLoading para falso quando os dados são carregados
-        } catch (error) {
-          console.error("Erro ao obter o produto pelo ID:", error);
-        }
-      }
-    };
-
-    fetchProduct();
-  }, [productID]);
-
-  useEffect(() => {
-    const currentUrl = router.asPath;
-  }, [router.asPath])
-
-  if (isLoading) {
-    return; // Renderiza um indicador de carregamento enquanto os dados estão sendo buscados
+  if (!product) {
+    return <div>Carregando...</div>; // Renderizar um indicador de carregamento se o produto não estiver disponível
   }
-
-
 
   return (
     <Container>
@@ -47,7 +22,7 @@ function PromoPage() {
         <title>{product.title}</title>
         <meta property="og:title" content={product.title} />
         <meta property="og:image" content={product.image} />
-        <meta property="og:url" content={router.asPath} />
+        <meta property="og:url" content={`https://www.example.com/promo/${router.query.ItemId}`} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="TomePromo" />
         <meta property="og:locale" content="pt_BR" />
@@ -76,4 +51,22 @@ function PromoPage() {
   );
 }
 
-export default PromoPage;
+export async function getServerSideProps(context) {
+  const { ItemId } = context.query;
+
+  try {
+    const product = await getProductById(Number(ItemId));
+    return {
+      props: {
+        product,
+      },
+    };
+  } catch (error) {
+    console.error('Erro ao obter o produto pelo ID:', error);
+    return {
+      props: {
+        product: null,
+      },
+    };
+  }
+}
