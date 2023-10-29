@@ -70,3 +70,20 @@ export const createProduct = async (data) => {
     }
   }
 
+  export const urlExtractor = async (url) => {
+    try {
+      const response = await fetch('https://api-tomepromo.onrender.com/services/extractor', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(url)
+      })
+      return response.ok
+      
+    } catch (error) {
+      console.error('Erro ao extrair dados da url: ', error)
+      return false;
+    }
+  }
+

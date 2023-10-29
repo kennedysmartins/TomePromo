@@ -9,7 +9,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { Input } from "@/components/Input";
 import { Bottom } from "@/components/Bottom";
 import { DrawerContext } from "@/contexts/DrawerContext";
-import { createProduct } from "@/utils/api";
+import { createProduct, urlExtractor } from "@/utils/api";
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/Textarea";
 import { Card } from "@/components/Card";
@@ -93,12 +93,33 @@ const CreateProducts = () => {
 
   const analiseLink = async (link) => {
     try {
-      console.log(link)
+      const success = await urlExtractor(link);
+      if (success) {
+        const extractedData = await fetch('https://api-tomepromo.onrender.com/services/extractor', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ link })
+        });
 
+        const data = await extractedData.json();
+        console.log(data)
+
+        setProduct((prevProduct) => ({
+          ...prevProduct,
+          title: data.title,
+          price: data.price,
+          image: data.image,
+          linkCompra: link,// ... other fields you want to update
+        }));
+      } else {
+        // handle failure
+      }
     } catch (error) {
       console.error('Erro ao analisar o link:', error);
     }
-  };
+};
 
   return (
     <Container bgActive={false}>
