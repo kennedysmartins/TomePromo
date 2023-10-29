@@ -97,7 +97,7 @@ const CreateProducts = () => {
       priceoriginal: formatPrice(product.priceoriginal),
       description: product.description,
       image: product.image,
-      condition: product.condition.toLocaleLowerCase(),
+      condition: product.condition,
       category: product.category,
       text5: product.text5,
       text6: product.text6,
@@ -250,7 +250,6 @@ const CreateProducts = () => {
                   <Input
                     {...register("priceoriginal")}
                     placeholder="200.1"
-                    required
                     value={product.priceoriginal}
                     onChange={(e) => handleInputChange(e, "priceoriginal")}
                   />
