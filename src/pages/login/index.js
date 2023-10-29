@@ -55,15 +55,17 @@ const LoginPage = () => {
           />
 
           <Content>
-            <h1 className="mt-2 text-4xl p-4 ">Você está logado</h1>
-            <h2 className="text-lg px-4  ">
-              Logado como: {session.user.name}, e-mail: {session.user.email}
-            </h2>
             <div>
+              <h1 className="mt-2 text-4xl p-4 ">Você está logado</h1>
+              <h2 className="text-lg px-4  ">
+                Logado como: {session.user.name}, <br/>E-mail: {session.user.email}
+              </h2>
+            </div>
+            <div className="mt-4">
               <CompleteProfile user={session.user} />
             </div>
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 ml-4 my-14 px-4 rounded-full"
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-4 ml-4 my-14 px-4 rounded"
               onClick={() => {
                 signOut();
               }}
@@ -85,12 +87,16 @@ const LoginPage = () => {
           isOpen={isDrawerOpen}
           onClose={handleMenuToggle}
         />
-        <Content >
-          <h1 className="mt-2 text-4xl p-4 ">Você não está logado</h1>
-          <h2 className="text-lg px-4  ">Logue com o Google</h2>
+        <Content>
+        <div>
+              <h1 className="mt-2 text-4xl p-4 ">Você está logado</h1>
+              <h2 className="text-lg px-4  ">
+                Logado como: {session.user.name}, <br/>E-mail: {session.user.email}
+              </h2>
+            </div>
 
           <button
-            className="bg-blue-500 ml-4 mt-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            className="bg-blue-500 ml-4 mt-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
             onClick={() => signIn("google")}
           >
             Sign in
