@@ -9,7 +9,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { Input } from "@/components/Input";
 import { Bottom } from "@/components/Bottom";
 import { DrawerContext } from "@/contexts/DrawerContext";
-import { createProduct, urlExtractor } from "@/utils/api";
+import { createProduct, urlExtractor, messageSend } from "@/utils/api";
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/Textarea";
 import { Card } from "@/components/Card";
@@ -20,6 +20,7 @@ const CreateProducts = () => {
   const { register, handleSubmit, setValue } = useForm();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isMessageSent, setIsMessageSent] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
   const [shouldRender, setShouldRender] = useState(false);
@@ -75,7 +76,7 @@ const CreateProducts = () => {
   };
 
   const formatPrice = (price) => {
-    if (typeof price === 'string') {
+    if (typeof price === "string") {
       return parseFloat(price.replace("R$", "").trim());
     } else {
       return price; // caso já seja um número, retorne sem modificação
@@ -109,7 +110,7 @@ const CreateProducts = () => {
 
     if (success) {
       alert("Produto criado");
-      router.push(`/products`);
+      setIsMessageSent(true);
     }
   };
 
@@ -140,7 +141,9 @@ const CreateProducts = () => {
           title: firstPart || prevProduct.title,
           text2: metadata.title || prevProduct.title,
           price: formatPrice(metadata.price) || prevProduct.price,
-          priceoriginal: formatPrice(metadata["price-original"]) || prevProduct.priceoriginal,
+          priceoriginal:
+            formatPrice(metadata["price-original"]) ||
+            prevProduct.priceoriginal,
           description: metadata.description || prevProduct.description,
           image: metadata.image || prevProduct.image,
           condition: metadata.condition || prevProduct.condition,
@@ -154,7 +157,15 @@ const CreateProducts = () => {
     }
   };
 
-  // ...
+  const handleSendMessage = async () => {
+    const messageContent = `Título: ${product.title}\nPreço: ${product.price}\nLink de compra: ${product.linkCompra}`;
+    const sendMessageSuccess = await messageSend(messageContent);
+    if (sendMessageSuccess) {
+      alert("Mensagem enviada com sucesso!");
+    } else {
+      alert("Erro ao enviar mensagem. Tente novamente mais tarde.");
+    }
+  };
 
   return (
     <Container bgActive={false}>
@@ -319,6 +330,11 @@ const CreateProducts = () => {
                   Postar
                 </button>
               </form>
+              {isMessageSent ? (
+                <Button onClick={handleSendMessage} disabled={isAnalyzing}>
+                  Enviar Mensagem
+                </Button>
+              ) : null}
               <Card
                 image={product.image}
                 title={product.title}

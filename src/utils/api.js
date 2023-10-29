@@ -1,11 +1,13 @@
 import axios from "axios";
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+const numberAPI = process.env.NEXT_PUBLIC_NUMBER;
 
 export const searchProducts = async (searchTerm) => {
   console.log("Executando searchProducts");
   try {
     if (searchTerm) {
       const response = await fetch(
-        `https://api-tomepromo.onrender.com/products/search/${searchTerm}`
+        `${apiUrl}/products/search/${searchTerm}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -21,7 +23,7 @@ export const searchProducts = async (searchTerm) => {
 export const getProducts = async () => {
   console.log("Executando getProducts");
   try {
-    const response = await fetch(`https://api-tomepromo.onrender.com/products`);
+    const response = await fetch(`${apiUrl}/products`);
     if (response.ok) {
       const data = await response.json();
       return data;
@@ -36,7 +38,7 @@ export const getProductById = async (id) => {
   console.log("Executando getProductById");
   try {
     const response = await fetch(
-      `https://api-tomepromo.onrender.com/products/${id}`
+      `${apiUrl}/products/${id}`
     );
     if (response.ok) {
       const data = await response.json();
@@ -52,7 +54,7 @@ export const getCategories = async () => {
   console.log("Executando getCategories");
   try {
     const response = await fetch(
-      `https://api-tomepromo.onrender.com/categories`
+      `${apiUrl}/categories`
     );
     if (response.ok) {
       const data = await response.json();
@@ -67,7 +69,7 @@ export const getCategories = async () => {
 export const createProduct = async (data) => {
   try {
     const response = await fetch(
-      "https://api-tomepromo.onrender.com/products",
+      "${apiUrl}/products",
       {
         method: "POST",
         headers: {
@@ -87,7 +89,7 @@ export const urlExtractor = async (url) => {
   try {
     console.log("Enviando requisição para a URL: ", url);
     const response = await axios.post(
-      "https://api-tomepromo.onrender.com/products/extractor",
+      "${apiUrl}/products/extractor",
       { url },
       {
         headers: {
@@ -98,6 +100,30 @@ export const urlExtractor = async (url) => {
     return response;
   } catch (error) {
     console.error("Erro ao extrair dados da url: ", error);
+    return false;
+  }
+};
+
+export const messageSend = async (text) => {
+  const message = {
+    phoneNumber: numberAPI,
+    message: text,
+  };
+
+  try {
+    console.log("Enviando mensagem: ", message);
+    const response = await axios.post(
+      `${apiUrl}/message/send`,
+      message,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Erro ao enviar mensagem: ", error);
     return false;
   }
 };
