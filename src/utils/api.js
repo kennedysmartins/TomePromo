@@ -78,10 +78,16 @@ export const createProduct = async (data) => {
         body: JSON.stringify(data),
       }
     );
-    return response.ok;
+
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      return null;
+    }
   } catch (error) {
     console.error("Erro ao criar o produto: ", error);
-    return false;
+    return null;
   }
 };
 
