@@ -97,7 +97,7 @@ const CreateProducts = () => {
       priceoriginal: formatPrice(product.priceoriginal),
       description: product.description,
       image: product.image,
-      condition: product.condition,
+      condition: product.condition.replace('Em', 'em'),
       category: product.category,
       text5: product.text5,
       text6: product.text6,
@@ -112,7 +112,7 @@ const CreateProducts = () => {
       alert("Produto criado");
       setProduct((prevProduct) => ({
         ...prevProduct,
-        id: success.id // Assume que o retorno de sucesso contém o ID
+        id: success.id, // Assume que o retorno de sucesso contém o ID
       }));
       setIsMessageSent(true);
     }
@@ -162,20 +162,34 @@ const CreateProducts = () => {
   };
 
   const handleSendMessage = async () => {
-    let messageContent = product.text1 ? `${product.text1}\n\n` : '';
-  
+    let messageContent = product.text1 ? `${product.text1}\n\n` : "";
+
     if (product.priceoriginal) {
-      messageContent += `De ~${product.priceoriginal}~\nPor `;
+      messageContent += `De ~R$ ${product.priceoriginal}~\nPor `;
     }
-  
-    messageContent += `*${product.price} ${product.condition}*\n\n*🛒 Compre aqui:* https://tomepromo.com.br/promo/${product.id}\n\n${product.text6}`;
-  
+
+    messageContent += `*R$ ${product.price} ${product.condition}*\n\n*🛒 Compre aqui:* https://tomepromo.com.br/promo/${product.id}\n\n${product.text6}`;
+
     const sendMessageSuccess = await messageSend(messageContent);
     if (sendMessageSuccess) {
       alert("Mensagem enviada com sucesso!");
     } else {
       alert("Erro ao enviar mensagem. Tente novamente mais tarde.");
     }
+  };
+
+  const handleCopyToClipboard = () => {
+    let messageContent = product.text1 ? `${product.text1}\n\n` : "";
+
+    if (product.priceoriginal) {
+      messageContent += `De ~R$ ${product.priceoriginal}~\nPor `;
+    }
+
+    messageContent += `*R$ ${product.price} ${product.condition}*\n\n*🛒 Compre aqui:* https://tomepromo.com.br/promo/${product.id}\n\n${product.text6}`;
+
+    navigator.clipboard.writeText(messageContent).then(() => {
+      alert("Conteúdo copiado para a área de transferência.");
+    });
   };
 
   return (
@@ -334,20 +348,33 @@ const CreateProducts = () => {
                   />
                 </div>
                 <div className="flex gap-4">
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white font-semibold py-2 rounded px-8"
-                >
-                  Postar
-                </button>
-                {isMessageSent ? (
-                <Button type="button" onClick={handleSendMessage} disabled={isAnalyzing}>
-                  Enviar Mensagem
-                </Button>
-              ) : null}
-              </div>
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white font-semibold py-2 rounded px-8"
+                  >
+                    Postar
+                  </button>
+                  {isMessageSent ? (
+                    <Button
+                      type="button"
+                      onClick={handleCopyToClipboard}
+                      disabled={isAnalyzing}
+                    >
+                      Copiar Mensagem
+                    </Button>
+                  ) : null}
+                  {isMessageSent ? (
+                    <Button
+                      type="button"
+                      onClick={handleSendMessage}
+                      disabled={isAnalyzing}
+                    >
+                      Enviar WhatsApp
+                    </Button>
+                  ) : null}
+                </div>
               </form>
-              
+
               <Card
                 image={product.image}
                 title={product.title}
