@@ -49,10 +49,8 @@ const Users = () => {
       <div className="flex">
       <Sidebar className={`hidden md:flex flex-col`} isOpen={isDrawerOpen} onClose={handleMenuToggle} />
         <Content>
-          <div className=" flex flex-col">
-            <br></br>
             <div>
-              <h1 className="mt-2 text-4xl p-4  ">Usuários</h1>
+              <h1 className="text-4xl p-4  ">Usuários</h1>
               <h1 className=" text-lg px-4  ">Gerencie os usuários</h1>
             </div>
 
@@ -126,7 +124,6 @@ const Users = () => {
             </Box>
             
             </main>
-          </div>
           <Bottom className={`md:hidden`} />
         </Content>
       </div>

@@ -9,7 +9,6 @@ import { Bottom } from "@/components/Bottom";
 import { DrawerContext } from "@/contexts/DrawerContext";
 import { getCategories } from "@/utils/api";
 
-
 import "tailwindcss/tailwind.css";
 
 const Categories = () => {
@@ -19,17 +18,17 @@ const Categories = () => {
   const { drawer, toggleDrawer } = useContext(DrawerContext);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const [categories, setCategories] = useState(Array(3).fill({})) 
+  const [categories, setCategories] = useState(Array(3).fill({}));
 
   useEffect(() => {
     const fetchData = async () => {
-      const dataCategories = await getCategories(); 
+      const dataCategories = await getCategories();
       const updatedCategories = [...dataCategories.slice(0, 20)];
       setCategories(updatedCategories);
     };
 
     fetchData();
-  }, [])
+  }, []);
 
   useEffect(() => {
     const checkSessionAndRedirect = async () => {
@@ -65,21 +64,24 @@ const Categories = () => {
           isOpen={isDrawerOpen}
           onClose={handleMenuToggle}
         />
-        <Content className="m-8">
-          <h1 className="mt-2 text-4xl p-4 ">Categorias</h1>
-          <h2 className="text-lg px-4  ">Crie e gerencie as categorias</h2>
-          <div className="p-4">
-          <ul>
-                  {categories.map((categorie) => (
-                      <li key={categorie.id}>
-                        <div className="">
-                          
-                          <p className="border rounded p-2 my-2 shadow-md">{categorie.name}</p>
-                        </div>
-                      </li>
-                    ))}
-                </ul>
-          </div>
+        <Content>
+            <div>
+              <h1 className="text-4xl p-4 ">Categorias</h1>
+              <h2 className="text-lg px-4  ">Crie e gerencie as categorias</h2>
+            </div>
+            <div className="p-4">
+              <ul>
+                {categories.map((categorie) => (
+                  <li key={categorie.id}>
+                    <div className="">
+                      <p className="border rounded p-2 my-2 shadow-md">
+                        {categorie.name}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
         </Content>
       </div>
       <Bottom className={`md:hidden`} />

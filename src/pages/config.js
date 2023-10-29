@@ -56,8 +56,6 @@ const Config = () => {
         />
 
         <Content>
-          <div className="flex flex-col">
-            <br></br>
             <div>
               <h1 className="mt-2 text-4xl p-4  ">Configurações</h1>
               <h2 className="text-lg px-4  ">Gerencie o App</h2>
@@ -110,7 +108,6 @@ const Config = () => {
                 </label>
               </Box>
             </div>
-          </div>
 
           <Bottom className={`md:hidden`} />
         </Content>

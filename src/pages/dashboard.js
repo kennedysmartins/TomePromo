@@ -8,6 +8,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { Bottom } from "@/components/Bottom";
 import { DrawerContext } from "@/contexts/DrawerContext";
 import { Box } from "@/components/Box";
+import Link from "next/link";
 
 
 import "tailwindcss/tailwind.css";
@@ -54,10 +55,12 @@ const Dashboard = () => {
           onClose={handleMenuToggle}
         />
       <Content>
-        <div className="mt-16">
+        <div>
           <h1 className="mt-2 text-4xl p-4  ">Dashboard</h1>
           <Box>
+            <Link href="/products/create">
             <h3>Criar oferta</h3>
+            </Link>
           </Box>
         </div>
       </Content>

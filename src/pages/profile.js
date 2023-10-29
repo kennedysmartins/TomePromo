@@ -49,9 +49,8 @@ const Profile = () => {
       <div className="flex">
       <Sidebar className={`hidden md:flex flex-col`} isOpen={isDrawerOpen} onClose={handleMenuToggle} />
             <div className=" flex flex-col">
-              <br></br>
               <div>
-                <h1 className="mt-2 text-4xl p-4  ">Perfil</h1>
+                <h1 className="text-4xl p-4  ">Perfil</h1>
                 <h1 className=" text-lg px-4  ">Crie e gerencie as categorias</h1>
               </div>
             </div>

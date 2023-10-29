@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { useForm } from "react-hook-form";
 import AvatarEditor from "react-avatar-editor";
 import { ThemeContext } from '@/contexts/ThemeContext'
+import { Input } from '@/components/Input'
 
 const ZoomSlider = ({ zoom, onZoomChange }) => {
   return (
@@ -68,33 +69,33 @@ const CompleteProfile = ({ user }) => {
         <label htmlFor="name" className={`${theme === 'dark' ? ' text-white': ' text-zinc-900 '}`}>
           Nome:
         </label>
-        <input
+        <Input
           {...register("name")}
           id="name"
-          className={`${theme === 'dark' ? ' text-zinc-900': ' text-zinc-900 '} border rounded w-full py-2 px-3`}
-        ></input>
+          
+        />
       </div>
 
       <div className="mb-4">
         <label htmlFor="email" className={`${theme === 'dark' ? ' text-white': ' text-zinc-900 '}`}>
           E-mail:
         </label>
-        <input
+        <Input
           {...register("email")}
           id="email"
-          className={`${theme === 'dark' ? ' text-zinc-900': ' text-zinc-900 '} border rounded w-full py-2 px-3`}
-        ></input>
+          
+        />
       </div>
 
       <div className="mb-4">
         <label htmlFor="phone" className={`${theme === 'dark' ? ' text-white': ' text-zinc-900 '}`}>
           Telefone:
         </label>
-        <input
+        <Input
           {...register("phone")}
           id="phone"
-          className={`${theme === 'dark' ? ' text-zinc-900': ' text-zinc-900 '} border rounded w-full py-2 px-3`}
-        ></input>
+          
+        />
       </div>
 
       <div className="mb-4">
@@ -104,7 +105,7 @@ const CompleteProfile = ({ user }) => {
 
         <img src={user.image} className="rounded-full" />
 
-        <input
+        <Input
           type="file"
           onChange={handleImageChange}
           accept="image/*"

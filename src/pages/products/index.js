@@ -56,7 +56,7 @@ const Products = () => {
           onClose={handleMenuToggle}
         />
       <Content>
-        <div className="mt-16">
+        <div>
           <h1 className="mt-2 text-4xl p-4  ">Produtos</h1>
           <Box>
             <Link href="/products/create">
