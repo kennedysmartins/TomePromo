@@ -69,7 +69,7 @@ export const getCategories = async () => {
 export const createProduct = async (data) => {
   try {
     const response = await fetch(
-      "${apiUrl}/products",
+      `${apiUrl}/products`,
       {
         method: "POST",
         headers: {
