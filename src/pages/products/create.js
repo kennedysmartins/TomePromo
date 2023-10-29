@@ -162,19 +162,14 @@ const CreateProducts = () => {
   };
 
   const handleSendMessage = async () => {
-    let messageContent = `${product.text1}
-    
-${product.title}\n\n`;
-
-if (product.priceoriginal) {
-  messageContent += `De ~${product.priceoriginal}~
-  Por `;
-}
-
-messageContent += `*${product.price} ${product.condition}*
-*🛒 Compre aqui:* https://tomepromo.com.br/promo/${product.id}
-
-${product.text6}`;
+    let messageContent = product.text1 ? `${product.text1}\n\n` : '';
+  
+    if (product.priceoriginal) {
+      messageContent += `De ~${product.priceoriginal}~\nPor `;
+    }
+  
+    messageContent += `*${product.price} ${product.condition}*\n*🛒 Compre aqui:* https://tomepromo.com.br/promo/${product.id}\n\n${product.text6}`;
+  
     const sendMessageSuccess = await messageSend(messageContent);
     if (sendMessageSuccess) {
       alert("Mensagem enviada com sucesso!");
@@ -339,18 +334,21 @@ ${product.text6}`;
                     onChange={(e) => handleInputChange(e, "image")}
                   />
                 </div>
+                <div className="flex gap-4">
                 <button
                   type="submit"
                   className="bg-blue-500 text-white font-semibold py-2 rounded px-8"
                 >
                   Postar
                 </button>
-              </form>
-              {isMessageSent ? (
-                <Button onClick={handleSendMessage} disabled={isAnalyzing}>
+                {isMessageSent ? (
+                <Button type="button" onClick={handleSendMessage} disabled={isAnalyzing}>
                   Enviar Mensagem
                 </Button>
               ) : null}
+              </div>
+              </form>
+              
               <Card
                 image={product.image}
                 title={product.title}
