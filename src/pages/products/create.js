@@ -128,10 +128,29 @@ const CreateProducts = () => {
     setValue(name, value);
   };
 
-  // ...
+  const resetFormFields = () => {
+    setProduct({
+      title: "",
+      price: "",
+      priceoriginal: "",
+      category: "",
+      image: "",
+      linkCompra: "",
+      data: "",
+      hora: "",
+      text1: "",
+      text2: "",
+      condition: "",
+      text5: "https://amzn.to/477bFDg",
+      text6: "⚠️ Essa oferta pode encerrar a qualquer momento",
+      text7:
+        "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
+    });
+  };
 
   const analiseLink = async (link) => {
     try {
+      resetFormFields();
       setIsAnalyzing(true);
       const response = await urlExtractor(link);
       console.log(response);
@@ -286,7 +305,6 @@ const CreateProducts = () => {
                     {...register("condition")}
                     value={product.condition}
                     placeholder="em 1x até 7x sem juros"
-                    required
                     onChange={(e) => handleInputChange(e, "condition")}
                   />
                 </div>
