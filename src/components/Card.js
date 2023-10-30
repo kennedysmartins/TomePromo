@@ -3,7 +3,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import Link from "next/link";
 import { ThemeContext } from "@/contexts/ThemeContext";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 export function Card({
   text1,
@@ -32,8 +32,8 @@ https://tomepromo.com.br/grupo`;
 
     const encodedShareText = encodeURIComponent(shareText);
     const url = `https://api.whatsapp.com/send?text=${encodedShareText}`;
-    window.open(url, '_blank');
-};
+    window.open(url, "_blank");
+  };
   return (
     <main className="w-[500px] p-14 mx-auto">
       <div className="flex-col gap-3 max-w-md mx-auto justify-center pt-6">
@@ -102,7 +102,9 @@ https://tomepromo.com.br/grupo`;
             {priceoriginal && (
               <strong>
                 De R$<del>{priceoriginal}</del>
-                <br />Por </strong>
+                <br />
+                Por{" "}
+              </strong>
             )}
             {price && (
               <strong>
@@ -148,44 +150,56 @@ https://tomepromo.com.br/grupo`;
           </footer>
         </div>
         <div className="flex justify-center items-center gap-3 py-2">
-      <a
-        className="w-full whitespace-nowrap"
-        target="_blank"
-        href={`${linkCompra}?source=tomepromo08-20`}
-      >
-        {text5 ? (
-          <button
-            className={`${
-              theme === "dark"
-                ? "text-white bg-gray-700 "
-                : "text-black bg-gray-50  "
-            }   w-full p-2 rounded`}
+          <a
+            className="w-full whitespace-nowrap"
+            target="_blank"
+            href={`${linkCompra}?source=tomepromo08-20`}
           >
-            🛒 Comprar
-          </button>
-        ) : (
-          <button
-            className={`${
-              theme === "dark"
-                ? "text-white bg-gray-700 "
-                : "text-black bg-gray-50  "
-            }   w-full p-2 rounded`}
-          >
-            <Skeleton />
-          </button>
-        )}
-      </a>
-      <button
-        className={`${
-          theme === "dark"
-            ? "text-white bg-gray-700 "
-            : "text-black bg-gray-50  "
-        }  w-full p-2 rounded`}
-        onClick={handleShare}
-      >
-        🔗 Compartilhar
-      </button>
-    </div>
+            {text5 ? (
+              <button
+                className={`${
+                  theme === "dark"
+                    ? "text-white bg-gray-700 "
+                    : "text-black bg-gray-50  "
+                }   w-full p-2 rounded`}
+              >
+                🛒 Comprar
+              </button>
+            ) : (
+              <button
+                className={`${
+                  theme === "dark"
+                    ? "text-white bg-gray-700 "
+                    : "text-black bg-gray-50  "
+                }   w-full p-2 rounded`}
+              >
+                <Skeleton />
+              </button>
+            )}
+          </a>
+          {text5 ? (
+            <button
+              className={`${
+                theme === "dark"
+                  ? "text-white bg-gray-700 "
+                  : "text-black bg-gray-50  "
+              }  w-full p-2 rounded`}
+              onClick={handleShare}
+            >
+              🔗 Compartilhar
+            </button>
+          ) : (
+            <button
+              className={`${
+                theme === "dark"
+                  ? "text-white bg-gray-700 "
+                  : "text-black bg-gray-50  "
+              }   w-full p-2 rounded`}
+            >
+              <Skeleton />
+            </button>
+          )}
+        </div>
       </div>
     </main>
   );
