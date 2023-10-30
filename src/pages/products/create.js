@@ -31,6 +31,7 @@ const CreateProducts = () => {
     category: "",
     image: "",
     linkCompra: "",
+    linkPesquisa: "",
     data: "",
     hora: "",
     text1: "",
@@ -104,7 +105,7 @@ const CreateProducts = () => {
       text7: product.text7,
       data: formattedDate,
       hora: formattedTime,
-      linkCompra: product.linkCompra,
+      linkCompra: product.linkPesquisa,
     };
     const success = await createProduct(newData);
 
@@ -129,12 +130,12 @@ const CreateProducts = () => {
 
   const resetFormFields = () => {
     setProduct({
+      linkPesquisa:"",
       title: "",
       price: "",
       priceoriginal: "",
       category: "",
       image: "",
-      linkCompra: "",
       data: "",
       hora: "",
       text1: "",
@@ -142,8 +143,7 @@ const CreateProducts = () => {
       condition: "",
       text5: "https://amzn.to/477bFDg",
       text6: "⚠️ Essa oferta pode encerrar a qualquer momento",
-      text7:
-        "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
+      text7: "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
     });
   };
 
@@ -216,7 +216,7 @@ const CreateProducts = () => {
 
   const handlePasteFromClipboard = async () => {
     const text = await navigator.clipboard.readText();
-    setProduct((prevProduct) => ({ ...prevProduct, linkCompra: text }));
+    setProduct((prevProduct) => ({ ...prevProduct, linkPesquisa: text }));
     if (text) {
       analiseLink(text);
     }
@@ -241,9 +241,9 @@ const CreateProducts = () => {
             <div className="flex mt-8 ml-4 gap-2">
   <Input
     className="w-72"
-    value={product.linkCompra}
+    value={product.linkPesquisa}
     placeholder="Link do produto"
-    onChange={(e) => handleInputChange(e, "linkCompra")}
+    onChange={(e) => handleInputChange(e, "linkPesquisa")}
   />
   {product.linkCompra ? (
     <Button onClick={() => analiseLink(product.linkCompra)} disabled={isAnalyzing}>
