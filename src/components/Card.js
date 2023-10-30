@@ -72,7 +72,7 @@ export function Card({
           </header>
 
           <picture>
-            <Link href={`/promo/${id}`}>
+            <Link href={`/p/${id}`}>
               {image ? (
                 <img
                   className="w-full z-20 h-96 object-contain bg-white p-4"
