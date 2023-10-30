@@ -24,11 +24,7 @@ export function Card({
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
   const handleShare = () => {
-    const shareText = `Confira esta promoção: ${title} por apenas R$ ${price}! 
-Saiba mais em: https://tomepromo.com.br/promo/${id}
-
-Entre em nosso grupo de promoções:
-https://tomepromo.com.br/grupo`;
+    const shareText = `Confira esta promoção: \n\n${title} \n\n*Por apenas R$ ${price}!*\n\n🛒 *Compre aqui:* https://tomepromo.com.br/promo/${id}\n\n📣 Entre em nosso grupo:\nhttps://tomepromo.com.br/g/`;
 
     const encodedShareText = encodeURIComponent(shareText);
     const url = `https://api.whatsapp.com/send?text=${encodedShareText}`;
