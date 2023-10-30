@@ -3,7 +3,6 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const numberAPI = process.env.NEXT_PUBLIC_NUMBER;
 
 export const searchProducts = async (searchTerm) => {
-  console.log("Executando searchProducts");
   try {
     if (searchTerm) {
       const response = await fetch(
@@ -21,7 +20,6 @@ export const searchProducts = async (searchTerm) => {
 };
 
 export const getProducts = async () => {
-  console.log("Executando getProducts");
   try {
     const response = await fetch(`${apiUrl}/products`);
     if (response.ok) {
@@ -35,7 +33,6 @@ export const getProducts = async () => {
 };
 
 export const getProductById = async (id) => {
-  console.log("Executando getProductById");
   try {
     const response = await fetch(
       `${apiUrl}/products/${id}`
@@ -51,7 +48,6 @@ export const getProductById = async (id) => {
 };
 
 export const getCategories = async () => {
-  console.log("Executando getCategories");
   try {
     const response = await fetch(
       `${apiUrl}/categories`
@@ -93,7 +89,6 @@ export const createProduct = async (data) => {
 
 export const urlExtractor = async (url) => {
   try {
-    console.log("Enviando requisição para a URL: ", url);
     const response = await axios.post(
       `${apiUrl}/products/extractor`,
       { url },
@@ -118,7 +113,6 @@ export const messageSend = async (text) => {
   };
 
   try {
-    console.log("Enviando mensagem: ", message);
     const response = await axios.post(
       `${apiUrl}/message/send`,
       message,

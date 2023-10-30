@@ -8,24 +8,61 @@ import { useEffect, useState, useRef } from "react";
 import 'tailwindcss/tailwind.css';
 
 export default function Home() {
-  const [products, setProducts] = useState(Array(3).fill({}));
+  const [products, setProducts] = useState([]);
+  const [maxProducts, setMaxProducts] = useState(0);
+  const [startIndex, setStartIndex] = useState(0);
+  const [batchSize, setBatchSize] = useState(15);
+  const [initialLoad, setInitialLoad] = useState(true);
+  const [scroll, setScroll] = useState(true);
+
   const bottomRef = useRef(null); // Referência para o elemento final da página
 
   useEffect(() => {
+    if(scroll) {
     const fetchData = async () => {
       const dataProducts = await getProducts();
-      const updatedProducts = [...dataProducts.slice(0, 20)];
+      setMaxProducts(dataProducts.length)
+      const updatedProducts = dataProducts.slice(dataProducts.length - batchSize - startIndex, dataProducts.length - startIndex);
       setProducts(updatedProducts);
+      if (initialLoad) {
+        setInitialLoad(false);
+      
     };
+  } 
 
     fetchData();
-  }, []);
+  }else{
+    return
+  }
+  }, [startIndex, batchSize, initialLoad]);
+
+  const handleScroll = () => {
+  if (
+    document.documentElement.scrollTop === 0 &&
+    products.length < maxProducts &&
+    scroll
+  ) {
+    setScroll(false);
+    setBatchSize((prevBatchSize) => prevBatchSize + 1);
+    setStartIndex((prev) => Math.min(prev, Math.max(0, products.length - 1)));
+    document.documentElement.scrollTop = 65;
+    setScroll(true);
+  }
+};
 
   useEffect(() => {
-    if (bottomRef.current) {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  useEffect(() => {
+    if (products.length <= 15 && bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: 'auto' });
     }
   }, [products]);
+
+
+
 
   return (
     <Container>

@@ -116,7 +116,7 @@ export function Card({
             <p>
               {linkCompra && "🛒 Compre aqui: "}
               {linkCompra ? (
-                <a className="text-blue-300" target="_blank" href={`${linkCompra}?source=tomepromo08-20`}>
+                <a className="text-blue-500" target="_blank" href={`${linkCompra}?source=tomepromo08-20`}>
                   {linkCompra}
                 </a>
               ) : (
@@ -128,7 +128,7 @@ export function Card({
             <p>
               {text5 && "📦 Seja Amazon Prime: "}
               {text5 ? (
-                <a className="text-blue-300" target="_blank" href={text5}>
+                <a className="text-blue-500" target="_blank" href={text5}>
                   {text5}
                 </a>
               ) : (
