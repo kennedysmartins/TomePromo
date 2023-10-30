@@ -119,18 +119,17 @@ const CreateProducts = () => {
     }
   };
 
-  const handleInputChange = (value, name) => {
+  const handleInputChange = (e, name) => {
+    const { value } = e.target;
     setProduct((prevProduct) => ({
       ...prevProduct,
       [name]: value,
     }));
-  
-    setValue(name, value);
   };
 
   const resetFormFields = () => {
     setProduct({
-      linkPesquisa:"",
+      linkPesquisa: "",
       title: "",
       price: "",
       priceoriginal: "",
@@ -143,7 +142,8 @@ const CreateProducts = () => {
       condition: "",
       text5: "https://amzn.to/477bFDg",
       text6: "⚠️ Essa oferta pode encerrar a qualquer momento",
-      text7: "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
+      text7:
+        "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
     });
   };
 
@@ -239,23 +239,27 @@ const CreateProducts = () => {
             </div>
 
             <div className="flex mt-8 ml-4 gap-2">
-  <Input
-    className="w-72"
-    value={product.linkPesquisa}
-    placeholder="Link do produto"
-    onChange={(e) => handleInputChange(e, "linkPesquisa")}
-  />
-  {product.linkCompra ? (
-    <Button onClick={() => analiseLink(product.linkCompra)} disabled={isAnalyzing}>
-      Verificar link
-    </Button>
-  ) : (
-    <Button onClick={handlePasteFromClipboard}>Colar</Button>
-  )}
-  {product.linkCompra && (
-    <Button onClick={handleFormReset}>Limpar</Button>
-  )}
-</div>
+              <Input
+                className="w-72"
+                value={product.linkPesquisa || ""}
+                placeholder="Link do produto"
+                onChange={(e) => handleInputChange(e, "linkPesquisa")}
+              />
+
+              {product.linkCompra ? (
+                <Button
+                  onClick={() => analiseLink(product.linkCompra)}
+                  disabled={isAnalyzing}
+                >
+                  Verificar link
+                </Button>
+              ) : (
+                <Button onClick={handlePasteFromClipboard}>Colar</Button>
+              )}
+              {product.linkCompra && (
+                <Button onClick={handleFormReset}>Limpar</Button>
+              )}
+            </div>
 
             <div className="md:flex">
               <form
