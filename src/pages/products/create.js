@@ -458,7 +458,6 @@ const CreateProducts = () => {
                   {isMessageSent ? (
                     <Button
                       type="button"
-                      type="button"
           onClick={() => {
             handleSendMessage();
             handleButtonClick();
