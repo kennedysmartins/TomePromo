@@ -5,7 +5,7 @@ export function ContentHome({children, ...rest}) {
 
     return (
         <main>
-            <div {...rest} className={`py-8 px-4  min-h-screen h-full grid-cols-content`}>
+            <div {...rest} className={`pt-8 px-4  min-h-screen h-full grid-cols-content`}>
                 {children}
                 </div>
         </main>

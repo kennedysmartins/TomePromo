@@ -92,7 +92,8 @@ export function Card({
           >
             <strong>{text1 || <Skeleton />}</strong>
             <br />
-            <p>{text2 || <Skeleton />}</p>
+            <br />
+            <Link href={`/p/${id}`}><p>{text2 || <Skeleton />}</p></Link>
             <br />
 
             {priceoriginal && (
@@ -115,7 +116,7 @@ export function Card({
             <p>
               {linkCompra && "🛒 Compre aqui: "}
               {linkCompra ? (
-                <a target="_blank" href={`${linkCompra}?source=tomepromo08-20`}>
+                <a className="text-blue-300" target="_blank" href={`${linkCompra}?source=tomepromo08-20`}>
                   {linkCompra}
                 </a>
               ) : (
@@ -127,7 +128,7 @@ export function Card({
             <p>
               {text5 && "📦 Seja Amazon Prime: "}
               {text5 ? (
-                <a target="_blank" href={text5}>
+                <a className="text-blue-300" target="_blank" href={text5}>
                   {text5}
                 </a>
               ) : (

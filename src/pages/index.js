@@ -23,7 +23,7 @@ export default function Home() {
 
   useEffect(() => {
     if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+      bottomRef.current.scrollIntoView({ behavior: 'auto' });
     }
   }, [products]);
 
