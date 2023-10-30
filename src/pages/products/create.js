@@ -438,8 +438,6 @@ const CreateProducts = () => {
                   <button
                     type="submit"
                     className="bg-blue-500 text-white font-semibold py-2 rounded px-8"
-                    onClick={handleButtonClick}
-                    disabled={isButtonDisabled}
                   >
                     Postar
                   </button>
