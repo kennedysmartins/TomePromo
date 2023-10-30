@@ -243,16 +243,11 @@ const CreateProducts = () => {
   <Input
     className="w-72"
     value={product.linkCompra}
-    onChange={(e) =>
-      setProduct({ ...product, linkCompra: e.target.value })
-    }
+    onChange={(e) => handleInputChange(e, "linkCompra")}
     placeholder="Link do produto"
   />
   {product.linkCompra ? (
-    <Button
-      onClick={() => analiseLink(product.linkCompra)}
-      disabled={isAnalyzing}
-    >
+    <Button onClick={() => analiseLink(product.linkCompra)} disabled={isAnalyzing}>
       Verificar link
     </Button>
   ) : (
