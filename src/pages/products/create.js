@@ -82,11 +82,13 @@ const CreateProducts = () => {
 
   const formatPrice = (price) => {
     if (typeof price === "string") {
-      return parseFloat(price.replace("R$", "").trim());
+      return price.replace("R$", "")
     } else {
       return price; // caso já seja um número, retorne sem modificação
     }
   };
+  
+  
 
   const onSubmit = async (data) => {
 

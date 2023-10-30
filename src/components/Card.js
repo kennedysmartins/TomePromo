@@ -98,7 +98,7 @@ export function Card({
 
             {priceoriginal && (
               <strong>
-                De R$<del>{priceoriginal}</del>
+                De <del>R$ {priceoriginal}</del>
                 <br />
                 Por{" "}
               </strong>
