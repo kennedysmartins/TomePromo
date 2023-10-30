@@ -72,7 +72,7 @@ export function Card({
           </header>
 
           <picture>
-            <Link href={`/p/${id}`}>
+            <Link href={`${linkCompra}?source=tomepromo08-20`}>
               {image ? (
                 <img
                   className="w-full z-20 h-96 object-contain bg-white p-4"
@@ -90,7 +90,7 @@ export function Card({
               theme === "dark" ? "text-white " : "text-black  "
             } p-4 `}
           >
-            <p>{text1 || <Skeleton />}</p>
+            <strong>{text1 || <Skeleton />}</strong>
             <br />
             <p>{text2 || <Skeleton />}</p>
             <br />
