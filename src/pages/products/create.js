@@ -232,7 +232,7 @@ const CreateProducts = () => {
       messageContent += `De ~R$ ${product.priceoriginal}~\nPor `;
     }
 
-    messageContent += `*R$ ${product.price}* ${product.condition}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/promo/${productId}\n\n${product.text6}`;
+    messageContent += `*R$ ${product.price}* ${product.condition}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.text6}`;
 
     const sendMessageSuccess = await messageSend(messageContent);
     if (sendMessageSuccess) {
@@ -253,7 +253,7 @@ const CreateProducts = () => {
       messageContent += `De ~R$ ${product.priceoriginal}~\nPor `;
     }
 
-    messageContent += `*R$ ${product.price}* ${product.condition}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/promo/${productId}\n\n${product.text6}`;
+    messageContent += `*R$ ${product.price}* ${product.condition}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.text6}`;
 
     navigator.clipboard.writeText(messageContent).then(() => {
       alert("Copiado para a área de transferência");

@@ -21,7 +21,7 @@ export default function PromoPage({ product }) {
         <title>{product.title}</title>
         <meta property="og:title" content={product.title} />
         <meta property="og:image" content={product.image} />
-        <meta property="og:url" content={`https://tomepromo.com.br/promo/${router.query.ItemId}`} />
+        <meta property="og:url" content={`https://tomepromo.com.br/p/${router.query.ItemId}`} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="TomePromo" />
         <meta property="og:locale" content="pt_BR" />
