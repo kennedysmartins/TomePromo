@@ -22,11 +22,13 @@ const CreateProducts = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isMessageSent, setIsMessageSent] = useState(false);
   const [isButtonDisabled, setButtonDisabled] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
   const [shouldRender, setShouldRender] = useState(false);
 
   const [product, setProduct] = useState({
+    id:"",
     title: "",
     price: "",
     priceoriginal: "",
@@ -136,13 +138,14 @@ const CreateProducts = () => {
 
   const resetFormFields = () => {
     setProduct({
+      id:"",
       title: "",
       price: "",
       priceoriginal: "",
       category: "",
       image: "",
-      linkCompra: product.linkPesquisa,
-      linkPesquisa: product.linkPesquisa,
+      linkCompra: "",
+      linkPesquisa: "",
       data: "",
       hora: "",
       text1: "",
@@ -441,29 +444,26 @@ const CreateProducts = () => {
                   >
                     Postar
                   </button>
-                  {isMessageSent ? (
+                  {product.id ? (
                     <Button
                       type="button"
-                      onClick={() => {
-                        handleCopyToClipboard();
-                        handleButtonClick();
-                      }}
-                      disabled={isButtonDisabled}
+                      onClick={handleCopyToClipboard}
                     >
                       Copiar Mensagem
                     </Button>
                   ) : null}
-                  {isMessageSent ? (
+                  {product.id ? (
                     <Button
-                      type="button"
-          onClick={() => {
-            handleSendMessage();
-            handleButtonClick();
-          }}
-                      disabled={isButtonDisabled}
-                    >
-                      Enviar WhatsApp
-                    </Button>
+                    type="button"
+                    onClick={async () => {
+                      setIsSending(true);
+                      await handleSendMessage();
+                      setIsSending(false);
+                    }}
+                    disabled={isSending || !product.id}
+                  >
+                    {isSending ? 'Enviando' : 'Enviar WhatsApp'}
+                  </Button>
                   ) : null}
                 </div>
               </form>

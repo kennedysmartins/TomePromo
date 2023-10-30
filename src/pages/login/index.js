@@ -89,9 +89,9 @@ const LoginPage = () => {
         />
         <Content>
         <div>
-              <h1 className="mt-2 text-4xl p-4 ">Você está logado</h1>
+              <h1 className="mt-2 text-4xl p-4 ">Você está deslogado</h1>
               <h2 className="text-lg px-4  ">
-                Logado como: {session.user.name}, <br/>E-mail: {session.user.email}
+                Logue com o Google!
               </h2>
             </div>
 
