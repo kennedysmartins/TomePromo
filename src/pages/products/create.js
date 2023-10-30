@@ -118,13 +118,12 @@ const CreateProducts = () => {
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+  const handleInputChange = (value, name) => {
     setProduct((prevProduct) => ({
       ...prevProduct,
       [name]: value,
     }));
-
+  
     setValue(name, value);
   };
 
@@ -243,8 +242,8 @@ const CreateProducts = () => {
   <Input
     className="w-72"
     value={product.linkCompra}
-    onChange={(e) => handleInputChange(e, "linkCompra")}
     placeholder="Link do produto"
+    onChange={(e) => handleInputChange(e, "linkCompra")}
   />
   {product.linkCompra ? (
     <Button onClick={() => analiseLink(product.linkCompra)} disabled={isAnalyzing}>
