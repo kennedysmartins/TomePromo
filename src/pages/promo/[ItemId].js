@@ -32,6 +32,8 @@ export default function PromoPage({ product }) {
       <ContentHome>
         <div className="flex flex-col sm:flex-row justify-center items-start">
           <Card
+            key={product.id}
+            id={product.id}
             image={product.image}
             title={product.title}
             linkCompra={product.linkCompra}

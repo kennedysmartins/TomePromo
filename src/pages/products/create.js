@@ -24,6 +24,7 @@ const CreateProducts = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [shouldRender, setShouldRender] = useState(false);
+
   const [product, setProduct] = useState({
     title: "",
     price: "",
@@ -85,37 +86,39 @@ const CreateProducts = () => {
   };
 
   const onSubmit = async (data) => {
+
     const currentDate = new Date();
-    const formattedDate = `${currentDate.getDate()}/${
-      currentDate.getMonth() + 1
-    }/${currentDate.getFullYear()}`;
+    const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
     const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+
     const newData = {
       ...data,
-      title: product.title,
-      text2: product.title,
-      price: formatPrice(product.price),
-      priceoriginal: formatPrice(product.priceoriginal),
-      description: product.description,
-      image: product.image,
-      condition: product.condition.replace("Em", "em"),
-      category: product.category,
-      text5: product.text5,
-      text6: product.text6,
-      text7: product.text7,
+      title: data.title,
+      text2: data.text2,
+      text1: data.text1,
+      price: formatPrice(data.price),
+      priceoriginal: formatPrice(data.priceoriginal),
+      description: data.description,
+      image: data.image,
+      condition: data.condition,
+      category: data.category,
+      text5: data.text5,
+      text6: data.text6,
+      text7: data.text7,
       data: formattedDate,
       hora: formattedTime,
-      linkCompra: product.linkPesquisa,
+      linkCompra: data.linkCompra,
     };
     const success = await createProduct(newData);
 
     if (success) {
-      alert("Produto criado");
       setProduct((prevProduct) => ({
         ...prevProduct,
         id: success.id, // Assume que o retorno de sucesso contém o ID
       }));
+        handleCopyToClipboard(success.id);
       setIsMessageSent(true);
+
     }
   };
 
@@ -125,16 +128,19 @@ const CreateProducts = () => {
       ...prevProduct,
       [name]: value,
     }));
+    setValue(name, value);
   };
+  
 
   const resetFormFields = () => {
     setProduct({
-      linkPesquisa: "",
       title: "",
       price: "",
       priceoriginal: "",
       category: "",
       image: "",
+      linkCompra: product.linkPesquisa,
+      linkPesquisa: product.linkPesquisa,
       data: "",
       hora: "",
       text1: "",
@@ -149,35 +155,56 @@ const CreateProducts = () => {
 
   const analiseLink = async (link) => {
     try {
-      resetFormFields();
-      setIsAnalyzing(true);
-      const response = await urlExtractor(link);
-      console.log(response);
-      if (response && response.data && response.data.metadata) {
-        const { metadata } = response.data;
-        console.log(metadata);
-        const firstPart = metadata.title?.split(",")[0];
-        const categoryString = JSON.stringify(metadata.breadcrumbs);
-        setProduct((prevProduct) => ({
-          ...prevProduct,
-          title: firstPart || prevProduct.title,
-          text2: metadata.title || prevProduct.title,
-          price: formatPrice(metadata.price) || prevProduct.price,
-          priceoriginal:
-            formatPrice(metadata["price-original"]) ||
-            prevProduct.priceoriginal,
-          description: metadata.description || prevProduct.description,
-          image: metadata.image || prevProduct.image,
-          condition: metadata.condition || prevProduct.condition,
-          category: categoryString || prevProduct.category,
-        }));
-      }
+        setIsAnalyzing(true);
+        const response = await urlExtractor(link);
+        console.log(response);
+        if (response && response.data && response.data.metadata) {
+            const { metadata } = response.data;
+            console.log(metadata);
+            const firstPart = metadata.title ? metadata.title.split(",")[0] : "";
+            const categoryString = JSON.stringify(metadata.breadcrumbs);
+            const descriptionWords = metadata.title
+                ? metadata.title.split(' ').slice(0, 8).join(' ')
+                : "";
+
+            setProduct((prevProduct) => ({
+                ...prevProduct,
+                title: firstPart || prevProduct.title,
+                text2: metadata.title || prevProduct.title,
+                price: formatPrice(metadata.price) || prevProduct.price,
+                priceoriginal: formatPrice(metadata["price-original"]) || prevProduct.priceoriginal,
+                description: metadata.description || prevProduct.description,
+                image: metadata.image || prevProduct.image,
+                condition: metadata.condition || prevProduct.condition,
+                category: categoryString || prevProduct.category,
+                linkCompra: link,
+                text5: "https://amzn.to/477bFDg",
+                text6: "⚠️ Essa oferta pode encerrar a qualquer momento",
+                text7: "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
+            }));
+
+            // Verifica se cada valor existe antes de definir
+            setValue('title', firstPart || '');
+            setValue('text2', metadata.title || '');
+            setValue('price', formatPrice(metadata.price) || '');
+            setValue('priceoriginal', formatPrice(metadata["price-original"]) || '');
+            setValue('description', metadata.description || '');
+            setValue('image', metadata.image || '');
+            setValue('condition', metadata.condition || '');
+            setValue('category', categoryString || '');
+            setValue('linkCompra', link);
+            setValue('text5', "https://amzn.to/477bFDg");
+            setValue('text6', "⚠️ Essa oferta pode encerrar a qualquer momento");
+            setValue('text7', "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador");
+        }
     } catch (error) {
-      console.error("Erro ao analisar o link:", error);
+        console.error("Erro ao analisar o link:", error);
     } finally {
-      setIsAnalyzing(false);
+        setIsAnalyzing(false);
     }
-  };
+};
+
+
 
   const handleFormReset = () => {
     resetFormFields();
@@ -200,25 +227,34 @@ const CreateProducts = () => {
     }
   };
 
-  const handleCopyToClipboard = () => {
-    let messageContent = product.text1 ? `${product.text1}\n\n` : "";
+  const handleCopyToClipboard = (id) => {
+    const productId = product.id || id;
+
+    let messageContent = product.text1
+      ? `*${product.text1}*\n\n${product.text2}\n\n`
+      : "";
 
     if (product.priceoriginal) {
       messageContent += `De ~R$ ${product.priceoriginal}~\nPor `;
     }
 
-    messageContent += `*R$ ${product.price} ${product.condition}*\n\n*🛒 Compre aqui:* https://tomepromo.com.br/promo/${product.id}\n\n${product.text6}`;
+    messageContent += `*R$ ${product.price}* ${product.condition}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/promo/${productId}\n\n${product.text6}`;
 
     navigator.clipboard.writeText(messageContent).then(() => {
-      alert("Conteúdo copiado para a área de transferência.");
+      alert("Copiado para a área de transferência");
     });
-  };
+};
+
 
   const handlePasteFromClipboard = async () => {
-    const text = await navigator.clipboard.readText();
-    setProduct((prevProduct) => ({ ...prevProduct, linkPesquisa: text }));
-    if (text) {
-      analiseLink(text);
+    try {
+      const text = await navigator.clipboard.readText();
+      setProduct((prevProduct) => ({ ...prevProduct, linkPesquisa: text, linkCompra: text }));
+      if (text) {
+        analiseLink(text);
+      }
+    } catch (error) {
+      console.error("Erro ao colar da área de transferência:", error);
     }
   };
 
@@ -246,19 +282,19 @@ const CreateProducts = () => {
                 onChange={(e) => handleInputChange(e, "linkPesquisa")}
               />
 
-              {product.linkCompra ? (
-                <Button
-                  onClick={() => analiseLink(product.linkCompra)}
-                  disabled={isAnalyzing}
-                >
-                  Verificar link
-                </Button>
-              ) : (
-                <Button onClick={handlePasteFromClipboard}>Colar</Button>
-              )}
-              {product.linkCompra && (
-                <Button onClick={handleFormReset}>Limpar</Button>
-              )}
+{product.linkPesquisa ? (
+  <Button
+    onClick={() => analiseLink(product.linkPesquisa)}
+    disabled={isAnalyzing}
+  >
+    {isAnalyzing ? 'Analisando' : 'Verificar link'}
+  </Button>
+) : (
+  <Button onClick={handlePasteFromClipboard}>Colar Link</Button>
+)}
+{product.linkPesquisa && !isAnalyzing ? (
+  <Button onClick={handleFormReset}>Limpar</Button>
+) : null}
             </div>
 
             <div className="md:flex">
