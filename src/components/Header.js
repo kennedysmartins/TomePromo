@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, {useContext} from 'react';
 import { ThemeContext } from '@/contexts/ThemeContext' 
 import { RiAdminLine } from "react-icons/ri";
+import { BsWhatsapp } from "react-icons/bs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -29,8 +30,8 @@ export function Header({ onMenuToggle }) {
           <img src={session.user.image} alt="image do usuário" className="w-10 text-4xl rounded-full bg-zinc-300 hover:bg-zinc-200 p-1 transition-all " />
         </Link>
         ) : (
-        <Link href={"/dashboard"}>
-          <RiAdminLine className={`${theme === 'dark' ? 'bg-gray-900 hover:bg-zinc-600 ': 'bg-zinc-300 hover:bg-zinc-200 '} text-4xl rounded-full  p-2 transition-all `} />
+        <Link href={"/g"}>
+          <BsWhatsapp className={`${theme === 'dark' ? 'bg-green-900 hover:bg-green-600 ': 'bg-green-300 hover:bg-green-200 '} text-4xl rounded-full  p-2 transition-all `} />
         </Link>
         )}
         
