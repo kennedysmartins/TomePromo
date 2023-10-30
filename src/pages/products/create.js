@@ -21,6 +21,7 @@ const CreateProducts = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isMessageSent, setIsMessageSent] = useState(false);
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
   const [shouldRender, setShouldRender] = useState(false);
@@ -116,7 +117,8 @@ const CreateProducts = () => {
         ...prevProduct,
         id: success.id, // Assume que o retorno de sucesso contém o ID
       }));
-        handleCopyToClipboard(success.id);
+        // handleCopyToClipboard(success.id);
+        alert(`Produto criado com sucesso com o id ${success.id}`);
       setIsMessageSent(true);
 
     }
@@ -210,14 +212,27 @@ const CreateProducts = () => {
     resetFormFields();
   };
 
+  const handleButtonClick = () => {
+    setButtonDisabled(true);
+
+    // Habilita o botão após 5 segundos
+    setTimeout(() => {
+      setButtonDisabled(false);
+    }, 1000);
+  };
+
   const handleSendMessage = async () => {
-    let messageContent = product.text1 ? `${product.text1}\n\n` : "";
+    const productId = product.id || id;
+
+    let messageContent = product.text1
+      ? `*${product.text1}*\n\n${product.text2}\n\n`
+      : "";
 
     if (product.priceoriginal) {
       messageContent += `De ~R$ ${product.priceoriginal}~\nPor `;
     }
 
-    messageContent += `*R$ ${product.price} ${product.condition}*\n\n*🛒 Compre aqui:* https://tomepromo.com.br/promo/${product.id}\n\n${product.text6}`;
+    messageContent += `*R$ ${product.price}* ${product.condition}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/promo/${productId}\n\n${product.text6}`;
 
     const sendMessageSuccess = await messageSend(messageContent);
     if (sendMessageSuccess) {
@@ -423,14 +438,19 @@ const CreateProducts = () => {
                   <button
                     type="submit"
                     className="bg-blue-500 text-white font-semibold py-2 rounded px-8"
+                    onClick={handleButtonClick}
+                    disabled={isButtonDisabled}
                   >
                     Postar
                   </button>
                   {isMessageSent ? (
                     <Button
                       type="button"
-                      onClick={handleCopyToClipboard}
-                      disabled={isAnalyzing}
+                      onClick={() => {
+                        handleCopyToClipboard();
+                        handleButtonClick();
+                      }}
+                      disabled={isButtonDisabled}
                     >
                       Copiar Mensagem
                     </Button>
@@ -438,8 +458,12 @@ const CreateProducts = () => {
                   {isMessageSent ? (
                     <Button
                       type="button"
-                      onClick={handleSendMessage}
-                      disabled={isAnalyzing}
+                      type="button"
+          onClick={() => {
+            handleSendMessage();
+            handleButtonClick();
+          }}
+                      disabled={isButtonDisabled}
                     >
                       Enviar WhatsApp
                     </Button>
