@@ -91,42 +91,42 @@ const CreateProducts = () => {
   
 
   const onSubmit = async (data) => {
-
     const currentDate = new Date();
     const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
     const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
-
+  
     const newData = {
       ...data,
-      title: data.title,
-      text2: data.text2,
-      text1: data.text1,
+      title: data.title.trim(),
+      text2: data.text2.trim(),
+      text1: data.text1.trim(),
       price: formatPrice(data.price),
       priceoriginal: formatPrice(data.priceoriginal),
-      description: data.description,
-      image: data.image,
-      condition: data.condition,
-      category: data.category,
-      text5: data.text5,
-      text6: data.text6,
-      text7: data.text7,
+      description: data.description.trim(),
+      image: data.image.trim(),
+      condition: data.condition.trim(),
+      category: data.category.trim(),
+      text5: data.text5.trim(),
+      text6: data.text6.trim(),
+      text7: data.text7.trim(),
       data: formattedDate,
       hora: formattedTime,
-      linkCompra: data.linkCompra,
+      linkCompra: data.linkCompra.trim(),
     };
+  
     const success = await createProduct(newData);
-
+  
     if (success) {
       setProduct((prevProduct) => ({
         ...prevProduct,
         id: success.id, // Assume que o retorno de sucesso contém o ID
       }));
-        // handleCopyToClipboard(success.id);
-        alert(`Produto criado com sucesso com o id ${success.id}`);
+      // handleCopyToClipboard(success.id);
+      alert(`Produto criado com sucesso com o id ${success.id}`);
       setIsMessageSent(true);
-
     }
   };
+  
 
   const handleInputChange = (e, name) => {
     const { value } = e.target;
