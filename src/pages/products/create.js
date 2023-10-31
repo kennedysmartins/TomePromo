@@ -228,17 +228,17 @@ const CreateProducts = () => {
 
   const handleSendMessage = async () => {
     const productId = product.id || id;
-
+  
     let messageContent = product.text1
-      ? `*${product.text1}*\n\n${product.text2}\n\n`
+      ? `*${product.text1.trim()}*\n\n${product.text2.trim()}\n\n`
       : "";
-
+  
     if (product.priceoriginal) {
-      messageContent += `De ~R$ ${product.priceoriginal}~\nPor `;
+      messageContent += `De ~R$ ${product.priceoriginal.trim()}~\nPor `;
     }
-
-    messageContent += `*R$ ${product.price}* ${product.condition}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.text6}`;
-
+  
+    messageContent += `*R$ ${product.price.trim()}* ${product.condition.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.text6.trim()}`;
+  
     const sendMessageSuccess = await messageSend(messageContent);
     if (sendMessageSuccess) {
       alert("Mensagem enviada com sucesso!");
@@ -246,24 +246,24 @@ const CreateProducts = () => {
       alert("Erro ao enviar mensagem. Tente novamente mais tarde.");
     }
   };
-
+  
   const handleCopyToClipboard = (id) => {
     const productId = product.id || id;
-
+  
     let messageContent = product.text1
-      ? `*${product.text1}*\n\n${product.text2}\n\n`
+      ? `*${product.text1.trim()}*\n\n${product.text2.trim()}\n\n`
       : "";
-
+  
     if (product.priceoriginal) {
-      messageContent += `De ~R$ ${product.priceoriginal}~\nPor `;
+      messageContent += `De ~R$ ${product.priceoriginal.trim()}~\nPor `;
     }
-
-    messageContent += `*R$ ${product.price}* ${product.condition}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.text6}`;
-
+  
+    messageContent += `*R$ ${product.price.trim()}* ${product.condition.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.text6.trim()}`;
+  
     navigator.clipboard.writeText(messageContent).then(() => {
       alert("Copiado para a área de transferência");
     });
-};
+  };
 
 
   const handlePasteFromClipboard = async () => {
