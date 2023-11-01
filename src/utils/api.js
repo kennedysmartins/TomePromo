@@ -1,6 +1,7 @@
 import axios from "axios";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const numberAPI = process.env.NEXT_PUBLIC_NUMBER;
+const numberTestAPI = process.env.NEXT_PUBLIC_NUMBER_TEST;
 
 export const searchProducts = async (searchTerm) => {
   try {
@@ -109,6 +110,29 @@ export const urlExtractor = async (url) => {
 export const messageSend = async (text) => {
   const message = {
     phoneNumber: numberAPI,
+    message: text,
+  };
+
+  try {
+    const response = await axios.post(
+      `${apiUrl}/message/send`,
+      message,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Erro ao enviar mensagem: ", error);
+    return false;
+  }
+};
+
+export const messageSendTest = async (text) => {
+  const message = {
+    phoneNumber: numberTestAPI,
     message: text,
   };
 

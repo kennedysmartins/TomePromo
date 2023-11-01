@@ -9,11 +9,18 @@ import { Sidebar } from "@/components/Sidebar";
 import { Input } from "@/components/Input";
 import { Bottom } from "@/components/Bottom";
 import { DrawerContext } from "@/contexts/DrawerContext";
-import { createProduct, urlExtractor, messageSend } from "@/utils/api";
+import {
+  createProduct,
+  urlExtractor,
+  messageSend,
+  messageSendTest,
+} from "@/utils/api";
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/Textarea";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
+import { BsWhatsapp, BsFillClipboard2Fill } from "react-icons/bs";
+import { MdPublishedWithChanges, MdOutlineContentPasteSearch, MdDeleteOutline } from "react-icons/md";
 
 const CreateProducts = () => {
   const { drawer, toggleDrawer } = useContext(DrawerContext);
@@ -28,7 +35,7 @@ const CreateProducts = () => {
   const [shouldRender, setShouldRender] = useState(false);
 
   const [product, setProduct] = useState({
-    id:"",
+    id: "",
     title: "",
     price: "",
     priceoriginal: "",
@@ -82,19 +89,19 @@ const CreateProducts = () => {
 
   const formatPrice = (price) => {
     if (typeof price === "string") {
-      return price.replace("R$", "")
+      return price.replace("R$", "");
     } else {
       return price; // caso já seja um número, retorne sem modificação
     }
   };
-  
-  
 
   const onSubmit = async (data) => {
     const currentDate = new Date();
-    const formattedDate = `${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+    const formattedDate = `${currentDate.getDate()}/${
+      currentDate.getMonth() + 1
+    }/${currentDate.getFullYear()}`;
     const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
-  
+
     const newData = {
       ...data,
       title: data.title.trim(),
@@ -113,9 +120,9 @@ const CreateProducts = () => {
       hora: formattedTime,
       linkCompra: data.linkCompra.trim(),
     };
-  
+
     const success = await createProduct(newData);
-  
+
     if (success) {
       setProduct((prevProduct) => ({
         ...prevProduct,
@@ -126,7 +133,6 @@ const CreateProducts = () => {
       setIsMessageSent(true);
     }
   };
-  
 
   const handleInputChange = (e, name) => {
     const { value } = e.target;
@@ -136,11 +142,10 @@ const CreateProducts = () => {
     }));
     setValue(name, value);
   };
-  
 
   const resetFormFields = () => {
     setProduct({
-      id:"",
+      id: "",
       title: "",
       price: "",
       priceoriginal: "",
@@ -162,56 +167,63 @@ const CreateProducts = () => {
 
   const analiseLink = async (link) => {
     try {
-        setIsAnalyzing(true);
-        const response = await urlExtractor(link);
-        console.log(response);
-        if (response && response.data && response.data.metadata) {
-            const { metadata } = response.data;
-            console.log(metadata);
-            const firstPart = metadata.title ? metadata.title.split(",")[0] : "";
-            const categoryString = JSON.stringify(metadata.breadcrumbs);
-            const descriptionWords = metadata.title
-                ? metadata.title.split(' ').slice(0, 8).join(' ')
-                : "";
+      setIsAnalyzing(true);
+      const response = await urlExtractor(link);
+      console.log(response);
+      if (response && response.data && response.data.metadata) {
+        const { metadata } = response.data;
+        console.log(metadata);
+        const firstPart = metadata.title ? metadata.title.split(",")[0] : "";
+        const categoryString = JSON.stringify(metadata.breadcrumbs);
+        const descriptionWords = metadata.title
+          ? metadata.title.split(" ").slice(0, 8).join(" ")
+          : "";
 
-            setProduct((prevProduct) => ({
-                ...prevProduct,
-                title: firstPart || prevProduct.title,
-                text2: metadata.title || prevProduct.title,
-                price: formatPrice(metadata.price) || prevProduct.price,
-                priceoriginal: formatPrice(metadata["price-original"]) || prevProduct.priceoriginal,
-                description: metadata.description || prevProduct.description,
-                image: metadata.image || prevProduct.image,
-                condition: metadata.condition || prevProduct.condition,
-                category: categoryString || prevProduct.category,
-                linkCompra: link,
-                text5: "https://amzn.to/477bFDg",
-                text6: "⚠️ Essa oferta pode encerrar a qualquer momento",
-                text7: "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
-            }));
+        setProduct((prevProduct) => ({
+          ...prevProduct,
+          title: firstPart || prevProduct.title,
+          text2: metadata.title || prevProduct.title,
+          price: formatPrice(metadata.price) || prevProduct.price,
+          priceoriginal:
+            formatPrice(metadata["price-original"]) ||
+            prevProduct.priceoriginal,
+          description: metadata.description || prevProduct.description,
+          image: metadata.image || prevProduct.image,
+          condition: metadata.condition || prevProduct.condition,
+          category: categoryString || prevProduct.category,
+          linkCompra: link,
+          text5: "https://amzn.to/477bFDg",
+          text6: "⚠️ Essa oferta pode encerrar a qualquer momento",
+          text7:
+            "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
+        }));
 
-            // Verifica se cada valor existe antes de definir
-            setValue('title', firstPart || '');
-            setValue('text2', metadata.title || '');
-            setValue('price', formatPrice(metadata.price) || '');
-            setValue('priceoriginal', formatPrice(metadata["price-original"]) || '');
-            setValue('description', metadata.description || '');
-            setValue('image', metadata.image || '');
-            setValue('condition', metadata.condition || '');
-            setValue('category', categoryString || '');
-            setValue('linkCompra', link);
-            setValue('text5', "https://amzn.to/477bFDg");
-            setValue('text6', "⚠️ Essa oferta pode encerrar a qualquer momento");
-            setValue('text7', "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador");
-        }
+        // Verifica se cada valor existe antes de definir
+        setValue("title", firstPart || "");
+        setValue("text2", metadata.title || "");
+        setValue("price", formatPrice(metadata.price) || "");
+        setValue(
+          "priceoriginal",
+          formatPrice(metadata["price-original"]) || ""
+        );
+        setValue("description", metadata.description || "");
+        setValue("image", metadata.image || "");
+        setValue("condition", metadata.condition || "");
+        setValue("category", categoryString || "");
+        setValue("linkCompra", link);
+        setValue("text5", "https://amzn.to/477bFDg");
+        setValue("text6", "⚠️ Essa oferta pode encerrar a qualquer momento");
+        setValue(
+          "text7",
+          "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador"
+        );
+      }
     } catch (error) {
-        console.error("Erro ao analisar o link:", error);
+      console.error("Erro ao analisar o link:", error);
     } finally {
-        setIsAnalyzing(false);
+      setIsAnalyzing(false);
     }
-};
-
-
+  };
 
   const handleFormReset = () => {
     resetFormFields();
@@ -226,19 +238,40 @@ const CreateProducts = () => {
     }, 1000);
   };
 
-  const handleSendMessage = async () => {
+  const handleSendMessageTest = async () => {
     const productId = product.id || id;
-  
+
     let messageContent = product.text1
       ? `*${product.text1.trim()}*\n\n${product.text2.trim()}\n\n`
       : "";
-  
+
     if (product.priceoriginal) {
       messageContent += `De ~R$ ${product.priceoriginal.trim()}~\nPor `;
     }
-  
+
     messageContent += `*R$ ${product.price.trim()}* ${product.condition.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.text6.trim()}`;
-  
+
+    const sendMessageSuccess = await messageSendTest(messageContent);
+    if (sendMessageSuccess) {
+      alert("Mensagem enviada com sucesso!");
+    } else {
+      alert("Erro ao enviar mensagem. Tente novamente mais tarde.");
+    }
+  };
+
+  const handleSendMessage = async () => {
+    const productId = product.id || id;
+
+    let messageContent = product.text1
+      ? `*${product.text1.trim()}*\n\n${product.text2.trim()}\n\n`
+      : "";
+
+    if (product.priceoriginal) {
+      messageContent += `De ~R$ ${product.priceoriginal.trim()}~\nPor `;
+    }
+
+    messageContent += `*R$ ${product.price.trim()}* ${product.condition.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.text6.trim()}`;
+
     const sendMessageSuccess = await messageSend(messageContent);
     if (sendMessageSuccess) {
       alert("Mensagem enviada com sucesso!");
@@ -246,30 +279,33 @@ const CreateProducts = () => {
       alert("Erro ao enviar mensagem. Tente novamente mais tarde.");
     }
   };
-  
+
   const handleCopyToClipboard = (id) => {
     const productId = product.id || id;
-  
+
     let messageContent = product.text1
       ? `*${product.text1.trim()}*\n\n${product.text2.trim()}\n\n`
       : "";
-  
+
     if (product.priceoriginal) {
       messageContent += `De ~R$ ${product.priceoriginal.trim()}~\nPor `;
     }
-  
+
     messageContent += `*R$ ${product.price.trim()}* ${product.condition.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.text6.trim()}`;
-  
+
     navigator.clipboard.writeText(messageContent).then(() => {
       alert("Copiado para a área de transferência");
     });
   };
 
-
   const handlePasteFromClipboard = async () => {
     try {
       const text = await navigator.clipboard.readText();
-      setProduct((prevProduct) => ({ ...prevProduct, linkPesquisa: text, linkCompra: text }));
+      setProduct((prevProduct) => ({
+        ...prevProduct,
+        linkPesquisa: text,
+        linkCompra: text,
+      }));
       if (text) {
         analiseLink(text);
       }
@@ -296,25 +332,32 @@ const CreateProducts = () => {
 
             <div className="flex mt-8 ml-4 gap-2">
               <Input
-                className="w-72"
+                className="w-64"
                 value={product.linkPesquisa || ""}
                 placeholder="Link do produto"
                 onChange={(e) => handleInputChange(e, "linkPesquisa")}
               />
 
-{product.linkPesquisa ? (
-  <Button
-    onClick={() => analiseLink(product.linkPesquisa)}
-    disabled={isAnalyzing}
-  >
-    {isAnalyzing ? 'Analisando' : 'Verificar link'}
-  </Button>
-) : (
-  <Button onClick={handlePasteFromClipboard}>Colar Link</Button>
-)}
-{product.linkPesquisa && !isAnalyzing ? (
-  <Button onClick={handleFormReset}>Limpar</Button>
-) : null}
+              {product.linkPesquisa ? (
+                <Button
+                  onClick={() => analiseLink(product.linkPesquisa)}
+                  icon={MdOutlineContentPasteSearch}
+                  disabled={isAnalyzing}
+                  className="w-40"
+                >
+                  {isAnalyzing ? "Analisando" : "Verificar link"}
+                </Button>
+              ) : (
+                <Button onClick={handlePasteFromClipboard}
+                icon={BsFillClipboard2Fill} className="w-40">
+                  Colar Link
+                </Button>
+              )}
+              {product.linkPesquisa && !isAnalyzing ? (
+                <Button onClick={handleFormReset} icon={MdDeleteOutline} className="w-40">
+                  Limpar
+                </Button>
+              ) : null}
             </div>
 
             <div className="md:flex">
@@ -439,34 +482,53 @@ const CreateProducts = () => {
                     onChange={(e) => handleInputChange(e, "image")}
                   />
                 </div>
-                <div className="flex gap-4">
-                  <button
+                <div className="flex flex-col gap-4">
+                  <Button
                     type="submit"
+                    icon={MdPublishedWithChanges}
                     className="bg-blue-500 text-white font-semibold py-2 rounded px-8"
                   >
                     Postar
-                  </button>
-                  {product.id ? (
-                    <Button
-                      type="button"
-                      onClick={handleCopyToClipboard}
-                    >
-                      Copiar Mensagem
-                    </Button>
-                  ) : null}
-                  {product.id ? (
-                    <Button
-                    type="button"
-                    onClick={async () => {
-                      setIsSending(true);
-                      await handleSendMessage();
-                      setIsSending(false);
-                    }}
-                    disabled={isSending || !product.id}
-                  >
-                    {isSending ? 'Enviando' : 'Enviar WhatsApp'}
                   </Button>
-                  ) : null}
+                  <div className="flex gap-4 w-full">
+                    {product.id ? (
+                      <Button
+                        icon={BsFillClipboard2Fill}
+                        type="button"
+                        onClick={handleCopyToClipboard}
+                      >
+                        Copiar
+                      </Button>
+                    ) : null}
+                    {product.id ? (
+                      <Button
+                        type="button"
+                        icon={BsWhatsapp}
+                        onClick={async () => {
+                          setIsSending(true);
+                          await handleSendMessage();
+                          setIsSending(false);
+                        }}
+                        disabled={isSending || !product.id}
+                      >
+                        {isSending ? "Enviando" : "Enviar Grupo"}
+                      </Button>
+                    ) : null}
+                    {product.id ? (
+                      <Button
+                        type="button"
+                        icon={BsWhatsapp}
+                        onClick={async () => {
+                          setIsSending(true);
+                          await handleSendMessageTest();
+                          setIsSending(false);
+                        }}
+                        disabled={isSending || !product.id}
+                      >
+                        {isSending ? "Enviando" : "Grupo Teste"}
+                      </Button>
+                    ) : null}
+                  </div>
                 </div>
               </form>
 
