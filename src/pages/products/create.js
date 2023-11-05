@@ -108,7 +108,6 @@ const CreateProducts = () => {
         priceWithoutSymbol = priceWithoutSymbol.replace(/\,/g,".")
       }
       parseFloat(priceWithoutSymbol)
-      console.log(`Formatado ${oldPrice} para ${priceWithoutSymbol}`)
 
       return priceWithoutSymbol;
 
@@ -256,7 +255,6 @@ const CreateProducts = () => {
   function formatCurrency(amount) {
     const options = { minimumFractionDigits: 2 };
     const formattedAmount = new Intl.NumberFormat('pt-BR', options).format(amount);
-    console.log("Formatando dinheiro de", amount, 'para', formattedAmount);
 
     return formattedAmount;
 }

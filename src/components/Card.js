@@ -37,7 +37,6 @@ export function Card({
   function formatCurrency(amount) {
     const options = { minimumFractionDigits: 2 };
     const formattedAmount = new Intl.NumberFormat('pt-BR', options).format(amount);
-    console.log("Formatando dinheiro de", amount, 'para', formattedAmount);
 
     return formattedAmount;
 }
