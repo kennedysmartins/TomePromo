@@ -6,25 +6,26 @@ import { ThemeContext } from "@/contexts/ThemeContext";
 import { useRouter } from "next/router";
 
 export function Card({
-  text1,
-  text2,
-  condition,
-  text5,
-  text6,
-  text7,
+  catchyText,
+  productName,
+  conditionPayment,
+  sponsorLink,
+  announcement1,
+  announcement2,
   id,
   title,
-  image,
-  linkCompra,
+  imagePath,
+  buyLink,
   data,
   hora,
-  price,
-  priceoriginal,
+  currentPrice,
+  originalPrice,
+  recurrencePrice,
 }) {
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
   const handleShare = () => {
-    const shareText = `Confira esta promoção: \n\n${title} \n\n*Por apenas R$ ${price}!*\n\n🛒 *Compre aqui:* https://tomepromo.com.br/p/${id}\n\n📣 Entre em nosso grupo:\nhttps://tomepromo.com.br/g/`;
+    const shareText = `Confira esta promoção: \n\n${title} \n\n*Por apenas R$ ${currentPrice}!*\n\n🛒 *Compre aqui:* https://tomepromo.com.br/p/${id}\n\n📣 Entre em nosso grupo:\nhttps://tomepromo.com.br/g/`;
 
     const encodedShareText = encodeURIComponent(shareText);
     const url = `https://api.whatsapp.com/send?text=${encodedShareText}`;
@@ -56,7 +57,7 @@ export function Card({
                 viewBox="0 0 10 21"
               >
                 <path
-                  class="background"
+                  className="background"
                   fill={`${theme === "dark" ? "#374151 " : "#fbfbfb  "} `}
                   d="M8,1 L9,1 L9,20 L8,20 L8,18 C7.807,15.161 7.124,12.233 5.950,9.218 C5.046,6.893 3.504,4.733 1.325,2.738 L1.325,2.738 C0.917,2.365 0.89,1.732 1.263,1.325 C1.452,1.118 1.72,1 2,1 L8,1 Z"
                 />
@@ -72,11 +73,11 @@ export function Card({
           </header>
 
           <picture>
-            <Link target="_blank" href={`${linkCompra}?source=tomepromo08-20`}>
-              {image ? (
+            <Link target="_blank" href={`${buyLink}?source=tomepromo08-20`}>
+              {imagePath ? (
                 <img
                   className="w-full z-20 h-96 object-contain bg-white p-4"
-                  src={image}
+                  src={imagePath}
                   alt={title}
                 />
               ) : (
@@ -90,34 +91,38 @@ export function Card({
               theme === "dark" ? "text-white " : "text-black  "
             } p-4 `}
           >
-            <strong>{text1 || <Skeleton />}</strong>
+            <strong>{catchyText || <Skeleton />}</strong>
             <br />
             <br />
-            <Link href={`/p/${id}`}><p>{text2 || <Skeleton />}</p></Link>
+            <Link href={`/p/${id}`}><p>{productName || <Skeleton />}</p></Link>
             <br />
 
-            {priceoriginal && (
+            {originalPrice && (
               <strong>
-                De <del>R$ {priceoriginal}</del>
+                De <del>R$ {originalPrice}</del>
                 <br />
                 Por{" "}
               </strong>
             )}
-            {price && (
+            {currentPrice && (
+  <strong>
+    {conditionPayment ? `R$ ${currentPrice} ${conditionPayment}` : `R$ ${currentPrice}`}
+  </strong>
+)}
+{recurrencePrice > 0 && (
+  
               <strong>
-                {`R$ ${price} ${condition}` ? (
-                  `R$ ${price} ${condition}`
-                ) : (
-                  <Skeleton />
-                )}
+              <br/>
+                Até R$ {recurrencePrice} com recorrência
               </strong>
             )}
 
+
             <p>
-              {linkCompra && "🛒 Compre aqui: "}
-              {linkCompra ? (
-                <a className="text-blue-500" target="_blank" href={`${linkCompra}?source=tomepromo08-20`}>
-                  {linkCompra}
+              {buyLink && "🛒 Compre aqui: "}
+              {buyLink ? (
+                <a className="text-blue-500" target="_blank" href={`${buyLink}?source=tomepromo08-20`}>
+                  {buyLink.slice(0, 24)}
                 </a>
               ) : (
                 <Skeleton />
@@ -126,18 +131,18 @@ export function Card({
 
             <br />
             <p>
-              {text5 && "📦 Seja Amazon Prime: "}
-              {text5 ? (
-                <a className="text-blue-500" target="_blank" href={text5}>
-                  {text5}
+              {sponsorLink && "📦 Seja Amazon Prime: "}
+              {sponsorLink ? (
+                <a className="text-blue-500" target="_blank" href={sponsorLink}>
+                  {sponsorLink.slice(0, 20)}
                 </a>
               ) : (
                 <Skeleton />
               )}
             </p>
 
-            <p>{text6 || <Skeleton />}</p>
-            <p>{text7 || <Skeleton />}</p>
+            <p>{announcement1 || <Skeleton />}</p>
+            <p>{announcement2 || <Skeleton />}</p>
           </main>
 
           <footer className=" flex justify-end px-3 text-gray-500">
@@ -150,9 +155,9 @@ export function Card({
           <a
             className="w-full whitespace-nowrap"
             target="_blank"
-            href={`${linkCompra}?source=tomepromo08-20`}
+            href={`${buyLink}?source=tomepromo08-20`}
           >
-            {text5 ? (
+            {sponsorLink ? (
               <button
                 className={`${
                   theme === "dark"
@@ -174,7 +179,7 @@ export function Card({
               </button>
             )}
           </a>
-          {text5 ? (
+          {sponsorLink ? (
             <button
               className={`${
                 theme === "dark"

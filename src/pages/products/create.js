@@ -20,7 +20,11 @@ import { Textarea } from "@/components/Textarea";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
 import { BsWhatsapp, BsFillClipboard2Fill } from "react-icons/bs";
-import { MdPublishedWithChanges, MdOutlineContentPasteSearch, MdDeleteOutline } from "react-icons/md";
+import {
+  MdPublishedWithChanges,
+  MdOutlineContentPasteSearch,
+  MdDeleteOutline,
+} from "react-icons/md";
 
 const CreateProducts = () => {
   const { drawer, toggleDrawer } = useContext(DrawerContext);
@@ -37,20 +41,20 @@ const CreateProducts = () => {
   const [product, setProduct] = useState({
     id: "",
     title: "",
-    price: "",
-    priceoriginal: "",
+    currentPrice: "",
+    originalPrice: "",
     category: "",
-    image: "",
-    linkCompra: "",
+    imagePath: "",
+    buyLink: "",
     linkPesquisa: "",
     data: "",
     hora: "",
-    text1: "",
-    text2: "",
-    condition: "",
-    text5: "",
-    text6: "",
-    text7: "",
+    catchyText: "",
+    productName: "",
+    conditionPayment: "",
+    sponsorLink: "",
+    announcement1: "",
+    announcement2: "",
   });
 
   useEffect(() => {
@@ -72,9 +76,9 @@ const CreateProducts = () => {
   useEffect(() => {
     setProduct((prevProduct) => ({
       ...prevProduct,
-      text5: "https://amzn.to/477bFDg",
-      text6: "⚠️ Essa oferta pode encerrar a qualquer momento",
-      text7:
+      sponsorLink: "https://amzn.to/477bFDg",
+      announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
+      announcement2:
         "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
     }));
   }, []);
@@ -87,38 +91,27 @@ const CreateProducts = () => {
     toggleDrawer();
   };
 
-  const formatPrice = (price) => {
-    if (typeof price === "string") {
-      return price.replace("R$", "");
-    } else {
-      return price; // caso já seja um número, retorne sem modificação
-    }
+  const formatPrice = (currentPrice) => {
+    const floatValue = parseFloat(currentPrice.replace(/[^\d,.-]/g, '').replace(",", "."));
+    return floatValue;
   };
 
   const onSubmit = async (data) => {
-    const currentDate = new Date();
-    const formattedDate = `${currentDate.getDate()}/${
-      currentDate.getMonth() + 1
-    }/${currentDate.getFullYear()}`;
-    const formattedTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
 
     const newData = {
       ...data,
       title: data.title.trim(),
-      text2: data.text2.trim(),
-      text1: data.text1.trim(),
-      price: formatPrice(data.price),
-      priceoriginal: formatPrice(data.priceoriginal),
-      description: data.description.trim(),
-      image: data.image.trim(),
-      condition: data.condition.trim(),
+      productName: data.productName.trim(),
+      catchyText: data.catchyText.trim(),
+      currentPrice: formatPrice(data.currentPrice),
+      originalPrice: formatPrice(data.originalPrice),
+      imagePath: data.imagePath.trim(),
+      conditionPayment: data.conditionPayment.trim(),
       category: data.category.trim(),
-      text5: data.text5.trim(),
-      text6: data.text6.trim(),
-      text7: data.text7.trim(),
-      data: formattedDate,
-      hora: formattedTime,
-      linkCompra: data.linkCompra.trim(),
+      sponsorLink: data.sponsorLink.trim(),
+      announcement1: data.announcement1.trim(),
+      announcement2: data.announcement2.trim(),
+      buyLink: data.buyLink.trim(),
     };
 
     const success = await createProduct(newData);
@@ -147,20 +140,19 @@ const CreateProducts = () => {
     setProduct({
       id: "",
       title: "",
-      price: "",
-      priceoriginal: "",
+      currentPrice: "",
+      originalPrice: "",
+      recurrencePrice: "",
       category: "",
-      image: "",
-      linkCompra: "",
+      imagePath: "",
+      buyLink: "",
       linkPesquisa: "",
-      data: "",
-      hora: "",
-      text1: "",
-      text2: "",
-      condition: "",
-      text5: "https://amzn.to/477bFDg",
-      text6: "⚠️ Essa oferta pode encerrar a qualquer momento",
-      text7:
+      catchyText: "",
+      productName: "",
+      conditionPayment: "",
+      sponsorLink: "https://amzn.to/477bFDg",
+      announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
+      announcement2:
         "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
     });
   };
@@ -175,46 +167,47 @@ const CreateProducts = () => {
         console.log(metadata);
         const firstPart = metadata.title ? metadata.title.split(",")[0] : "";
         const categoryString = JSON.stringify(metadata.breadcrumbs);
-        const descriptionWords = metadata.title
-          ? metadata.title.split(" ").slice(0, 8).join(" ")
-          : "";
 
         setProduct((prevProduct) => ({
           ...prevProduct,
           title: firstPart || prevProduct.title,
-          text2: metadata.title || prevProduct.title,
-          price: formatPrice(metadata.price) || prevProduct.price,
-          priceoriginal:
-            formatPrice(metadata["price-original"]) ||
-            prevProduct.priceoriginal,
-          description: metadata.description || prevProduct.description,
-          image: metadata.image || prevProduct.image,
-          condition: metadata.condition || prevProduct.condition,
+          productName: metadata.title || prevProduct.title,
+          currentPrice:
+            formatPrice(metadata.currentPrice) || prevProduct.currentPrice,
+          recurrencePrice:
+            formatPrice(metadata.recurrencePrice) ||
+            prevProduct.recurrencePrice,
+          originalPrice:
+            formatPrice(metadata["currentPrice-original"]) ||
+            prevProduct.originalPrice,
+          imagePath: metadata.imagePath || prevProduct.imagePath,
+          conditionPayment:
+            metadata.conditionPayment || prevProduct.conditionPayment,
           category: categoryString || prevProduct.category,
-          linkCompra: link,
-          text5: "https://amzn.to/477bFDg",
-          text6: "⚠️ Essa oferta pode encerrar a qualquer momento",
-          text7:
+          buyLink: link,
+          sponsorLink: "https://amzn.to/477bFDg",
+          announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
+          announcement2:
             "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
         }));
 
         // Verifica se cada valor existe antes de definir
         setValue("title", firstPart || "");
-        setValue("text2", metadata.title || "");
-        setValue("price", formatPrice(metadata.price) || "");
-        setValue(
-          "priceoriginal",
-          formatPrice(metadata["price-original"]) || ""
-        );
-        setValue("description", metadata.description || "");
-        setValue("image", metadata.image || "");
-        setValue("condition", metadata.condition || "");
+        setValue("productName", metadata.title || "");
+        setValue("currentPrice", formatPrice(metadata.currentPrice) || "");
+        setValue("originalPrice", formatPrice(metadata.originalPrice) || "");
+        setValue("recurrencePrice", formatPrice(metadata.recurrencePrice) || "");
+        setValue("imagePath", metadata.imagePath || "");
+        setValue("conditionPayment", metadata.conditionPayment || "");
         setValue("category", categoryString || "");
-        setValue("linkCompra", link);
-        setValue("text5", "https://amzn.to/477bFDg");
-        setValue("text6", "⚠️ Essa oferta pode encerrar a qualquer momento");
+        setValue("buyLink", link);
+        setValue("sponsorLink", "https://amzn.to/477bFDg");
         setValue(
-          "text7",
+          "announcement1",
+          "⚠️ Essa oferta pode encerrar a qualquer momento"
+        );
+        setValue(
+          "announcement2",
           "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador"
         );
       }
@@ -241,15 +234,15 @@ const CreateProducts = () => {
   const handleSendMessageTest = async () => {
     const productId = product.id || id;
 
-    let messageContent = product.text1
-      ? `*${product.text1.trim()}*\n\n${product.text2.trim()}\n\n`
+    let messageContent = product.catchyText
+      ? `*${product.catchyText.trim()}*\n\n${product.productName.trim()}\n\n`
       : "";
 
-    if (product.priceoriginal) {
-      messageContent += `De ~R$ ${product.priceoriginal.trim()}~\nPor `;
+    if (product.originalPrice) {
+      messageContent += `De ~R$ ${product.originalPrice.trim()}~\nPor `;
     }
 
-    messageContent += `*R$ ${product.price.trim()}* ${product.condition.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.text6.trim()}`;
+    messageContent += `*R$ ${product.currentPrice.trim()}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
 
     const sendMessageSuccess = await messageSendTest(messageContent);
     if (sendMessageSuccess) {
@@ -262,15 +255,15 @@ const CreateProducts = () => {
   const handleSendMessage = async () => {
     const productId = product.id || id;
 
-    let messageContent = product.text1
-      ? `*${product.text1.trim()}*\n\n${product.text2.trim()}\n\n`
+    let messageContent = product.catchyText
+      ? `*${product.catchyText.trim()}*\n\n${product.productName.trim()}\n\n`
       : "";
 
-    if (product.priceoriginal) {
-      messageContent += `De ~R$ ${product.priceoriginal.trim()}~\nPor `;
+    if (product.originalPrice) {
+      messageContent += `De ~R$ ${product.originalPrice.trim()}~\nPor `;
     }
 
-    messageContent += `*R$ ${product.price.trim()}* ${product.condition.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.text6.trim()}`;
+    messageContent += `*R$ ${product.currentPrice.trim()}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
 
     const sendMessageSuccess = await messageSend(messageContent);
     if (sendMessageSuccess) {
@@ -283,15 +276,15 @@ const CreateProducts = () => {
   const handleCopyToClipboard = (id) => {
     const productId = product.id || id;
 
-    let messageContent = product.text1
-      ? `*${product.text1.trim()}*\n\n${product.text2.trim()}\n\n`
+    let messageContent = product.catchyText
+      ? `*${product.catchyText.trim()}*\n\n${product.productName.trim()}\n\n`
       : "";
 
-    if (product.priceoriginal) {
-      messageContent += `De ~R$ ${product.priceoriginal.trim()}~\nPor `;
+    if (product.originalPrice) {
+      messageContent += `De ~R$ ${product.originalPrice.trim()}~\nPor `;
     }
 
-    messageContent += `*R$ ${product.price.trim()}* ${product.condition.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.text6.trim()}`;
+    messageContent += `*R$ ${product.currentPrice.trim()}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
 
     navigator.clipboard.writeText(messageContent).then(() => {
       alert("Copiado para a área de transferência");
@@ -304,7 +297,7 @@ const CreateProducts = () => {
       setProduct((prevProduct) => ({
         ...prevProduct,
         linkPesquisa: text,
-        linkCompra: text,
+        buyLink: text,
       }));
       if (text) {
         analiseLink(text);
@@ -348,13 +341,20 @@ const CreateProducts = () => {
                   {isAnalyzing ? "Analisando" : "Verificar link"}
                 </Button>
               ) : (
-                <Button onClick={handlePasteFromClipboard}
-                icon={BsFillClipboard2Fill} className="w-40">
+                <Button
+                  onClick={handlePasteFromClipboard}
+                  icon={BsFillClipboard2Fill}
+                  className="w-40"
+                >
                   Colar Link
                 </Button>
               )}
               {product.linkPesquisa && !isAnalyzing ? (
-                <Button onClick={handleFormReset} icon={MdDeleteOutline} className="w-40">
+                <Button
+                  onClick={handleFormReset}
+                  icon={MdDeleteOutline}
+                  className="w-40"
+                >
                   Limpar
                 </Button>
               ) : null}
@@ -368,11 +368,11 @@ const CreateProducts = () => {
                 <div className="mb-4">
                   <label htmlFor="category">Mensagem chamativa</label>
                   <Input
-                    {...register("text1")}
-                    value={product.text1}
+                    {...register("catchyText")}
+                    value={product.catchyText}
                     placeholder="🔝👌-47% de DESCONTO"
                     required
-                    onChange={(e) => handleInputChange(e, "text1")}
+                    onChange={(e) => handleInputChange(e, "catchyText")}
                   />
                 </div>
                 <div className="mb-4">
@@ -386,80 +386,80 @@ const CreateProducts = () => {
                   />
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="price">Preço</label>
+                  <label htmlFor="currentPrice">Preço</label>
                   <Input
-                    {...register("price")}
+                    {...register("currentPrice")}
                     placeholder="168.3"
                     required
-                    value={product.price}
-                    onChange={(e) => handleInputChange(e, "price")}
+                    value={product.currentPrice}
+                    onChange={(e) => handleInputChange(e, "currentPrice")}
                   />
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="priceoriginal">Preço Original</label>
+                  <label htmlFor="originalPrice">Preço Original</label>
                   <Input
-                    {...register("priceoriginal")}
+                    {...register("originalPrice")}
                     placeholder="200.1"
-                    value={product.priceoriginal}
-                    onChange={(e) => handleInputChange(e, "priceoriginal")}
+                    value={product.originalPrice}
+                    onChange={(e) => handleInputChange(e, "originalPrice")}
                   />
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="text2">Descrição</label>
+                  <label htmlFor="productName">Descrição</label>
                   <Textarea
                     required
                     rows="5"
-                    {...register("text2")}
+                    {...register("productName")}
                     placeholder="Headset Gamer Sem Fio Logitech G435 LIGHTSPEED, Conexão USB e Bluetooth, Design Leve e Confortável, Microfone Embutido, Bateria de até 18h - Compatível com Dolby Atmos, PC, PS4, PS5, Mobile – Branco"
-                    value={product.text2}
-                    onChange={(e) => handleInputChange(e, "text2")}
+                    value={product.productName}
+                    onChange={(e) => handleInputChange(e, "productName")}
                   ></Textarea>
                 </div>
 
                 <div className="mb-4">
                   <label htmlFor="category">Condições</label>
                   <Input
-                    {...register("condition")}
-                    value={product.condition}
+                    {...register("conditionPayment")}
+                    value={product.conditionPayment}
                     placeholder="em 1x até 7x sem juros"
-                    onChange={(e) => handleInputChange(e, "condition")}
+                    onChange={(e) => handleInputChange(e, "conditionPayment")}
                   />
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="linkCompra">Link de compra</label>
+                  <label htmlFor="buyLink">Link de compra</label>
                   <Input
-                    {...register("linkCompra")}
-                    value={product.linkCompra}
+                    {...register("buyLink")}
+                    value={product.buyLink}
                     placeholder="https://amzn.to/3tP7mxY"
                     required
-                    onChange={(e) => handleInputChange(e, "linkCompra")}
+                    onChange={(e) => handleInputChange(e, "buyLink")}
                   />
                 </div>
                 <div className="mb-4">
                   <label htmlFor="category">Seja Amazon Prime</label>
                   <Input
-                    {...register("text5")}
+                    {...register("sponsorLink")}
                     placeholder="https://amzn.to/477bFDg"
-                    value={product.text5}
-                    onChange={(e) => handleInputChange(e, "text5")}
+                    value={product.sponsorLink}
+                    onChange={(e) => handleInputChange(e, "sponsorLink")}
                   />
                 </div>
                 <div className="mb-4">
                   <label htmlFor="category">Alerta</label>
                   <Input
-                    {...register("text6")}
-                    value={product.text6}
+                    {...register("announcement1")}
+                    value={product.announcement1}
                     placeholder="⚠️ Essa oferta pode encerrar a qualquer momento"
-                    onChange={(e) => handleInputChange(e, "text6")}
+                    onChange={(e) => handleInputChange(e, "announcement1")}
                   />
                 </div>
                 <div className="mb-4">
                   <label htmlFor="category">Alerta 2</label>
                   <Input
-                    {...register("text7")}
-                    value={product.text7}
+                    {...register("announcement2")}
+                    value={product.announcement2}
                     placeholder="⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador"
-                    onChange={(e) => handleInputChange(e, "text7")}
+                    onChange={(e) => handleInputChange(e, "announcement2")}
                   />
                 </div>
                 <div className="mb-4">
@@ -473,13 +473,13 @@ const CreateProducts = () => {
                   />
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="image">Imagem</label>
+                  <label htmlFor="imagePath">Imagem</label>
                   <Input
-                    {...register("image")}
+                    {...register("imagePath")}
                     placeholder="https://m.media-amazon.com/images/I/81WfRjLX93L._AC_SX679_.jpg"
                     required
-                    value={product.image}
-                    onChange={(e) => handleInputChange(e, "image")}
+                    value={product.imagePath}
+                    onChange={(e) => handleInputChange(e, "imagePath")}
                   />
                 </div>
                 <div className="flex flex-col gap-4">
@@ -533,19 +533,20 @@ const CreateProducts = () => {
               </form>
 
               <Card
-                image={product.image}
+                imagePath={product.imagePath}
                 title={product.title}
-                price={product.price}
-                priceoriginal={product.priceoriginal}
-                linkCompra={product.linkCompra}
+                currentPrice={product.currentPrice}
+                originalPrice={product.originalPrice}
+                recurrencePrice={product.recurrencePrice}
+                buyLink={product.buyLink}
                 data={product.data}
                 hora={product.hora}
-                text1={product.text1}
-                text2={product.text2}
-                condition={product.condition}
-                text5={product.text5}
-                text6={product.text6}
-                text7={product.text7}
+                catchyText={product.catchyText}
+                productName={product.productName}
+                conditionPayment={product.conditionPayment}
+                sponsorLink={product.sponsorLink}
+                announcement1={product.announcement1}
+                announcement2={product.announcement2}
               />
             </div>
           </div>

@@ -19,7 +19,7 @@ export default function PromoPage({ product }) {
     <Container>
       <Head>
         <title>{product.title}</title>
-        <meta property="og:title" content={product.text2} />
+        <meta property="og:title" content={product.productName} />
         <meta property="og:image" content={product.image} />
         <meta property="og:url" content={`https://tomepromo.com.br/p/${router.query.ItemId}`} />
         <meta property="og:type" content="website" />
@@ -34,20 +34,20 @@ export default function PromoPage({ product }) {
           <Card
             key={product.id}
             id={product.id}
-            image={product.image}
+            imagePath={product.imagePath}
             title={product.title}
-            linkCompra={product.linkCompra}
+            buyLink={product.buyLink}
             data={product.data}
             hora={product.hora}
-            text1={product.text1}
-            text2={product.text2}
-            condition={product.condition}
-            text4={product.text4}
-            text5={product.text5}
-            text6={product.text6}
-            text7={product.text7}
-            price={product.price}
-            priceoriginal={product.priceoriginal}
+            catchyText={product.catchyText}
+            productName={product.productName}
+            conditionPayment={product.conditionPayment}
+            sponsorLink={product.sponsorLink}
+            announcement1={product.announcement1}
+            announcement2={product.announcement2}
+            currentPrice={product.currentPrice}
+            originalPrice={product.originalPrice}
+            recurrencePrice={product.recurrencePrice}
           />
         </div>
       </ContentHome>

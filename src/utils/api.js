@@ -48,6 +48,49 @@ export const getProductById = async (id) => {
   }
 };
 
+export const deleteProductById = async (id) => {
+  try {
+    const response = await fetch(
+      `${apiUrl}/products/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }
+    );
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (error) {
+    console.error("Erro ao deletar o produto", error);
+    return [];
+  }
+};
+
+export const editProductById = async (data, id) => {
+  try {
+    const response = await fetch(
+      `${apiUrl}/products/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (error) {
+    console.error("Erro ao editar o produto", error);
+    return [];
+  }
+};
+
 export const getCategories = async () => {
   try {
     const response = await fetch(

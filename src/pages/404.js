@@ -14,7 +14,8 @@ const Custom404 = () => {
             <Card
             image="https://spikeandfreak.com/wp-content/uploads/2019/03/img-404.gif"
             title="404 Não Encontrado"
-            linkCompra=""
+            catchyText="404 Não Encontrado"
+            buyLink=""
             data=""
             hora=""
             />
