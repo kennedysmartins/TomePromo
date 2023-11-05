@@ -91,22 +91,42 @@ const CreateProducts = () => {
     toggleDrawer();
   };
 
+  function isFloat(value) {
+    const floatValue = parseFloat(value);
+    return !isNaN(floatValue) && Number.isFinite(floatValue) && Number.isInteger(floatValue) === false;
+  }
+
   const formatPrice = (currentPrice) => {
+    const oldPrice = currentPrice;
     if(currentPrice) {
-    const floatValue = parseFloat(currentPrice.replace(/[^\d,.-]/g, '').replace(",", "."));
-    return floatValue;
+      let priceWithoutSymbol = currentPrice.replace(/^R\$\s?/, '')
+
+      if(priceWithoutSymbol.includes(",") && priceWithoutSymbol.includes(".")) {
+        priceWithoutSymbol = priceWithoutSymbol.replace(/\./g,"")
+        priceWithoutSymbol = priceWithoutSymbol.replace(/\,/g,".")
+      } else {
+        priceWithoutSymbol = priceWithoutSymbol.replace(/\,/g,".")
+      }
+      parseFloat(priceWithoutSymbol)
+      console.log(`Formatado ${oldPrice} para ${priceWithoutSymbol}`)
+
+      return priceWithoutSymbol;
+
     }
-  };
+    return currentPrice
+};
 
   const onSubmit = async (data) => {
+    console.log("Preço ao submit",data.currentPrice)
+    console.log("Preço da variável produto", product.currentPrice)
 
     const newData = {
-      ...data,
       title: data.title.trim(),
       productName: data.productName.trim(),
       catchyText: data.catchyText.trim(),
       currentPrice: formatPrice(data.currentPrice),
-      originalPrice: formatPrice(data.originalPrice),
+      originalPrice: formatPrice(data.originalPrice) || 0,
+      recurrencePrice: formatPrice(data.recurrencePrice) || 0,
       imagePath: data.imagePath.trim(),
       conditionPayment: data.conditionPayment.trim(),
       category: data.category.trim(),
@@ -180,7 +200,7 @@ const CreateProducts = () => {
             formatPrice(metadata.recurrencePrice) ||
             prevProduct.recurrencePrice,
           originalPrice:
-            formatPrice(metadata["currentPrice-original"]) ||
+            formatPrice(metadata.originalPrice) ||
             prevProduct.originalPrice,
           imagePath: metadata.imagePath || prevProduct.imagePath,
           conditionPayment:
@@ -233,6 +253,14 @@ const CreateProducts = () => {
     }, 1000);
   };
 
+  function formatCurrency(amount) {
+    const options = { minimumFractionDigits: 2 };
+    const formattedAmount = new Intl.NumberFormat('pt-BR', options).format(amount);
+    console.log("Formatando dinheiro de", amount, 'para', formattedAmount);
+
+    return formattedAmount;
+}
+
   const handleSendMessageTest = async () => {
     const productId = product.id || id;
 
@@ -241,10 +269,10 @@ const CreateProducts = () => {
       : "";
 
     if (product.originalPrice) {
-      messageContent += `De ~R$ ${product.originalPrice.trim()}~\nPor `;
+      messageContent += `De ~R$ ${formatCurrency(product.originalPrice)}~\nPor `;
     }
 
-    messageContent += `*R$ ${product.currentPrice.trim()}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
+    messageContent += `*R$ ${formatCurrency(product.currentPrice)}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
 
     const sendMessageSuccess = await messageSendTest(messageContent);
     if (sendMessageSuccess) {
@@ -262,10 +290,10 @@ const CreateProducts = () => {
       : "";
 
     if (product.originalPrice) {
-      messageContent += `De ~R$ ${product.originalPrice.trim()}~\nPor `;
+      messageContent += `De ~R$ ${formatCurrency(product.originalPrice)}~\nPor `;
     }
 
-    messageContent += `*R$ ${product.currentPrice.trim()}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
+    messageContent += `*R$ ${formatCurrency(product.currentPrice)}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
 
     const sendMessageSuccess = await messageSend(messageContent);
     if (sendMessageSuccess) {
@@ -283,10 +311,10 @@ const CreateProducts = () => {
       : "";
 
     if (product.originalPrice) {
-      messageContent += `De ~R$ ${product.originalPrice.trim()}~\nPor `;
+      messageContent += `De ~R$ ${formatCurrency(product.originalPrice)}~\nPor `;
     }
 
-    messageContent += `*R$ ${product.currentPrice.trim()}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
+    messageContent += `*R$ ${formatCurrency(product.currentPrice)}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
 
     navigator.clipboard.writeText(messageContent).then(() => {
       alert("Copiado para a área de transferência");
@@ -391,7 +419,7 @@ const CreateProducts = () => {
                   <label htmlFor="currentPrice">Preço</label>
                   <Input
                     {...register("currentPrice")}
-                    placeholder="168.3"
+                    placeholder="1999.99"
                     required
                     value={product.currentPrice}
                     onChange={(e) => handleInputChange(e, "currentPrice")}
@@ -401,7 +429,7 @@ const CreateProducts = () => {
                   <label htmlFor="originalPrice">Preço Original</label>
                   <Input
                     {...register("originalPrice")}
-                    placeholder="200.1"
+                    placeholder="2200.99"
                     value={product.originalPrice}
                     onChange={(e) => handleInputChange(e, "originalPrice")}
                   />

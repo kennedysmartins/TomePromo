@@ -25,12 +25,23 @@ export function Card({
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
   const handleShare = () => {
-    const shareText = `Confira esta promoção: \n\n${title} \n\n*Por apenas R$ ${currentPrice}!*\n\n🛒 *Compre aqui:* https://tomepromo.com.br/p/${id}\n\n📣 Entre em nosso grupo:\nhttps://tomepromo.com.br/g/`;
+    const shareText = `Confira esta promoção: \n\n${title} \n\n*Por apenas R$ ${formatCurrency(
+      currentPrice
+    )}!*\n\n🛒 *Compre aqui:* https://tomepromo.com.br/p/${id}\n\n📣 Entre em nosso grupo:\nhttps://tomepromo.com.br/g/`;
 
     const encodedShareText = encodeURIComponent(shareText);
     const url = `https://api.whatsapp.com/send?text=${encodedShareText}`;
     window.open(url, "_blank");
   };
+
+  function formatCurrency(amount) {
+    const options = { minimumFractionDigits: 2 };
+    const formattedAmount = new Intl.NumberFormat('pt-BR', options).format(amount);
+    console.log("Formatando dinheiro de", amount, 'para', formattedAmount);
+
+    return formattedAmount;
+}
+
   return (
     <main className="w-[500px] p-14 mx-auto">
       <div className="flex-col gap-3 max-w-md mx-auto justify-center pt-6">
@@ -94,34 +105,40 @@ export function Card({
             <strong>{catchyText || <Skeleton />}</strong>
             <br />
             <br />
-            <Link href={`/p/${id}`}><p>{productName || <Skeleton />}</p></Link>
+            <Link href={`/p/${id}`}>
+              <p>{productName || <Skeleton />}</p>
+            </Link>
             <br />
 
             {originalPrice && (
               <strong>
-                De <del>R$ {originalPrice}</del>
+                De <del>R$ {formatCurrency(originalPrice)}</del>
                 <br />
                 Por{" "}
               </strong>
             )}
             {currentPrice && (
-  <strong>
-    {conditionPayment ? `R$ ${currentPrice} ${conditionPayment}` : `R$ ${currentPrice}`}
-  </strong>
-)}
-{recurrencePrice > 0 && (
-  
               <strong>
-              <br/>
-                Até R$ {recurrencePrice} com recorrência
+                {conditionPayment
+                  ? `R$ ${formatCurrency(currentPrice)} ${conditionPayment}`
+                  : `R$ ${formatCurrency(currentPrice)}`}
               </strong>
             )}
-
+            {recurrencePrice > 0 && (
+              <strong>
+                <br />
+                Até R$ {formatCurrency(recurrencePrice)} com recorrência
+              </strong>
+            )}
 
             <p>
               {buyLink && "🛒 Compre aqui: "}
               {buyLink ? (
-                <a className="text-blue-500" target="_blank" href={`${buyLink}?source=tomepromo08-20`}>
+                <a
+                  className="text-blue-500"
+                  target="_blank"
+                  href={`${buyLink}?source=tomepromo08-20`}
+                >
                   {buyLink.slice(0, 24)}
                 </a>
               ) : (
