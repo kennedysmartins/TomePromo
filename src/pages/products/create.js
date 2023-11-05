@@ -92,8 +92,10 @@ const CreateProducts = () => {
   };
 
   const formatPrice = (currentPrice) => {
+    if(currentPrice) {
     const floatValue = parseFloat(currentPrice.replace(/[^\d,.-]/g, '').replace(",", "."));
     return floatValue;
+    }
   };
 
   const onSubmit = async (data) => {
