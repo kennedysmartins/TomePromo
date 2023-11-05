@@ -97,7 +97,6 @@ const CreateProducts = () => {
   }
 
   const formatPrice = (currentPrice) => {
-    const oldPrice = currentPrice;
     if(currentPrice) {
       let priceWithoutSymbol = currentPrice.replace(/^R\$\s?/, '')
 
@@ -123,9 +122,9 @@ const CreateProducts = () => {
       title: data.title.trim(),
       productName: data.productName.trim(),
       catchyText: data.catchyText.trim(),
-      currentPrice: formatPrice(data.currentPrice),
-      originalPrice: formatPrice(data.originalPrice) || 0,
-      recurrencePrice: formatPrice(data.recurrencePrice) || 0,
+      currentPrice: parseFloat(formatPrice(data.currentPrice)),
+      originalPrice: parseFloat(formatPrice(data.originalPrice)) || 0,
+      recurrencePrice: parseFloat(formatPrice(data.recurrencePrice)) || 0,
       imagePath: data.imagePath.trim(),
       conditionPayment: data.conditionPayment.trim(),
       category: data.category.trim(),
