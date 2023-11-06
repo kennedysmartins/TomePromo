@@ -160,13 +160,11 @@ export function Card({
             <br />
             <p>
               {sponsorLink && "📦 Seja Amazon Prime: "}
-              {sponsorLink ? (
+              {sponsorLink && (
                 <a className="text-blue-500" target="_blank" href={sponsorLink}>
                   {sponsorLink.slice(0, 20)}
                 </a>
-              ) : (
-                <Skeleton />
-              )}
+              ) }
             </p>
 
             <p>{announcement1 || <Skeleton />}</p>

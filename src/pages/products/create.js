@@ -262,7 +262,6 @@ const CreateProducts = () => {
 
   const handleFormReset = (type, link) => {
     if(type === "Search") {
-      console.log("Aqui")
       resetFormFieldsSearch(link)
     } else {
 
