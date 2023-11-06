@@ -61,7 +61,7 @@ const LoginPage = () => {
                 Logado como: {session.user.name}, <br/>E-mail: {session.user.email}
               </h2>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 ml-4">
               <CompleteProfile user={session.user} />
             </div>
             <button
