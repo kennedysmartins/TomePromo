@@ -16,7 +16,7 @@ export default function Grupo() {
     <Head>
         <title>Grupo de Promoções - TomePromo</title>
         <meta property="og:title" content="Black Friday - TomePromo" />
-        <meta property="og:image" content="https://www.tomepromo.com.br/blackfriday-tomepromo.png" />
+        <meta property="og:image" content="https://www.tomepromo.com.br/blackfriday-tomepromo.jpg" />
         <meta property="og:url" content={`https://tomepromo.com.br/g/`} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="TomePromo" />
