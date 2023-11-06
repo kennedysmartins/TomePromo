@@ -177,9 +177,31 @@ const CreateProducts = () => {
     });
   };
 
+  const resetFormFieldsSearch = (link) => {
+    setProduct({
+      id: "",
+      title: "",
+      currentPrice: "",
+      originalPrice: "",
+      recurrencePrice: "",
+      category: "",
+      linkPesquisa: link,
+      buyLink: link,
+      imagePath: "",
+      catchyText: "",
+      productName: "",
+      conditionPayment: "",
+      sponsorLink: "https://amzn.to/477bFDg",
+      announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
+      announcement2:
+        "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
+    });
+  };
+
   const analiseLink = async (link) => {
     try {
       setIsAnalyzing(true);
+      handleFormReset("Search", link)
       const response = await urlExtractor(link);
       console.log(response);
       if (response && response.data && response.data.metadata) {
@@ -238,8 +260,14 @@ const CreateProducts = () => {
     }
   };
 
-  const handleFormReset = () => {
-    resetFormFields();
+  const handleFormReset = (type, link) => {
+    if(type === "Search") {
+      console.log("Aqui")
+      resetFormFieldsSearch(link)
+    } else {
+
+      resetFormFields();
+    }
   };
 
   const handleButtonClick = () => {
