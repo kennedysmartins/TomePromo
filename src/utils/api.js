@@ -69,6 +69,25 @@ export const deleteProductById = async (id) => {
   }
 };
 
+export const updateProductClick = async (id) => {
+  console.log("API Click")
+  try {
+    const response = await fetch(
+      `${apiUrl}/products/${id}/click`,
+      {
+        method: "PATCH",
+      }
+    );
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (error) {
+    console.error("Erro ao atualizar o produto", error);
+    return [];
+  }
+};
+
 export const editProductById = async (data, id) => {
   try {
     const response = await fetch(

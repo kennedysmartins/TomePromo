@@ -4,6 +4,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Link from "next/link";
 import { ThemeContext } from "@/contexts/ThemeContext";
 import { useRouter } from "next/router";
+import { updateProductClick } from "@/utils/api";
 
 export function Card({
   catchyText,
@@ -36,10 +37,16 @@ export function Card({
 
   function formatCurrency(amount) {
     const options = { minimumFractionDigits: 2 };
-    const formattedAmount = new Intl.NumberFormat('pt-BR', options).format(amount);
+    const formattedAmount = new Intl.NumberFormat("pt-BR", options).format(
+      amount
+    );
 
     return formattedAmount;
-}
+  }
+
+  const handleBuyLinkClick = (id) => {
+    updateProductClick(id)
+  };
 
   return (
     <main className="w-[500px] p-14 mx-auto">
@@ -83,7 +90,11 @@ export function Card({
           </header>
 
           <picture>
-            <Link target="_blank" href={`${buyLink}?source=tomepromo08-20`}>
+            <Link
+              target="_blank"
+              href={`${buyLink}?source=tomepromo08-20`}
+              onClick={() => handleBuyLinkClick(id)}
+            >
               {imagePath ? (
                 <img
                   className="w-full z-20 h-96 object-contain bg-white p-4"
@@ -137,6 +148,7 @@ export function Card({
                   className="text-blue-500"
                   target="_blank"
                   href={`${buyLink}?source=tomepromo08-20`}
+                  onClick={() => handleBuyLinkClick(id)}
                 >
                   {buyLink.slice(0, 24)}
                 </a>
@@ -172,6 +184,7 @@ export function Card({
             className="w-full whitespace-nowrap"
             target="_blank"
             href={`${buyLink}?source=tomepromo08-20`}
+            onClick={() => handleBuyLinkClick(id)}
           >
             {sponsorLink ? (
               <button
