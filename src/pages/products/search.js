@@ -63,13 +63,15 @@ const Search = () => {
   };
 
   const handleDeleteProduct = async (id) => {
-    const userConfirmation = confirm("Tem certeza que deseja apagar o produto?");
+    const userConfirmation = confirm(
+      "Tem certeza que deseja apagar o produto?"
+    );
     if (userConfirmation) {
       try {
         await deleteProductById(id);
         alert("Produto apagado com sucesso!");
-        const updatedResults = await getProducts(); 
-        setSearchResults(updatedResults); 
+        const updatedResults = await getProducts();
+        setSearchResults(updatedResults);
       } catch (error) {
         alert("Erro ao apagar o produto: " + error.message);
       }
@@ -87,7 +89,6 @@ const Search = () => {
         />
         <Content>
           <div className=" flex flex-col">
-            
             <div>
               <h1 className="mt-2 text-4xl p-4  ">Produtos</h1>
               <h2 className=" text-lg px-4  ">Gerenciamento de ofertas</h2>
@@ -120,7 +121,9 @@ const Search = () => {
                             </span>
                             <span className="block">
                               <strong>Title: </strong>
-                              {product.title}
+                              {product.title.length > 20
+                                ? `${product.title.substring(0, 20)}...`
+                                : product.title}
                             </span>
                             <span className="block">
                               <strong>Price: </strong>
@@ -139,10 +142,12 @@ const Search = () => {
                               {product.published ? "true" : "false"}
                             </span>
                             <div className="flex gap-2 mt-2">
-                              <div className="bg-red-500 rounded p-2 cursor-pointer"
-                              onClick={() => {
-                                handleDeleteProduct(product.id);
-                              }}  >
+                              <div
+                                className="bg-red-500 rounded p-2 cursor-pointer"
+                                onClick={() => {
+                                  handleDeleteProduct(product.id);
+                                }}
+                              >
                                 Apagar
                               </div>
                               <div className="bg-blue-500 rounded p-2">
@@ -150,6 +155,9 @@ const Search = () => {
                               </div>
                               <div className="bg-green-500 rounded p-2">
                                 Repostar
+                              </div>
+                              <div className="bg-purple-500 rounded p-2">
+                                <Link href={product.buyLink}>Link</Link>
                               </div>
                             </div>
                           </div>
