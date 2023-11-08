@@ -112,7 +112,7 @@ export function Card({
               theme === "dark" ? "text-white " : "text-black  "
             } p-4 `}
           >
-            <strong>{catchyText || <Skeleton />}</strong>
+            <strong>{catchyText}</strong>
             <br />
             <br />
             <Link href={`/p/${id}`}>
@@ -120,7 +120,7 @@ export function Card({
             </Link>
             <br />
 
-            {originalPrice && (
+            {originalPrice > 0 && (
               <strong>
                 De <del>R$ {formatCurrency(originalPrice)}</del>
                 <br />
@@ -159,7 +159,7 @@ export function Card({
 
             <br />
             <p>
-              {sponsorLink && "📦 Seja Amazon Prime: "}
+            {sponsorLink && (sponsorLink.includes('amazon') || sponsorLink.includes('amzn')) ? "📦 Seja Amazon Prime: " : ""}
               {sponsorLink && (
                 <a className="text-blue-500" target="_blank" href={sponsorLink}>
                   {sponsorLink.slice(0, 20)}
@@ -173,7 +173,7 @@ export function Card({
 
           <footer className=" flex justify-end px-3 text-gray-500">
             <h5>
-              {data || <Skeleton />} {hora || <Skeleton />}
+              {data } {hora}
             </h5>
           </footer>
         </div>
@@ -184,7 +184,7 @@ export function Card({
             href={`${buyLink}?source=tomepromo08-20`}
             onClick={() => handleBuyLinkClick(id)}
           >
-            {sponsorLink ? (
+            {buyLink ? (
               <button
                 className={`${
                   theme === "dark"
@@ -206,7 +206,7 @@ export function Card({
               </button>
             )}
           </a>
-          {sponsorLink ? (
+          {buyLink ? (
             <button
               className={`${
                 theme === "dark"
