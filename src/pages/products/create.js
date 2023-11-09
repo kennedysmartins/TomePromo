@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/Textarea";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/Button";
-import { BsWhatsapp, BsFillClipboard2Fill } from "react-icons/bs";
+import { BsWhatsapp, BsFillClipboard2Fill, BsLink45Deg } from "react-icons/bs";
 import {
   MdPublishedWithChanges,
   MdOutlineContentPasteSearch,
@@ -93,30 +93,36 @@ const CreateProducts = () => {
 
   function isFloat(value) {
     const floatValue = parseFloat(value);
-    return !isNaN(floatValue) && Number.isFinite(floatValue) && Number.isInteger(floatValue) === false;
+    return (
+      !isNaN(floatValue) &&
+      Number.isFinite(floatValue) &&
+      Number.isInteger(floatValue) === false
+    );
   }
 
   const formatPrice = (currentPrice) => {
-    if(currentPrice) {
-      let priceWithoutSymbol = currentPrice.replace(/^R\$\s?/, '')
+    if (currentPrice) {
+      let priceWithoutSymbol = currentPrice.replace(/^R\$\s?/, "");
 
-      if(priceWithoutSymbol.includes(",") && priceWithoutSymbol.includes(".")) {
-        priceWithoutSymbol = priceWithoutSymbol.replace(/\./g,"")
-        priceWithoutSymbol = priceWithoutSymbol.replace(/\,/g,".")
+      if (
+        priceWithoutSymbol.includes(",") &&
+        priceWithoutSymbol.includes(".")
+      ) {
+        priceWithoutSymbol = priceWithoutSymbol.replace(/\./g, "");
+        priceWithoutSymbol = priceWithoutSymbol.replace(/\,/g, ".");
       } else {
-        priceWithoutSymbol = priceWithoutSymbol.replace(/\,/g,".")
+        priceWithoutSymbol = priceWithoutSymbol.replace(/\,/g, ".");
       }
-      parseFloat(priceWithoutSymbol)
+      parseFloat(priceWithoutSymbol);
 
       return priceWithoutSymbol;
-
     }
-    return currentPrice
-};
+    return currentPrice;
+  };
 
   const onSubmit = async (data) => {
-    console.log("Preço ao submit",data.currentPrice)
-    console.log("Preço da variável produto", product.currentPrice)
+    console.log("Preço ao submit", data.currentPrice);
+    console.log("Preço da variável produto", product.currentPrice);
 
     const newData = {
       title: data.title.trim(),
@@ -201,7 +207,7 @@ const CreateProducts = () => {
   const analiseLink = async (link) => {
     try {
       setIsAnalyzing(true);
-      handleFormReset("Search", link)
+      handleFormReset("Search", link);
       const response = await urlExtractor(link);
       console.log(response);
       if (response && response.data && response.data.metadata) {
@@ -220,13 +226,12 @@ const CreateProducts = () => {
             formatPrice(metadata.recurrencePrice) ||
             prevProduct.recurrencePrice,
           originalPrice:
-            formatPrice(metadata.originalPrice) ||
-            prevProduct.originalPrice,
+            formatPrice(metadata.originalPrice) || prevProduct.originalPrice,
           imagePath: metadata.imagePath || prevProduct.imagePath,
           conditionPayment:
             metadata.conditionPayment || prevProduct.conditionPayment,
           category: categoryString || prevProduct.category,
-          buyLink: link,
+          buyLink: metadata.buyLink || link,
           sponsorLink: "https://amzn.to/477bFDg",
           announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
           announcement2:
@@ -238,11 +243,14 @@ const CreateProducts = () => {
         setValue("productName", metadata.title || "");
         setValue("currentPrice", formatPrice(metadata.currentPrice) || "");
         setValue("originalPrice", formatPrice(metadata.originalPrice) || "");
-        setValue("recurrencePrice", formatPrice(metadata.recurrencePrice) || "");
+        setValue(
+          "recurrencePrice",
+          formatPrice(metadata.recurrencePrice) || ""
+        );
         setValue("imagePath", metadata.imagePath || "");
         setValue("conditionPayment", metadata.conditionPayment || "");
         setValue("category", categoryString || "");
-        setValue("buyLink", link);
+        setValue("buyLink", metadata.buyLink || link);
         setValue("sponsorLink", "https://amzn.to/477bFDg");
         setValue(
           "announcement1",
@@ -261,10 +269,9 @@ const CreateProducts = () => {
   };
 
   const handleFormReset = (type, link) => {
-    if(type === "Search") {
-      resetFormFieldsSearch(link)
+    if (type === "Search") {
+      resetFormFieldsSearch(link);
     } else {
-
       resetFormFields();
     }
   };
@@ -280,10 +287,12 @@ const CreateProducts = () => {
 
   function formatCurrency(amount) {
     const options = { minimumFractionDigits: 2 };
-    const formattedAmount = new Intl.NumberFormat('pt-BR', options).format(amount);
+    const formattedAmount = new Intl.NumberFormat("pt-BR", options).format(
+      amount
+    );
 
     return formattedAmount;
-}
+  }
 
   const handleSendMessageTest = async () => {
     const productId = product.id || id;
@@ -293,10 +302,14 @@ const CreateProducts = () => {
       : "";
 
     if (product.originalPrice) {
-      messageContent += `De ~R$ ${formatCurrency(product.originalPrice)}~\nPor `;
+      messageContent += `De ~R$ ${formatCurrency(
+        product.originalPrice
+      )}~\nPor `;
     }
 
-    messageContent += `*R$ ${formatCurrency(product.currentPrice)}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
+    messageContent += `*R$ ${formatCurrency(
+      product.currentPrice
+    )}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
 
     const sendMessageSuccess = await messageSendTest(messageContent);
     if (sendMessageSuccess) {
@@ -314,10 +327,14 @@ const CreateProducts = () => {
       : "";
 
     if (product.originalPrice) {
-      messageContent += `De ~R$ ${formatCurrency(product.originalPrice)}~\nPor `;
+      messageContent += `De ~R$ ${formatCurrency(
+        product.originalPrice
+      )}~\nPor `;
     }
 
-    messageContent += `*R$ ${formatCurrency(product.currentPrice)}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
+    messageContent += `*R$ ${formatCurrency(
+      product.currentPrice
+    )}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
 
     const sendMessageSuccess = await messageSend(messageContent);
     if (sendMessageSuccess) {
@@ -335,10 +352,14 @@ const CreateProducts = () => {
       : "";
 
     if (product.originalPrice) {
-      messageContent += `De ~R$ ${formatCurrency(product.originalPrice)}~\nPor `;
+      messageContent += `De ~R$ ${formatCurrency(
+        product.originalPrice
+      )}~\nPor `;
     }
 
-    messageContent += `*R$ ${formatCurrency(product.currentPrice)}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
+    messageContent += `*R$ ${formatCurrency(
+      product.currentPrice
+    )}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
 
     navigator.clipboard.writeText(messageContent).then(() => {
       alert("Copiado para a área de transferência");
@@ -481,13 +502,20 @@ const CreateProducts = () => {
                 </div>
                 <div className="mb-4">
                   <label htmlFor="buyLink">Link de compra</label>
-                  <Input
-                    {...register("buyLink")}
-                    value={product.buyLink}
-                    placeholder="https://amzn.to/3tP7mxY"
-                    required
-                    onChange={(e) => handleInputChange(e, "buyLink")}
-                  />
+                  <div className="flex">
+                    <Input
+                      {...register("buyLink")}
+                      value={product.buyLink}
+                      placeholder="https://amzn.to/3tP7mxY"
+                      required
+                      onChange={(e) => handleInputChange(e, "buyLink")}
+                    />
+                    {product.buyLink != product.linkPesquisa && (
+                      <div className="flex justify-content items-center p-2 bg-green-500 rounded-full m-2 text-black">
+                        <BsLink45Deg />
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="mb-4">
                   <label htmlFor="category">Seja Amazon Prime</label>
