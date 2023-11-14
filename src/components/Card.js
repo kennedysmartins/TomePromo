@@ -92,7 +92,7 @@ export function Card({
           <picture>
             <Link
               target="_blank"
-              href={`${buyLink}?source=tomepromo08-20`}
+              href={`${buyLink}?source=tomepromo.com.br`}
               onClick={() => handleBuyLinkClick(id)}
             >
               {imagePath ? (
@@ -147,7 +147,7 @@ export function Card({
                 <a
                   className="text-blue-500"
                   target="_blank"
-                  href={`${buyLink}?source=tomepromo08-20`}
+                  href={`${buyLink}?source=tomepromo.com.br`}
                   onClick={() => handleBuyLinkClick(id)}
                 >
                   {buyLink.slice(0, 24)}
@@ -181,7 +181,7 @@ export function Card({
           <a
             className="w-full whitespace-nowrap"
             target="_blank"
-            href={`${buyLink}?source=tomepromo08-20`}
+            href={`${buyLink}?source=tomepromo.com.br`}
             onClick={() => handleBuyLinkClick(id)}
           >
             {buyLink ? (
