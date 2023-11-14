@@ -33,6 +33,32 @@ export const getProducts = async () => {
   }
 };
 
+export const getProductGroups = async () => {
+  try {
+    const response = await fetch(`${apiUrl}/products/productGroups`);
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (error) {
+    console.error("Erro ao carregar os grupos", error);
+    return [];
+  }
+};
+
+export const getProductsByGroup = async (id) => {
+  try {
+    const response = await fetch(`${apiUrl}/products/productGroups/${id}/products`);
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+  } catch (error) {
+    console.error("Erro ao carregar os produtos do grupo", error);
+    return [];
+  }
+};
+
 export const getProductById = async (id) => {
   try {
     const response = await fetch(
@@ -147,6 +173,31 @@ export const createProduct = async (data) => {
   } catch (error) {
     console.error("Erro ao criar o produto: ", error);
     return null;
+  }
+};
+
+export const createProductGroup = async (groupData, productIds) => {
+  try {
+    const response = await fetch(`${apiUrl}/products/create-group`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...groupData,
+        productIds: productIds,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error('Erro ao criar o grupo de produtos');
+    }
+  } catch (error) {
+    console.error('Erro ao criar o grupo de produtos', error);
+    throw error;
   }
 };
 

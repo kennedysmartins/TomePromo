@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import { ThemeContext } from '@/contexts/ThemeContext'
 import { TfiPackage } from "react-icons/tfi"
+import { TbPackages  } from "react-icons/tb"
 import { FiUsers, FiSettings } from "react-icons/fi"
 import { MdOutlineCategory } from "react-icons/md"
 import { RxDashboard, RxExit } from "react-icons/rx"
@@ -22,6 +23,7 @@ export function Sidebar({ isOpen, onClose, className }) {
     <aside className={`${theme === 'dark' ? 'bg-gray-800 text-white shadow-slate-700/30': 'bg-zinc-50 text-zinc-900 shadow-slate-300/50'} grid-cols-sidebar w-72 px-3 pt-20  min-h-screen h-full overflow-auto shadow-lg fixed ${className}`} style={drawerStyle}>
       <Link href={"/dashboard"}><ButtonMenu icon={RxDashboard} title="Dashboard">Dashboard</ButtonMenu></Link>
       <Link href={"/products"}><ButtonMenu icon={TfiPackage} title="Produtos">Produtos</ButtonMenu></Link>
+      <Link href={"/productGroups"}><ButtonMenu icon={TbPackages} title="Grupos">Grupos</ButtonMenu></Link>
       <Link href={"/categories"}><ButtonMenu icon={MdOutlineCategory} title="Categorias">Categorias</ButtonMenu></Link>
       <Link href={"/users"}><ButtonMenu icon={FiUsers} title="Usuários">Usuários</ButtonMenu></Link>
       <Link href={"/config"}><ButtonMenu icon={FiSettings} title="Configurações">Configurações</ButtonMenu></Link>

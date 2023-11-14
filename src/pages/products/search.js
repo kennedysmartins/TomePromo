@@ -49,7 +49,7 @@ const Search = () => {
       } else {
         results = await searchProducts(searchTerm);
       }
-      setSearchResults(results);
+      setSearchResults(results.reverse());
     };
     search();
   }, [searchTerm]);
@@ -102,12 +102,12 @@ const Search = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <div className="flex justify-center">
+            <div className="flex px-4">
               <ul>
                 {searchResults &&
-                  searchResults.reverse().map((product) => (
+                  searchResults.map((product) => (
                     <li key={product.id}>
-                      <Box className="border rounded p-4 shadow-md">
+                      <Box>
                         <div className="flex gap-3">
                           <img
                             src={product.imagePath}

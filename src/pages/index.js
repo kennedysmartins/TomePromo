@@ -36,6 +36,7 @@ export default function Home() {
     return
   }
   }, [startIndex, batchSize, initialLoad]);
+  
 
   const handleScroll = () => {
   if (

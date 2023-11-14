@@ -68,6 +68,11 @@ const Products = () => {
             <h3>Pesquisar produto</h3>
             </Link>
           </Box>
+          <Box>
+            <Link href="/productGroups">
+            <h3>Grupos de produtos</h3>
+            </Link>
+          </Box>
         </div>
       </Content>
       </div>

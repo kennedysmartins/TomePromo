@@ -7,5 +7,5 @@ export const Container = styled.div`
   color: ${({ theme }) => (theme === 'dark' ? '#fff' : '#000')};
   width: 100%;
   padding: 16px;
-  margin: 16px;
+  margin-block: 16px;
 `;
