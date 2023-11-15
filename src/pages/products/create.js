@@ -76,7 +76,7 @@ const CreateProducts = () => {
   useEffect(() => {
     setProduct((prevProduct) => ({
       ...prevProduct,
-      sponsorLink: "https://amzn.to/477bFDg",
+      sponsorLink: "https://amzn.to/3FXpmcn",
       announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
       announcement2:
         "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
@@ -176,7 +176,7 @@ const CreateProducts = () => {
       catchyText: "",
       productName: "",
       conditionPayment: "",
-      sponsorLink: "https://amzn.to/477bFDg",
+      sponsorLink: "https://amzn.to/3FXpmcn",
       announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
       announcement2:
         "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
@@ -197,7 +197,7 @@ const CreateProducts = () => {
       catchyText: "",
       productName: "",
       conditionPayment: "",
-      sponsorLink: "https://amzn.to/477bFDg",
+      sponsorLink: "https://amzn.to/3FXpmcn",
       announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
       announcement2:
         "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
@@ -232,7 +232,7 @@ const CreateProducts = () => {
             metadata.conditionPayment || prevProduct.conditionPayment,
           category: categoryString || prevProduct.category,
           buyLink: metadata.buyLink || link,
-          sponsorLink: "https://amzn.to/477bFDg",
+          sponsorLink: "https://amzn.to/3FXpmcn",
           announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
           announcement2:
             "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
@@ -251,7 +251,7 @@ const CreateProducts = () => {
         setValue("conditionPayment", metadata.conditionPayment || "");
         setValue("category", categoryString || "");
         setValue("buyLink", metadata.buyLink || link);
-        setValue("sponsorLink", "https://amzn.to/477bFDg");
+        setValue("sponsorLink", "https://amzn.to/3FXpmcn");
         setValue(
           "announcement1",
           "⚠️ Essa oferta pode encerrar a qualquer momento"
@@ -521,7 +521,7 @@ const CreateProducts = () => {
                   <label htmlFor="category">Seja Amazon Prime</label>
                   <Input
                     {...register("sponsorLink")}
-                    placeholder="https://amzn.to/477bFDg"
+                    placeholder="https://amzn.to/3FXpmcn"
                     value={product.sponsorLink}
                     onChange={(e) => handleInputChange(e, "sponsorLink")}
                   />
