@@ -78,6 +78,7 @@ export default function Home() {
         <meta property="og:locale" content="pt_BR" />
         <meta property="og:locale:alternate" content="en_US" />
         <meta name="description" content="Quer promoção? então Tome! - TomePromo" /> 
+        <meta name="lomadee-verification" content="23281575" />
       </Head>
       <Header />
       <ContentHome>
