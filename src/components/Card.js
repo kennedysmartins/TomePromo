@@ -22,6 +22,8 @@ export function Card({
   currentPrice,
   originalPrice,
   recurrencePrice,
+  website,
+  cupom,
 }) {
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
@@ -45,7 +47,7 @@ export function Card({
   }
 
   const handleBuyLinkClick = (id) => {
-    updateProductClick(id)
+    updateProductClick(id);
   };
 
   return (
@@ -141,6 +143,13 @@ export function Card({
               </strong>
             )}
 
+            {cupom && (
+              <>
+                <br />
+                <p>🔖 Utilize o cupom: <strong>{cupom}</strong></p>
+              </>
+            )}
+
             <p>
               {buyLink && "🛒 Compre aqui: "}
               {buyLink ? (
@@ -159,21 +168,26 @@ export function Card({
 
             <br />
             <p>
-            {sponsorLink && (sponsorLink.includes('amazon') || sponsorLink.includes('amzn')) ? "📦 Seja Amazon Prime: " : ""}
+              {sponsorLink &&
+              (sponsorLink.includes("amazon") || sponsorLink.includes("amzn"))
+                ? "📦 Seja Amazon Prime: "
+                : ""}
               {sponsorLink && (
                 <a className="text-blue-500" target="_blank" href={sponsorLink}>
                   {sponsorLink.slice(0, 20)}
                 </a>
-              ) }
+              )}
             </p>
 
             <p>{announcement1 || <Skeleton />}</p>
             <p>{announcement2 || <Skeleton />}</p>
+            {website && <br />}
+            {website && <p>🌐 {website}</p>}
           </main>
 
           <footer className=" flex justify-end px-3 text-gray-500">
             <h5>
-              {data } {hora}
+              {data} {hora}
             </h5>
           </footer>
         </div>

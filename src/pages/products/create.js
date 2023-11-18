@@ -6,7 +6,6 @@ import { Container } from "@/components/Container";
 import { Content } from "@/components/Content";
 import { Header } from "@/components/Header";
 import { Sidebar } from "@/components/Sidebar";
-import { Input } from "@/components/Input";
 import { Bottom } from "@/components/Bottom";
 import { DrawerContext } from "@/contexts/DrawerContext";
 import {
@@ -16,36 +15,50 @@ import {
   messageSendTest,
 } from "@/utils/api";
 import { useForm } from "react-hook-form";
-import { Textarea } from "@/components/Textarea";
 import { Card } from "@/components/Card";
-import { Button } from "@/components/Button";
-import { BsWhatsapp, BsFillClipboard2Fill, BsLink45Deg } from "react-icons/bs";
+
 import {
-  MdPublishedWithChanges,
-  MdOutlineContentPasteSearch,
-  MdDeleteOutline,
-} from "react-icons/md";
+  Chip,
+  Divider,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
+import LinkIcon from "@mui/icons-material/Link";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import AddIcon from "@mui/icons-material/Add";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import { AutoAwesome } from "@mui/icons-material";
+import Link from "next/link";
 
 const CreateProducts = () => {
-  const { drawer, toggleDrawer } = useContext(DrawerContext);
-  const { register, handleSubmit, setValue } = useForm();
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isMessageSent, setIsMessageSent] = useState(false);
-  const [isButtonDisabled, setButtonDisabled] = useState(false);
-  const [isSending, setIsSending] = useState(false);
-  const { data: session, status } = useSession();
   const router = useRouter();
+  const { register, handleSubmit, setValue } = useForm();
+  const { drawer, toggleDrawer } = useContext(DrawerContext);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { data: session, status } = useSession();
   const [shouldRender, setShouldRender] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [isSendingTest, setIsSendingTest] = useState(false);
+  const [isCopying, setIsCopying] = useState(false);
 
   const [product, setProduct] = useState({
     id: "",
     title: "",
     currentPrice: "",
     originalPrice: "",
+    recurrencePrice: "",
     category: "",
     imagePath: "",
     buyLink: "",
+    productCode: "",
     linkPesquisa: "",
     data: "",
     hora: "",
@@ -55,6 +68,8 @@ const CreateProducts = () => {
     sponsorLink: "",
     announcement1: "",
     announcement2: "",
+    website: "",
+    cupom: "",
   });
 
   useEffect(() => {
@@ -73,16 +88,6 @@ const CreateProducts = () => {
     setIsDrawerOpen(drawer === "open");
   }, [session, status, router, drawer]);
 
-  useEffect(() => {
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      sponsorLink: "https://amzn.to/3FXpmcn",
-      announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
-      announcement2:
-        "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
-    }));
-  }, []);
-
   if (!shouldRender) {
     return null;
   }
@@ -91,13 +96,243 @@ const CreateProducts = () => {
     toggleDrawer();
   };
 
-  function isFloat(value) {
-    const floatValue = parseFloat(value);
-    return (
-      !isNaN(floatValue) &&
-      Number.isFinite(floatValue) &&
-      Number.isInteger(floatValue) === false
+  const analiseLink = async (link) => {
+    setIsAnalyzing(true);
+    handleFormReset("Search", link);
+    try {
+      const response = await urlExtractor(link);
+      if (response && response.data && response.data.metadata) {
+        const { metadata } = response.data;
+        console.log("Extractor", metadata);
+        const categoryString = JSON.stringify(metadata.breadcrumbs);
+
+        // Extrair as informações desejadas do objeto metadata
+        const {
+          title,
+          currentPrice,
+          originalPrice,
+          recurrencePrice,
+          category,
+          imagePath,
+          buyLink,
+          productCode,
+          data,
+          hora,
+          cupom,
+          catchyText,
+          productName,
+          conditionPayment,
+          sponsorLink,
+          announcement1,
+          announcement2,
+          website,
+        } = metadata;
+
+        // Atualizar o estado do componente com as informações extraídas
+        setProduct((prevProduct) => ({
+          ...prevProduct,
+          title: title ?? prevProduct.title,
+          currentPrice: formatPrice(currentPrice) ?? prevProduct.currentPrice,
+          originalPrice:
+            formatPrice(originalPrice) ?? prevProduct.originalPrice,
+          recurrencePrice:
+            formatPrice(recurrencePrice) ?? prevProduct.recurrencePrice,
+          category: categoryString ?? prevProduct.category,
+          imagePath: imagePath ?? prevProduct.imagePath,
+          buyLink: buyLink ?? prevProduct.buyLink,
+          productCode: productCode ?? prevProduct.productCode,
+          linkPesquisa: link,
+          data: data ?? prevProduct.data,
+          hora: hora ?? prevProduct.hora,
+          cupom: cupom ?? prevProduct.cupom,
+          catchyText: catchyText ?? prevProduct.catchyText,
+          productName: title ?? prevProduct.title,
+          conditionPayment: conditionPayment ?? prevProduct.conditionPayment,
+          sponsorLink: sponsorLink ?? prevProduct.sponsorLink,
+          announcement1: announcement1 ?? prevProduct.announcement1,
+          announcement2: announcement2 ?? prevProduct.announcement2,
+          website: website ?? prevProduct.website,
+        }));
+      }
+    } catch (error) {
+      console.error("Erro ao analisar o link:", error);
+    } finally {
+      // Lógica a ser executada independentemente do sucesso ou falha
+      setIsAnalyzing(false);
+    }
+  };
+
+  const resetFormFields = () => {
+    setProduct({
+      id: "",
+      title: "",
+      currentPrice: "",
+      originalPrice: "",
+      recurrencePrice: "",
+      category: "",
+      imagePath: "",
+      website: "",
+      cupom: "",
+      buyLink: "",
+      linkPesquisa: "",
+      catchyText: "",
+      productName: "",
+      conditionPayment: "",
+      sponsorLink: "https://amzn.to/3FXpmcn",
+      announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
+      announcement2:
+        "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
+    });
+  };
+
+  const handleFormReset = (type, link) => {
+    setIsCopying(false);
+    setIsSending(false);
+    setIsSendingTest(false);
+    setIsCreating(false);
+    if (type === "Search") {
+      resetFormFieldsSearch(link);
+    } else {
+      resetFormFields();
+    }
+  };
+
+  const resetFormFieldsSearch = (link) => {
+    setProduct({
+      id: "",
+      title: "",
+      currentPrice: "",
+      originalPrice: "",
+      recurrencePrice: "",
+      category: "",
+      linkPesquisa: link,
+      buyLink: link,
+      imagePath: "",
+      website: "",
+      cupom: "",
+      catchyText: product.catchyText,
+      productName: "",
+      conditionPayment: "",
+      sponsorLink: "https://amzn.to/3FXpmcn",
+      announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
+      announcement2:
+        "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
+    });
+  };
+
+  const messageTemplate = () => {
+    const productId = product.id || id;
+
+    let messageContent = product.catchyText
+      ? `*${product.catchyText.trim()}*\n\n${product.productName.trim()}\n\n`
+      : "";
+
+    if (product.originalPrice) {
+      messageContent += `De ~R$ ${formatCurrency(
+        product.originalPrice
+      )}~\nPor `;
+    }
+
+    messageContent += `*R$ ${formatCurrency(
+      product.currentPrice
+    )}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}\n\n🌐 ${product.website}`;
+
+    return messageContent;
+  };
+
+  const handleCopyToClipboard = (id) => {
+    setIsCopying(true);
+    const messageContent = messageTemplate();
+    navigator.clipboard.writeText(messageContent);
+  };
+
+  const handleSendMessageTest = async () => {
+    setIsSendingTest(true);
+    const messageContent = messageTemplate();
+    const sendMessageSuccess = await messageSendTest(messageContent);
+    if (sendMessageSuccess) {
+      alert("Mensagem enviada com sucesso!");
+    } else {
+      alert("Erro ao enviar mensagem. Tente novamente mais tarde.");
+    }
+    setIsSendingTest(false);
+  };
+
+  const handleSendMessage = async () => {
+    setIsSending(true);
+    const messageContent = messageTemplate();
+    const sendMessageSuccess = await messageSendTest(messageContent);
+    if (sendMessageSuccess) {
+      alert("Mensagem enviada com sucesso!");
+    } else {
+      alert("Erro ao enviar mensagem. Tente novamente mais tarde.");
+    }
+    setIsSending(false);
+  };
+
+  const handlePasteFromClipboard = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      setProduct((prevProduct) => ({
+        ...prevProduct,
+        linkPesquisa: text,
+        buyLink: text,
+      }));
+      if (text) {
+        analiseLink(text);
+      }
+    } catch (error) {
+      console.error("Erro ao colar da área de transferência:", error);
+    }
+  };
+
+  const handleInputChange = (e, name) => {
+    const { value } = e.target;
+    // setValue((prevProduct) => ({
+    //   ...prevProduct,
+    //   [name]: value,
+    // }));
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      [name]: value,
+    }));
+  };
+
+  const addEmojiToCatchyText = (emoji) => {
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      catchyText: prevProduct.catchyText + emoji,
+    }));
+  };
+
+  const addTextToCatchyText = () => {
+    const catchyTextOptions = [
+      "Acaba rápido ⚡⚡",
+      "Menor preço nos últimos 30 dias 🔥",
+      "Menor preço já visto 😱🚨",
+      "OFERTA RELÂMPAGO ⚡",
+      "MUITO BARATO 🔥💪",
+      "PRECINHO TOP 💋",
+      "CORREEE 🏃‍♂️🏃‍♂️",
+      "VAI ACABAR 🏃‍♂️🏃‍♂️🚨",
+    ];
+
+    const randomIndex = Math.floor(Math.random() * catchyTextOptions.length);
+    const randomText = catchyTextOptions[randomIndex];
+
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      catchyText: randomText,
+    }));
+  };
+
+  function formatCurrency(amount) {
+    const options = { minimumFractionDigits: 2 };
+    const formattedAmount = new Intl.NumberFormat("pt-BR", options).format(
+      amount
     );
+
+    return formattedAmount;
   }
 
   const formatPrice = (currentPrice) => {
@@ -120,10 +355,11 @@ const CreateProducts = () => {
     return currentPrice;
   };
 
-  const onSubmit = async (data) => {
-    console.log("Preço ao submit", data.currentPrice);
-    console.log("Preço da variável produto", product.currentPrice);
+  const onSubmit = async () => {
+      setIsCreating(true);
 
+    const data = product
+    console.log(data);
     const newData = {
       title: data.title.trim(),
       productName: data.productName.trim(),
@@ -138,8 +374,11 @@ const CreateProducts = () => {
       announcement1: data.announcement1.trim(),
       announcement2: data.announcement2.trim(),
       buyLink: data.buyLink.trim(),
+      website: data.website.trim(),
+      cupom: data.cupom.trim(),
     };
 
+    console.log("newData", newData)
     const success = await createProduct(newData);
 
     if (success) {
@@ -147,238 +386,7 @@ const CreateProducts = () => {
         ...prevProduct,
         id: success.id, // Assume que o retorno de sucesso contém o ID
       }));
-      // handleCopyToClipboard(success.id);
-      alert(`Produto criado com sucesso com o id ${success.id}`);
-      setIsMessageSent(true);
-    }
-  };
-
-  const handleInputChange = (e, name) => {
-    const { value } = e.target;
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]: value,
-    }));
-    setValue(name, value);
-  };
-
-  const resetFormFields = () => {
-    setProduct({
-      id: "",
-      title: "",
-      currentPrice: "",
-      originalPrice: "",
-      recurrencePrice: "",
-      category: "",
-      imagePath: "",
-      buyLink: "",
-      linkPesquisa: "",
-      catchyText: "",
-      productName: "",
-      conditionPayment: "",
-      sponsorLink: "https://amzn.to/3FXpmcn",
-      announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
-      announcement2:
-        "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
-    });
-  };
-
-  const resetFormFieldsSearch = (link) => {
-    setProduct({
-      id: "",
-      title: "",
-      currentPrice: "",
-      originalPrice: "",
-      recurrencePrice: "",
-      category: "",
-      linkPesquisa: link,
-      buyLink: link,
-      imagePath: "",
-      catchyText: "",
-      productName: "",
-      conditionPayment: "",
-      sponsorLink: "https://amzn.to/3FXpmcn",
-      announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
-      announcement2:
-        "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
-    });
-  };
-
-  const analiseLink = async (link) => {
-    try {
-      setIsAnalyzing(true);
-      handleFormReset("Search", link);
-      const response = await urlExtractor(link);
-      console.log(response);
-      if (response && response.data && response.data.metadata) {
-        const { metadata } = response.data;
-        console.log(metadata);
-        const firstPart = metadata.title ? metadata.title.split(",")[0] : "";
-        const categoryString = JSON.stringify(metadata.breadcrumbs);
-
-        setProduct((prevProduct) => ({
-          ...prevProduct,
-          title: firstPart || prevProduct.title,
-          productName: metadata.title || prevProduct.title,
-          currentPrice:
-            formatPrice(metadata.currentPrice) || prevProduct.currentPrice,
-          recurrencePrice:
-            formatPrice(metadata.recurrencePrice) ||
-            prevProduct.recurrencePrice,
-          originalPrice:
-            formatPrice(metadata.originalPrice) || prevProduct.originalPrice,
-          imagePath: metadata.imagePath || prevProduct.imagePath,
-          conditionPayment:
-            metadata.conditionPayment || prevProduct.conditionPayment,
-          category: categoryString || prevProduct.category,
-          buyLink: metadata.buyLink || link,
-          sponsorLink: "https://amzn.to/3FXpmcn",
-          announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
-          announcement2:
-            "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
-        }));
-
-        // Verifica se cada valor existe antes de definir
-        setValue("title", firstPart || "");
-        setValue("productName", metadata.title || "");
-        setValue("currentPrice", formatPrice(metadata.currentPrice) || "");
-        setValue("originalPrice", formatPrice(metadata.originalPrice) || "");
-        setValue(
-          "recurrencePrice",
-          formatPrice(metadata.recurrencePrice) || ""
-        );
-        setValue("imagePath", metadata.imagePath || "");
-        setValue("conditionPayment", metadata.conditionPayment || "");
-        setValue("category", categoryString || "");
-        setValue("buyLink", metadata.buyLink || link);
-        setValue("sponsorLink", "https://amzn.to/3FXpmcn");
-        setValue(
-          "announcement1",
-          "⚠️ Essa oferta pode encerrar a qualquer momento"
-        );
-        setValue(
-          "announcement2",
-          "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador"
-        );
-      }
-    } catch (error) {
-      console.error("Erro ao analisar o link:", error);
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
-
-  const handleFormReset = (type, link) => {
-    if (type === "Search") {
-      resetFormFieldsSearch(link);
-    } else {
-      resetFormFields();
-    }
-  };
-
-  const handleButtonClick = () => {
-    setButtonDisabled(true);
-
-    // Habilita o botão após 5 segundos
-    setTimeout(() => {
-      setButtonDisabled(false);
-    }, 1000);
-  };
-
-  function formatCurrency(amount) {
-    const options = { minimumFractionDigits: 2 };
-    const formattedAmount = new Intl.NumberFormat("pt-BR", options).format(
-      amount
-    );
-
-    return formattedAmount;
-  }
-
-  const handleSendMessageTest = async () => {
-    const productId = product.id || id;
-
-    let messageContent = product.catchyText
-      ? `*${product.catchyText.trim()}*\n\n${product.productName.trim()}\n\n`
-      : "";
-
-    if (product.originalPrice) {
-      messageContent += `De ~R$ ${formatCurrency(
-        product.originalPrice
-      )}~\nPor `;
-    }
-
-    messageContent += `*R$ ${formatCurrency(
-      product.currentPrice
-    )}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
-
-    const sendMessageSuccess = await messageSendTest(messageContent);
-    if (sendMessageSuccess) {
-      alert("Mensagem enviada com sucesso!");
-    } else {
-      alert("Erro ao enviar mensagem. Tente novamente mais tarde.");
-    }
-  };
-
-  const handleSendMessage = async () => {
-    const productId = product.id || id;
-
-    let messageContent = product.catchyText
-      ? `*${product.catchyText.trim()}*\n\n${product.productName.trim()}\n\n`
-      : "";
-
-    if (product.originalPrice) {
-      messageContent += `De ~R$ ${formatCurrency(
-        product.originalPrice
-      )}~\nPor `;
-    }
-
-    messageContent += `*R$ ${formatCurrency(
-      product.currentPrice
-    )}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
-
-    const sendMessageSuccess = await messageSend(messageContent);
-    if (sendMessageSuccess) {
-      alert("Mensagem enviada com sucesso!");
-    } else {
-      alert("Erro ao enviar mensagem. Tente novamente mais tarde.");
-    }
-  };
-
-  const handleCopyToClipboard = (id) => {
-    const productId = product.id || id;
-
-    let messageContent = product.catchyText
-      ? `*${product.catchyText.trim()}*\n\n${product.productName.trim()}\n\n`
-      : "";
-
-    if (product.originalPrice) {
-      messageContent += `De ~R$ ${formatCurrency(
-        product.originalPrice
-      )}~\nPor `;
-    }
-
-    messageContent += `*R$ ${formatCurrency(
-      product.currentPrice
-    )}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}`;
-
-    navigator.clipboard.writeText(messageContent).then(() => {
-      alert("Copiado para a área de transferência");
-    });
-  };
-
-  const handlePasteFromClipboard = async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-      setProduct((prevProduct) => ({
-        ...prevProduct,
-        linkPesquisa: text,
-        buyLink: text,
-      }));
-      if (text) {
-        analiseLink(text);
-      }
-    } catch (error) {
-      console.error("Erro ao colar da área de transferência:", error);
+      setIsCreating(false);
     }
   };
 
@@ -395,220 +403,453 @@ const CreateProducts = () => {
           <div className="flex flex-col">
             <div>
               <h1 className="text-4xl p-4 ">Produtos</h1>
+              <Link href="/products/create2">
               <h1 className=" text-lg px-4 ">Crie um produto</h1>
+              </Link>
             </div>
 
-            <div className="flex mt-8 ml-4 gap-2">
-              <Input
-                className="w-64"
-                value={product.linkPesquisa || ""}
-                placeholder="Link do produto"
-                onChange={(e) => handleInputChange(e, "linkPesquisa")}
-              />
+            <div className="flex mx-4 my-8 gap-4 w-full items-center">
+              <div className="w-full">
+                <div className="w-full">
+                  <InputLabel htmlFor="outlined-adornment-linkPesquisa">
+                    Extrair dados de URL
+                  </InputLabel>
+                  <OutlinedInput
+                    fullWidth
+                    placeholder="https://amazon.com/dsakSIKC4"
+                    value={product.linkPesquisa}
+                    autoComplete="off"
+                    onChange={(e) => handleInputChange(e, "linkPesquisa")}
+                    // {...register("linkPesquisa")}
+                    id="outlined-adornment-linkPesquisa"
+                    startAdornment={
+                      <InputAdornment position="start">🌐</InputAdornment>
+                    }
+                    label="linkPesquisa"
+                  />
+                </div>
+              </div>
+              <div className="w-full flex gap-2">
+                {product.linkPesquisa ? (
+                  <LoadingButton
+                    sx={{ padding: 1.8, marginTop: 2.6 }}
+                    loading={isAnalyzing}
+                    onClick={handlePasteFromClipboard}
+                    disabled={isAnalyzing}
+                    size="large"
+                    color={product.currentPrice ? "success" : "error"}
+                    loadingPosition="start"
+                    startIcon={<LinkIcon />}
+                    variant="outlined"
+                  >
+                    {isAnalyzing ? "Analisando..." : "Analisar Link"}
+                  </LoadingButton>
+                ) : (
+                  <LoadingButton
+                    sx={{ padding: 1.8, marginTop: 2.6 }}
+                    loading={isAnalyzing}
+                    onClick={handlePasteFromClipboard}
+                    disabled={isAnalyzing}
+                    size="large"
+                    loadingPosition="start"
+                    startIcon={<LinkIcon />}
+                    variant="outlined"
+                  >
+                    {isAnalyzing ? "Analisando..." : "Colar Link"}
+                  </LoadingButton>
+                )}
 
-              {product.linkPesquisa ? (
-                <Button
-                  onClick={() => analiseLink(product.linkPesquisa)}
-                  icon={MdOutlineContentPasteSearch}
-                  disabled={isAnalyzing}
-                  className="w-40"
-                >
-                  {isAnalyzing ? "Analisando" : "Verificar link"}
-                </Button>
-              ) : (
-                <Button
-                  onClick={handlePasteFromClipboard}
-                  icon={BsFillClipboard2Fill}
-                  className="w-40"
-                >
-                  Colar Link
-                </Button>
-              )}
-              {product.linkPesquisa && !isAnalyzing ? (
-                <Button
-                  onClick={handleFormReset}
-                  icon={MdDeleteOutline}
-                  className="w-40"
-                >
-                  Limpar
-                </Button>
-              ) : null}
+                {product.linkPesquisa && (
+                  <LoadingButton
+                    sx={{ padding: 1.8, marginTop: 2.6 }}
+                    loading={false}
+                    onClick={handleFormReset}
+                    disabled={isAnalyzing}
+                    size="large"
+                    loadingPosition="start"
+                    color="error"
+                    startIcon={<DeleteOutlineIcon />}
+                    variant="outlined"
+                  >
+                    Limpar
+                  </LoadingButton>
+                )}
+              </div>
             </div>
+
+            <Divider />
 
             <div className="md:flex">
-              <form
-                className="mt-8 ml-4 w-96"
-                onSubmit={handleSubmit(onSubmit)}
+              <form noValidate autoComplete="off"
+                className="flex flex-col mt-8 ml-4 w-96 gap-4"
+                // onSubmit={handleSubmit(onSubmit)}
               >
-                <div className="mb-4">
-                  <label htmlFor="category">Mensagem chamativa</label>
-                  <Input
-                    {...register("catchyText")}
-                    value={product.catchyText}
-                    placeholder="🔝👌-47% de DESCONTO"
-                    required
-                    onChange={(e) => handleInputChange(e, "catchyText")}
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="title">Título</label>
-                  <Input
-                    {...register("title")}
-                    placeholder="Headset Gamer Sem Fio Logitech G435 LIGHTSPEED"
-                    required
-                    value={product.title}
-                    onChange={(e) => handleInputChange(e, "title")}
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="currentPrice">Preço</label>
-                  <Input
-                    {...register("currentPrice")}
-                    placeholder="1999.99"
-                    required
-                    value={product.currentPrice}
-                    onChange={(e) => handleInputChange(e, "currentPrice")}
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="originalPrice">Preço Original</label>
-                  <Input
-                    {...register("originalPrice")}
-                    placeholder="2200.99"
-                    value={product.originalPrice}
-                    onChange={(e) => handleInputChange(e, "originalPrice")}
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="productName">Descrição</label>
-                  <Textarea
-                    required
-                    rows="5"
-                    {...register("productName")}
-                    placeholder="Headset Gamer Sem Fio Logitech G435 LIGHTSPEED, Conexão USB e Bluetooth, Design Leve e Confortável, Microfone Embutido, Bateria de até 18h - Compatível com Dolby Atmos, PC, PS4, PS5, Mobile – Branco"
-                    value={product.productName}
-                    onChange={(e) => handleInputChange(e, "productName")}
-                  ></Textarea>
-                </div>
-
-                <div className="mb-4">
-                  <label htmlFor="category">Condições</label>
-                  <Input
-                    {...register("conditionPayment")}
-                    value={product.conditionPayment}
-                    placeholder="em 1x até 7x sem juros"
-                    onChange={(e) => handleInputChange(e, "conditionPayment")}
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="buyLink">Link de compra</label>
-                  <div className="flex">
-                    <Input
-                      {...register("buyLink")}
-                      value={product.buyLink}
-                      placeholder="https://amzn.to/3tP7mxY"
-                      required
-                      onChange={(e) => handleInputChange(e, "buyLink")}
+                
+                <div>
+                  <div className="flex relative">
+                    <TextField
+                      fullWidth
+                      id="outlined-basic"
+                      label="Mensagem Chamativa"
+                      placeholder="SUPER PROMOÇÃO"
+                      value={product.catchyText}
+                      variant="outlined"
+                      color="secondary"
+                      autoComplete="off"
+                      onChange={(e) => handleInputChange(e, "catchyText")}
+                      // {...register("catchyText")}
                     />
-                    {product.buyLink != product.linkPesquisa && (
-                      <div className="flex justify-content items-center p-2 bg-green-500 rounded-full m-2 text-black">
-                        <BsLink45Deg />
-                      </div>
-                    )}
+                    <IconButton
+                      aria-label="Automatic"
+                      color="secondary"
+                      sx={{
+                        position: "absolute",
+                        right: 8,
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                      }}
+                      onClick={() => {
+                        addTextToCatchyText();
+                      }}
+                    >
+                      <AutoAwesomeIcon />
+                    </IconButton>
+                  </div>
+                  <div className="flex my-2 gap-2 flex-nowrap">
+                    <Chip
+                      label="🚨"
+                      size="small"
+                      onClick={() => addEmojiToCatchyText("🚨")}
+                    />
+                    <Chip
+                      label="🔥"
+                      size="small"
+                      onClick={() => addEmojiToCatchyText("🔥")}
+                    />
+                    <Chip
+                      label="😱"
+                      size="small"
+                      onClick={() => addEmojiToCatchyText("😱")}
+                    />
+                    <Chip
+                      label="💪"
+                      size="small"
+                      onClick={() => addEmojiToCatchyText("💪")}
+                    />
+                    <Chip
+                      label="🏃‍♂️"
+                      size="small"
+                      onClick={() => addEmojiToCatchyText("🏃‍♂️")}
+                    />
+                    <Chip
+                      label="🔝"
+                      size="small"
+                      onClick={() => addEmojiToCatchyText("🔝")}
+                    />
+
+                    <Chip
+                      label="⚡"
+                      size="small"
+                      onClick={() => addEmojiToCatchyText("⚡")}
+                    />
+                    <Chip
+                      label="⏳"
+                      size="small"
+                      onClick={() => addEmojiToCatchyText("⏳")}
+                    />
+                    <Chip
+                      label="💋"
+                      size="small"
+                      onClick={() => addEmojiToCatchyText("💋")}
+                    />
                   </div>
                 </div>
-                <div className="mb-4">
-                  <label htmlFor="category">Seja Amazon Prime</label>
-                  <Input
-                    {...register("sponsorLink")}
+
+                <div className="flex">
+                  <div>
+                    <InputLabel htmlFor="outlined-adornment-originalPrice">
+                      Preço Original
+                    </InputLabel>
+                    <OutlinedInput
+                      sx={{ textDecoration: "line-through" }}
+                      fullWidth
+                      placeholder="20.50"
+                      value={product.originalPrice}
+                      autoComplete="off"
+                      onChange={(e) => handleInputChange(e, "originalPrice")}
+                      // {...register("originalPrice")}
+                      id="outlined-adornment-originalPrice"
+                      startAdornment={
+                        <InputAdornment position="start">R$</InputAdornment>
+                      }
+                      label="originalPrice"
+                    />
+                  </div>
+
+                  <div className="mx-2">
+                    <InputLabel htmlFor="outlined-adornment-currentPrice">
+                      Preço Atual
+                    </InputLabel>
+                    <OutlinedInput
+                      placeholder="15.50"
+                      color="secondary"
+                      value={product.currentPrice}
+                      autoComplete="off"
+                      onChange={(e) => handleInputChange(e, "currentPrice")}
+                      // {...register("currentPrice")}
+                      fullWidth
+                      id="outlined-adornment-currentPrice"
+                      startAdornment={
+                        <InputAdornment position="start">R$</InputAdornment>
+                      }
+                      label="currentPrice"
+                    />
+                  </div>
+
+                  <div>
+                    <InputLabel htmlFor="outlined-adornment-recurrencePrice">
+                      Preço Recorrente
+                    </InputLabel>
+                    <OutlinedInput
+                      placeholder="12.50"
+                      value={product.recurrencePrice}
+                      autoComplete="off"
+                      onChange={(e) => handleInputChange(e, "recurrencePrice")}
+                      // {...register("recurrencePrice")}
+                      fullWidth
+                      id="outlined-adornment-recurrencePrice"
+                      startAdornment={
+                        <InputAdornment position="start">R$</InputAdornment>
+                      }
+                      label="recurrencePrice"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Cupom"
+                    placeholder="TOMEPROMO10"
+                    value={product.cupom}
+                    variant="outlined"
+                    autoComplete="off"
+                    onChange={(e) => handleInputChange(e, "cupom")}
+                    // {...register("cupom")}
+                  />
+                </div>
+
+                <div>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Descrição"
+                    multiline
+                    placeholder="Headset Gamer Sem Fio Logitech G435 LIGHTSPEED, Conexão USB e Bluetooth, Design Leve e Confortável, Microfone Embutido, Bateria de até 18h - Compatível com Dolby Atmos, PC, PS4, PS5, Mobile – Branco"
+                    value={product.productName}
+                    variant="outlined"
+                    autoComplete="off"
+                    onChange={(e) => handleInputChange(e, "productName")}
+                    // {...register("productName")}
+                  />
+                </div>
+
+                <div>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Condições"
+                    placeholder="em 1x até 7x sem juros"
+                    value={product.conditionPayment}
+                    variant="outlined"
+                    autoComplete="off"
+                    onChange={(e) => handleInputChange(e, "conditionPayment")}
+                    // {...register("conditionPayment")}
+                  />
+                </div>
+
+                <div>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Link Compra"
+                    placeholder="https://amzn.to/3tP7mxY"
+                    value={product.buyLink}
+                    variant="outlined"
+                    autoComplete="off"
+                    onChange={(e) => handleInputChange(e, "buyLink")}
+                    // {...register("buyLink")}
+                  />
+                </div>
+
+                <div>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="URL Patrocinio"
                     placeholder="https://amzn.to/3FXpmcn"
                     value={product.sponsorLink}
+                    variant="outlined"
+                    autoComplete="off"
                     onChange={(e) => handleInputChange(e, "sponsorLink")}
+                    // {...register("sponsorLink")}
                   />
                 </div>
-                <div className="mb-4">
-                  <label htmlFor="category">Alerta</label>
-                  <Input
-                    {...register("announcement1")}
-                    value={product.announcement1}
+
+                <div>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Alerta 2"
                     placeholder="⚠️ Essa oferta pode encerrar a qualquer momento"
+                    value={product.announcement1}
+                    variant="outlined"
+                    autoComplete="off"
                     onChange={(e) => handleInputChange(e, "announcement1")}
+                    // {...register("announcement1")}
                   />
                 </div>
-                <div className="mb-4">
-                  <label htmlFor="category">Alerta 2</label>
-                  <Input
-                    {...register("announcement2")}
-                    value={product.announcement2}
+
+                <div>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Alerta 2"
                     placeholder="⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador"
+                    value={product.announcement2}
+                    variant="outlined"
+                    autoComplete="off"
                     onChange={(e) => handleInputChange(e, "announcement2")}
+                    // {...register("announcement2")}
                   />
                 </div>
-                <div className="mb-4">
-                  <label htmlFor="category">Categoria</label>
-                  <Input
-                    {...register("category")}
-                    placeholder="eletrônico"
+
+                <div>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Categoria"
+                    placeholder="Eletrônico"
                     value={product.category}
-                    required
+                    variant="outlined"
+                    autoComplete="off"
                     onChange={(e) => handleInputChange(e, "category")}
+                    // {...register("category")}
                   />
                 </div>
-                <div className="mb-4">
-                  <label htmlFor="imagePath">Imagem</label>
-                  <Input
-                    {...register("imagePath")}
+
+                <div>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="URL Imagem"
                     placeholder="https://m.media-amazon.com/images/I/81WfRjLX93L._AC_SX679_.jpg"
-                    required
                     value={product.imagePath}
+                    variant="outlined"
+                    autoComplete="off"
                     onChange={(e) => handleInputChange(e, "imagePath")}
+                    // {...register("imagePath")}
+                  />
+                </div>
+
+                <div>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Alt Imagem"
+                    placeholder="Headset Gamer"
+                    value={product.title}
+                    variant="outlined"
+                    autoComplete="off"
+                    onChange={(e) => handleInputChange(e, "title")}
+                    // {...register("title")}
+                  />
+                </div>
+
+                <div>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Site"
+                    placeholder="Amazon"
+                    value={product.website}
+                    variant="outlined"
+                    autoComplete="off"
+                    onChange={(e) => handleInputChange(e, "website")}
+                    // {...register("website")}
                   />
                 </div>
                 <div className="flex flex-col gap-4">
-                  <Button
-                    type="submit"
-                    icon={MdPublishedWithChanges}
-                    className="bg-blue-500 text-white font-semibold py-2 rounded px-8"
+                  <LoadingButton
+                    sx={{ padding: 1.8, marginTop: 2.6 }}
+                    fullWidth
+                    loading={isCreating}
+                    onClick={onSubmit}
+                    disabled={isCreating}
+                    size="large"
+                    loadingPosition="start"
+                    startIcon={<AddIcon />}
+                    variant="outlined"
+                    // type="submit"
                   >
-                    Postar
-                  </Button>
+                    {isCreating && !product.id
+                      ? "Adicionando..."
+                      : isCreating && product.id
+                      ? "Adicionando Novamente..."
+                      : !isCreating && !product.id
+                      ? "Adicionar Produto"
+                      : "Produto Adicionado"}
+                  </LoadingButton>
+
                   <div className="flex gap-4 w-full">
                     {product.id ? (
-                      <Button
-                        icon={BsFillClipboard2Fill}
-                        type="button"
+                      <LoadingButton
+                        sx={{ padding: 1.8, marginTop: 2.6 }}
+                        fullWidth
+                        loading={isCreating}
                         onClick={handleCopyToClipboard}
+                        disabled={isCreating || !product.id}
+                        size="large"
+                        color={isCopying ? "success" : "secondary"}
+                        loadingPosition="start"
+                        startIcon={<ContentPasteIcon />}
+                        variant="outlined"
                       >
-                        Copiar
-                      </Button>
+                        {isCopying ? "Copiado!" : "Copiar"}
+                      </LoadingButton>
                     ) : null}
                     {product.id ? (
-                      <Button
-                        type="button"
-                        icon={BsWhatsapp}
-                        onClick={async () => {
-                          setIsSending(true);
-                          await handleSendMessage();
-                          setIsSending(false);
-                        }}
+                      <LoadingButton
+                        sx={{ padding: 1.8, marginTop: 2.6 }}
+                        fullWidth
+                        loading={isSending}
+                        onClick={handleSendMessage}
                         disabled={isSending || !product.id}
+                        size="large"
+                        color={isSending ? "success" : "secondary"}
+                        loadingPosition="start"
+                        startIcon={<WhatsAppIcon />}
+                        variant="outlined"
                       >
                         {isSending ? "Enviando" : "Enviar Grupo"}
-                      </Button>
+                      </LoadingButton>
                     ) : null}
                     {product.id ? (
-                      <Button
-                        type="button"
-                        icon={BsWhatsapp}
-                        onClick={async () => {
-                          setIsSending(true);
-                          await handleSendMessageTest();
-                          setIsSending(false);
-                        }}
-                        disabled={isSending || !product.id}
+                      <LoadingButton
+                        sx={{ padding: 1.8, marginTop: 2.6 }}
+                        fullWidth
+                        loading={isSendingTest}
+                        onClick={handleSendMessageTest}
+                        disabled={isSendingTest || !product.id}
+                        size="large"
+                        color={isSendingTest ? "success" : "secondary"}
+                        loadingPosition="start"
+                        startIcon={<WhatsAppIcon />}
+                        variant="outlined"
                       >
-                        {isSending ? "Enviando" : "Grupo Teste"}
-                      </Button>
+                        {isSendingTest ? "Enviando" : "Enviar Teste"}
+                      </LoadingButton>
                     ) : null}
                   </div>
                 </div>
@@ -629,6 +870,8 @@ const CreateProducts = () => {
                 sponsorLink={product.sponsorLink}
                 announcement1={product.announcement1}
                 announcement2={product.announcement2}
+                website={product.website}
+                cupom={product.cupom}
               />
             </div>
           </div>
