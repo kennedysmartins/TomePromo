@@ -249,6 +249,7 @@ const CreateProducts = () => {
   const handleSendMessageTest = async () => {
     setIsSendingTest(true);
     const messageContent = messageTemplate();
+    console.log(messageContent)
     const sendMessageSuccess = await messageSendTest(messageContent);
     if (sendMessageSuccess) {
       alert("Mensagem enviada com sucesso!");
@@ -261,7 +262,7 @@ const CreateProducts = () => {
   const handleSendMessage = async () => {
     setIsSending(true);
     const messageContent = messageTemplate();
-    const sendMessageSuccess = await messageSendTest(messageContent);
+    const sendMessageSuccess = await messageSend(messageContent);
     if (sendMessageSuccess) {
       alert("Mensagem enviada com sucesso!");
     } else {
