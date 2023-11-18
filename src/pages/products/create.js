@@ -222,21 +222,29 @@ const CreateProducts = () => {
 
   const messageTemplate = () => {
     const productId = product.id || id;
-
+  
     let messageContent = product.catchyText
       ? `*${product.catchyText.trim()}*\n\n${product.productName.trim()}\n\n`
       : "";
-
+  
     if (product.originalPrice) {
       messageContent += `De ~R$ ${formatCurrency(
         product.originalPrice
       )}~\nPor `;
     }
-
+  
     messageContent += `*R$ ${formatCurrency(
       product.currentPrice
-    )}* ${product.conditionPayment.trim()}\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}\n\n🌐 ${product.website}`;
-
+    )}* ${product.conditionPayment.trim()}`;
+  
+    if (product.recurrencePrice) {
+      messageContent += `\nAté: *R$ ${formatCurrency(
+        product.recurrencePrice
+      )}* com recorrência`;
+    }
+  
+    messageContent += `\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}\n\n🌐 ${product.website}`;
+  
     return messageContent;
   };
 
