@@ -390,7 +390,7 @@ const CreateProducts = () => {
       originalPrice: parseFloat(formatPrice(data.originalPrice)) || 0,
       recurrencePrice: parseFloat(formatPrice(data.recurrencePrice)) || 0,
       imagePath: data.imagePath.trim(),
-      conditionPayment: data.conditionPayment.trim().charAt(0).toLowerCase() + conditionPayment.slice(1),
+      conditionPayment: data.conditionPayment.trim().charAt(0).toLowerCase() + data.conditionPayment.slice(1),
       category: data.category.trim(),
       sponsorLink: data.sponsorLink.trim(),
       announcement1: data.announcement1.trim(),
