@@ -398,7 +398,7 @@ const CreateProducts = () => {
       buyLink: data.buyLink.trim(),
       website: data.website.trim(),
       cupom: data.cupom.trim(),
-      productCode: data.productCode.trim(),
+      productCode: data.productCode ?? data.productCode.trim(),
     };
 
     console.log("newData", newData);
