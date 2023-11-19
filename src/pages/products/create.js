@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { Card } from "@/components/Card";
 
 import {
+  Button,
   Chip,
   Divider,
   IconButton,
@@ -35,6 +36,7 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { AutoAwesome } from "@mui/icons-material";
 import Link from "next/link";
+import { Container2 } from "@/components/Container2";
 
 const CreateProducts = () => {
   const router = useRouter();
@@ -147,7 +149,7 @@ const CreateProducts = () => {
           cupom: cupom ?? prevProduct.cupom,
           catchyText: catchyText ?? prevProduct.catchyText,
           productName: title ?? prevProduct.title,
-          conditionPayment: conditionPayment ?? prevProduct.conditionPayment,
+          conditionPayment: conditionPayment.charAt(0).toLowerCase() + conditionPayment.slice(1) ?? prevProduct.conditionPayment,
           sponsorLink: sponsorLink ?? prevProduct.sponsorLink,
           announcement1: announcement1 ?? prevProduct.announcement1,
           announcement2: announcement2 ?? prevProduct.announcement2,
@@ -222,29 +224,40 @@ const CreateProducts = () => {
 
   const messageTemplate = () => {
     const productId = product.id || id;
-  
+
     let messageContent = product.catchyText
       ? `*${product.catchyText.trim()}*\n\n${product.productName.trim()}\n\n`
       : "";
-  
+
     if (product.originalPrice) {
       messageContent += `De ~R$ ${formatCurrency(
         product.originalPrice
       )}~\nPor `;
     }
-  
+
     messageContent += `*R$ ${formatCurrency(
       product.currentPrice
-    )}* ${product.conditionPayment.trim()}`;
-  
+    )}* ${product.conditionPayment.trim().charAt(0).toLowerCase() + product.conditionPayment.slice(1)}`;
+
     if (product.recurrencePrice) {
-      messageContent += `\nAté: *R$ ${formatCurrency(
+      messageContent += `\nAté *R$ ${formatCurrency(
         product.recurrencePrice
       )}* com recorrência`;
     }
-  
-    messageContent += `\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}\n\n${product.announcement1.trim()}\n\n🌐 ${product.website}`;
-  
+
+    messageContent += `\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}`;
+
+    // Pular duas linhas
+    messageContent += "\n\n";
+
+    if (product.cupom) {
+      messageContent += `🔖 *Use o cupom:* ${product.cupom.trim()}`;
+    }
+
+    messageContent += `\n\n${product.announcement1.trim()}\n\n🌐 ${
+      product.website
+    }`;
+
     return messageContent;
   };
 
@@ -257,7 +270,7 @@ const CreateProducts = () => {
   const handleSendMessageTest = async () => {
     setIsSendingTest(true);
     const messageContent = messageTemplate();
-    console.log(messageContent)
+    console.log(messageContent);
     const sendMessageSuccess = await messageSendTest(messageContent);
     if (sendMessageSuccess) {
       alert("Mensagem enviada com sucesso!");
@@ -365,9 +378,9 @@ const CreateProducts = () => {
   };
 
   const onSubmit = async () => {
-      setIsCreating(true);
+    setIsCreating(true);
 
-    const data = product
+    const data = product;
     console.log(data);
     const newData = {
       title: data.title.trim(),
@@ -377,7 +390,7 @@ const CreateProducts = () => {
       originalPrice: parseFloat(formatPrice(data.originalPrice)) || 0,
       recurrencePrice: parseFloat(formatPrice(data.recurrencePrice)) || 0,
       imagePath: data.imagePath.trim(),
-      conditionPayment: data.conditionPayment.trim(),
+      conditionPayment: data.conditionPayment.trim().charAt(0).toLowerCase() + conditionPayment.slice(1),
       category: data.category.trim(),
       sponsorLink: data.sponsorLink.trim(),
       announcement1: data.announcement1.trim(),
@@ -385,9 +398,10 @@ const CreateProducts = () => {
       buyLink: data.buyLink.trim(),
       website: data.website.trim(),
       cupom: data.cupom.trim(),
+      productCode: data.productCode.trim(),
     };
 
-    console.log("newData", newData)
+    console.log("newData", newData);
     const success = await createProduct(newData);
 
     if (success) {
@@ -400,7 +414,7 @@ const CreateProducts = () => {
   };
 
   return (
-    <Container bgActive={false}>
+    <Container2 bgActive={false}>
       <Header onMenuToggle={handleMenuToggle} />
       <div className="flex flex-col">
         <Sidebar
@@ -411,15 +425,15 @@ const CreateProducts = () => {
         <Content>
           <div className="flex flex-col">
             <div>
-              <h1 className="text-4xl p-4 ">Produtos</h1>
+              <h1 className="text-4xl py-4 ">Produtos</h1>
               <Link href="/products/create2">
-              <h1 className=" text-lg px-4 ">Crie um produto</h1>
+                <h1 className=" text-lg">Crie um produto</h1>
               </Link>
             </div>
 
-            <div className="flex mx-4 my-8 gap-4 w-full items-center">
+            <div className="flex my-8 gap-4 md:w-[50rem] w-full items-center">
               <div className="w-full">
-                <div className="w-full">
+                <div className="w-full relative">
                   <InputLabel htmlFor="outlined-adornment-linkPesquisa">
                     Extrair dados de URL
                   </InputLabel>
@@ -438,12 +452,15 @@ const CreateProducts = () => {
                   />
                 </div>
               </div>
-              <div className="w-full flex gap-2">
+              <div className="md:w-96 w-full flex gap-2">
                 {product.linkPesquisa ? (
                   <LoadingButton
                     sx={{ padding: 1.8, marginTop: 2.6 }}
+                    fullWidth
                     loading={isAnalyzing}
-                    onClick={handlePasteFromClipboard}
+                    onClick={() => {
+                      analiseLink(product.linkPesquisa)
+                    }}
                     disabled={isAnalyzing}
                     size="large"
                     color={product.currentPrice ? "success" : "error"}
@@ -451,11 +468,12 @@ const CreateProducts = () => {
                     startIcon={<LinkIcon />}
                     variant="outlined"
                   >
-                    {isAnalyzing ? "Analisando..." : "Analisar Link"}
+                    {isAnalyzing ? "Analisando" : " Analisar "}
                   </LoadingButton>
                 ) : (
                   <LoadingButton
                     sx={{ padding: 1.8, marginTop: 2.6 }}
+                    fullWidth
                     loading={isAnalyzing}
                     onClick={handlePasteFromClipboard}
                     disabled={isAnalyzing}
@@ -467,33 +485,31 @@ const CreateProducts = () => {
                     {isAnalyzing ? "Analisando..." : "Colar Link"}
                   </LoadingButton>
                 )}
-
                 {product.linkPesquisa && (
-                  <LoadingButton
-                    sx={{ padding: 1.8, marginTop: 2.6 }}
-                    loading={false}
-                    onClick={handleFormReset}
-                    disabled={isAnalyzing}
-                    size="large"
-                    loadingPosition="start"
-                    color="error"
-                    startIcon={<DeleteOutlineIcon />}
+                  <Button
                     variant="outlined"
+                    sx={{ marginTop: 2.6 }}
+                    size="large"
+                    color="error"
+                    onClick={handleFormReset}
+                    loading={isAnalyzing}
+                    disabled={isAnalyzing}
                   >
-                    Limpar
-                  </LoadingButton>
+                    {<DeleteOutlineIcon />}
+                  </Button>
                 )}
               </div>
             </div>
 
             <Divider />
 
-            <div className="md:flex">
-              <form noValidate autoComplete="off"
-                className="flex flex-col mt-8 ml-4 w-96 gap-4"
+            <div className="md:flex w-full">
+              <form
+                noValidate
+                autoComplete="off"
+                className="flex flex-col mt-8 w-96 gap-4 w-full"
                 // onSubmit={handleSubmit(onSubmit)}
               >
-                
                 <div>
                   <div className="flex relative">
                     <TextField
@@ -574,8 +590,8 @@ const CreateProducts = () => {
                   </div>
                 </div>
 
-                <div className="flex">
-                  <div>
+                <div className="flex w-full gap-2">
+                  <div className="w-full">
                     <InputLabel htmlFor="outlined-adornment-originalPrice">
                       Preço Original
                     </InputLabel>
@@ -595,7 +611,7 @@ const CreateProducts = () => {
                     />
                   </div>
 
-                  <div className="mx-2">
+                  <div className="w-full">
                     <InputLabel htmlFor="outlined-adornment-currentPrice">
                       Preço Atual
                     </InputLabel>
@@ -615,7 +631,7 @@ const CreateProducts = () => {
                     />
                   </div>
 
-                  <div>
+                  <div className="w-full">
                     <InputLabel htmlFor="outlined-adornment-recurrencePrice">
                       Preço Recorrente
                     </InputLabel>
@@ -864,6 +880,10 @@ const CreateProducts = () => {
                 </div>
               </form>
 
+              <div className="w-full">
+
+
+
               <Card
                 imagePath={product.imagePath}
                 title={product.title}
@@ -882,12 +902,13 @@ const CreateProducts = () => {
                 website={product.website}
                 cupom={product.cupom}
               />
+              </div>
             </div>
           </div>
           <Bottom className={`md:hidden`} />
         </Content>
       </div>
-    </Container>
+    </Container2>
   );
 };
 

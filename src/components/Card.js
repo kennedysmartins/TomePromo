@@ -51,7 +51,7 @@ export function Card({
   };
 
   return (
-    <main className="w-[500px] p-14 mx-auto">
+    <main className="md:w-[31rem] p-14 mx-auto">
       <div className="flex-col gap-3 max-w-md mx-auto justify-center pt-6">
         <div
           className={`${
@@ -130,11 +130,15 @@ export function Card({
               </strong>
             )}
             {currentPrice && (
-              <strong>
-                {conditionPayment
-                  ? `R$ ${formatCurrency(currentPrice)} ${conditionPayment}`
-                  : `R$ ${formatCurrency(currentPrice)}`}
-              </strong>
+              <>
+              {conditionPayment ? (
+                <>
+                  <strong>R$ {formatCurrency(currentPrice)}</strong> {conditionPayment}
+                </>
+              ) : (
+                <strong>R$ {formatCurrency(currentPrice)}</strong>
+              )}
+            </>
             )}
             {recurrencePrice > 0 && (
               <strong>
@@ -146,7 +150,9 @@ export function Card({
             {cupom && (
               <>
                 <br />
+                <br />
                 <p>🔖 Utilize o cupom: <strong>{cupom}</strong></p>
+                <br />
               </>
             )}
 
