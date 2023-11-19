@@ -247,10 +247,8 @@ const CreateProducts = () => {
 
     messageContent += `\n\n*🛒 Compre aqui:* https://tomepromo.com.br/p/${productId}`;
 
-    // Pular duas linhas
-    messageContent += "\n\n";
-
     if (product.cupom) {
+      messageContent += "\n\n";
       messageContent += `🔖 *Use o cupom:* ${product.cupom.trim()}`;
     }
 
