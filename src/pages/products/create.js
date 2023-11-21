@@ -523,7 +523,7 @@ const CreateProducts = () => {
               <form
                 noValidate
                 autoComplete="off"
-                className="flex flex-col mt-8 w-96 gap-4 w-full"
+                className="flex flex-col mt-8 gap-4 w-full"
                 // onSubmit={handleSubmit(onSubmit)}
               >
                 <div>
@@ -560,48 +560,48 @@ const CreateProducts = () => {
                     <Chip
                       label="🚨"
                       size="small"
-                      onClick={() => addEmojiToCatchyText("🚨")}
+                      onClick={() => addEmojiToCatchyText(" 🚨 ")}
                     />
                     <Chip
                       label="🔥"
                       size="small"
-                      onClick={() => addEmojiToCatchyText("🔥")}
+                      onClick={() => addEmojiToCatchyText(" 🔥 ")}
                     />
                     <Chip
                       label="😱"
                       size="small"
-                      onClick={() => addEmojiToCatchyText("😱")}
+                      onClick={() => addEmojiToCatchyText(" 😱 ")}
                     />
                     <Chip
                       label="💪"
                       size="small"
-                      onClick={() => addEmojiToCatchyText("💪")}
+                      onClick={() => addEmojiToCatchyText(" 💪 ")}
                     />
                     <Chip
                       label="🏃‍♂️"
                       size="small"
-                      onClick={() => addEmojiToCatchyText("🏃‍♂️")}
+                      onClick={() => addEmojiToCatchyText(" 🏃‍♂️ ")}
                     />
                     <Chip
                       label="🔝"
                       size="small"
-                      onClick={() => addEmojiToCatchyText("🔝")}
+                      onClick={() => addEmojiToCatchyText(" 🔝 ")}
                     />
 
                     <Chip
                       label="⚡"
                       size="small"
-                      onClick={() => addEmojiToCatchyText("⚡")}
+                      onClick={() => addEmojiToCatchyText(" ⚡ ")}
                     />
                     <Chip
                       label="⏳"
                       size="small"
-                      onClick={() => addEmojiToCatchyText("⏳")}
+                      onClick={() => addEmojiToCatchyText(" ⏳ ")}
                     />
                     <Chip
                       label="💋"
                       size="small"
-                      onClick={() => addEmojiToCatchyText("💋")}
+                      onClick={() => addEmojiToCatchyText(" 💋 ")}
                     />
                   </div>
                 </div>
