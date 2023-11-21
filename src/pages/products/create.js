@@ -182,7 +182,7 @@ const CreateProducts = () => {
       catchyText: "",
       productName: "",
       conditionPayment: "",
-      sponsorLink: "https://amzn.to/3FXpmcn",
+      sponsorLink: "https://amzn.to/47ilPBf",
       announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
       announcement2:
         "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
@@ -217,7 +217,7 @@ const CreateProducts = () => {
       catchyText: product.catchyText,
       productName: "",
       conditionPayment: "",
-      sponsorLink: "https://amzn.to/3FXpmcn",
+      sponsorLink: "https://amzn.to/47ilPBf",
       announcement1: "⚠️ Essa oferta pode encerrar a qualquer momento",
       announcement2:
         "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
@@ -729,7 +729,7 @@ const CreateProducts = () => {
                     fullWidth
                     id="outlined-basic"
                     label="URL Patrocinio"
-                    placeholder="https://amzn.to/3FXpmcn"
+                    placeholder="https://amzn.to/47ilPBf"
                     value={product.sponsorLink}
                     variant="outlined"
                     autoComplete="off"
