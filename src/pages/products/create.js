@@ -241,10 +241,16 @@ const CreateProducts = () => {
       )}~\nPor `;
     }
 
-    messageContent += `*R$ ${formatCurrency(product.currentPrice)}* _${
-      product.conditionPayment.trim().charAt(0).toLowerCase() +
-      product.conditionPayment.slice(1)
-    }_`;
+    if(product.currentPrice){
+      messageContent += `*R$ ${formatCurrency(product.currentPrice)}*`
+    }
+
+    if(product.conditionPayment) {
+      messageContent += `_${
+        product.conditionPayment.trim().charAt(0).toLowerCase() +
+        product.conditionPayment.slice(1)
+      }_`;
+    }
 
     if (product.recurrencePrice) {
       messageContent += `\nAté *R$ ${formatCurrency(
