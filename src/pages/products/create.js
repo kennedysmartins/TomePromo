@@ -246,7 +246,7 @@ const CreateProducts = () => {
     }
 
     if(product.conditionPayment) {
-      messageContent += `_${
+      messageContent += ` _${
         product.conditionPayment.trim().charAt(0).toLowerCase() +
         product.conditionPayment.slice(1)
       }_`;
