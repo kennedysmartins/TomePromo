@@ -149,7 +149,9 @@ const CreateProducts = () => {
           cupom: cupom ?? prevProduct.cupom,
           catchyText: catchyText ?? prevProduct.catchyText,
           productName: title ?? prevProduct.title,
-          conditionPayment: conditionPayment.charAt(0).toLowerCase() + conditionPayment.slice(1) ?? prevProduct.conditionPayment,
+          conditionPayment:
+            conditionPayment.charAt(0).toLowerCase() +
+              conditionPayment.slice(1) ?? prevProduct.conditionPayment,
           sponsorLink: sponsorLink ?? prevProduct.sponsorLink,
           announcement1: announcement1 ?? prevProduct.announcement1,
           announcement2: announcement2 ?? prevProduct.announcement2,
@@ -226,8 +228,12 @@ const CreateProducts = () => {
     const productId = product.id || id;
 
     let messageContent = product.catchyText
-      ? `*${product.catchyText.trim()}*\n\n${product.productName.trim()}\n\n`
+      && `*${product.catchyText.trim()}*\n\n `
       : "";
+
+      if(product.productName) {
+        messageContent += `${product.productName.trim()}\n\n`
+      }
 
     if (product.originalPrice) {
       messageContent += `De ~R$ ${formatCurrency(
@@ -235,9 +241,10 @@ const CreateProducts = () => {
       )}~\nPor `;
     }
 
-    messageContent += `*R$ ${formatCurrency(
-      product.currentPrice
-    )}* ${product.conditionPayment.trim().charAt(0).toLowerCase() + product.conditionPayment.slice(1)}`;
+    messageContent += `*R$ ${formatCurrency(product.currentPrice)}* _${
+      product.conditionPayment.trim().charAt(0).toLowerCase() +
+      product.conditionPayment.slice(1)
+    }_`;
 
     if (product.recurrencePrice) {
       messageContent += `\nAté *R$ ${formatCurrency(
@@ -260,7 +267,10 @@ const CreateProducts = () => {
   };
 
   const handleCopyToClipboard = (id) => {
-    setIsCopying(true);
+    setIsCopying(false);
+    setTimeout(() => {
+      setIsCopying(true);
+    }, "600");
     const messageContent = messageTemplate();
     navigator.clipboard.writeText(messageContent);
   };
@@ -388,7 +398,9 @@ const CreateProducts = () => {
       originalPrice: parseFloat(formatPrice(data.originalPrice)) || 0,
       recurrencePrice: parseFloat(formatPrice(data.recurrencePrice)) || 0,
       imagePath: data.imagePath.trim(),
-      conditionPayment: data.conditionPayment.trim().charAt(0).toLowerCase() + data.conditionPayment.slice(1),
+      conditionPayment:
+        data.conditionPayment.trim().charAt(0).toLowerCase() +
+        data.conditionPayment.slice(1),
       category: data.category.trim(),
       sponsorLink: data.sponsorLink.trim(),
       announcement1: data.announcement1.trim(),
@@ -457,7 +469,7 @@ const CreateProducts = () => {
                     fullWidth
                     loading={isAnalyzing}
                     onClick={() => {
-                      analiseLink(product.linkPesquisa)
+                      analiseLink(product.linkPesquisa);
                     }}
                     disabled={isAnalyzing}
                     size="large"
@@ -879,27 +891,24 @@ const CreateProducts = () => {
               </form>
 
               <div className="w-full">
-
-
-
-              <Card
-                imagePath={product.imagePath}
-                title={product.title}
-                currentPrice={product.currentPrice}
-                originalPrice={product.originalPrice}
-                recurrencePrice={product.recurrencePrice}
-                buyLink={product.buyLink}
-                data={product.data}
-                hora={product.hora}
-                catchyText={product.catchyText}
-                productName={product.productName}
-                conditionPayment={product.conditionPayment}
-                sponsorLink={product.sponsorLink}
-                announcement1={product.announcement1}
-                announcement2={product.announcement2}
-                website={product.website}
-                cupom={product.cupom}
-              />
+                <Card
+                  imagePath={product.imagePath}
+                  title={product.title}
+                  currentPrice={product.currentPrice}
+                  originalPrice={product.originalPrice}
+                  recurrencePrice={product.recurrencePrice}
+                  buyLink={product.buyLink}
+                  data={product.data}
+                  hora={product.hora}
+                  catchyText={product.catchyText}
+                  productName={product.productName}
+                  conditionPayment={product.conditionPayment}
+                  sponsorLink={product.sponsorLink}
+                  announcement1={product.announcement1}
+                  announcement2={product.announcement2}
+                  website={product.website}
+                  cupom={product.cupom}
+                />
               </div>
             </div>
           </div>

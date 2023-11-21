@@ -114,9 +114,14 @@ export function Card({
               theme === "dark" ? "text-white " : "text-black  "
             } p-4 `}
           >
-            <strong>{catchyText}</strong>
-            <br />
-            <br />
+            {catchyText && (
+              <>
+                <strong>{catchyText}</strong>
+                <br />
+                <br />
+              </>
+            )}
+
             <Link href={`/p/${id}`}>
               <p>{productName || <Skeleton />}</p>
             </Link>
@@ -131,14 +136,15 @@ export function Card({
             )}
             {currentPrice && (
               <>
-              {conditionPayment ? (
-                <>
-                  <strong>R$ {formatCurrency(currentPrice)}</strong> {conditionPayment}
-                </>
-              ) : (
-                <strong>R$ {formatCurrency(currentPrice)}</strong>
-              )}
-            </>
+                {conditionPayment ? (
+                  <>
+                    <strong>R$ {formatCurrency(currentPrice)}</strong>{" "}
+                    {conditionPayment}
+                  </>
+                ) : (
+                  <strong>R$ {formatCurrency(currentPrice)}</strong>
+                )}
+              </>
             )}
             {recurrencePrice > 0 && (
               <strong>
@@ -151,7 +157,9 @@ export function Card({
               <>
                 <br />
                 <br />
-                <p>🔖 Utilize o cupom: <strong>{cupom}</strong></p>
+                <p>
+                  🔖 Utilize o cupom: <strong>{cupom}</strong>
+                </p>
                 <br />
               </>
             )}
