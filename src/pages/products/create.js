@@ -228,7 +228,7 @@ const CreateProducts = () => {
     const productId = product.id || id;
 
     let messageContent = product.catchyText
-      && `*${product.catchyText.trim()}*\n\n `
+      ? `*${product.catchyText.trim()}*\n\n`
       : "";
 
       if(product.productName) {
