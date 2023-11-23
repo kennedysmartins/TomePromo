@@ -717,6 +717,7 @@ const CreateProducts = () => {
                     label="Link Compra"
                     placeholder="https://amzn.to/3tP7mxY"
                     value={product.buyLink}
+                    required
                     variant="outlined"
                     autoComplete="off"
                     onChange={(e) => handleInputChange(e, "buyLink")}
@@ -787,6 +788,7 @@ const CreateProducts = () => {
                     label="URL Imagem"
                     placeholder="https://m.media-amazon.com/images/I/81WfRjLX93L._AC_SX679_.jpg"
                     value={product.imagePath}
+                    required
                     variant="outlined"
                     autoComplete="off"
                     onChange={(e) => handleInputChange(e, "imagePath")}
