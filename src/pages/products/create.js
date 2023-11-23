@@ -183,7 +183,7 @@ const CreateProducts = () => {
       productName: "",
       conditionPayment: "",
       sponsorLink: "https://amzn.to/47ilPBf",
-      announcement1: "🟢 Entrem em nosso grupo de ofertas no WhatsApp: https://tomepromo.com.br/g",
+      announcement1: "🟢 Entre em nosso grupo de ofertas do WhatsApp: https://tomepromo.com.br/g",
       announcement2:
         "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
     });
@@ -218,7 +218,7 @@ const CreateProducts = () => {
       productName: "",
       conditionPayment: "",
       sponsorLink: "https://amzn.to/47ilPBf",
-      announcement1: "🟢 Entrem em nosso grupo de ofertas: https://tomepromo.com.br/g",
+      announcement1: "🟢 Entre em nosso grupo de ofertas: https://tomepromo.com.br/g",
       announcement2:
         "⚠️ O link ou foto da promo não apareceu? Só adicionar o número do administrador",
     });
